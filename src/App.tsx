@@ -485,6 +485,7 @@ const publications: Publication[] = [
     title: "Sproutfit: An Immersive Seed-Planting Virtual Reality Game to Enhance Patient Motivation for Performing Exercises for the Prevention of Venous Thromboembolism through Loss and Avoidance Gamification",
     authors: "R. Han et al.",
     venue: "Virtual Reality · 29(3), Article 137",
+    pdf: "/papers/renzhi-han-sproutfit-immersive-vr-rehabilitation-2025.pdf",
     url: "https://doi.org/10.1007/s10055-025-01220-2",
     resources: [{ label: "UNNC", url: "https://research.nottingham.edu.cn/en/publications/sproutfit-an-immersive-seed-planting-virtual-reality-game-to-enha-2/" }],
   },
