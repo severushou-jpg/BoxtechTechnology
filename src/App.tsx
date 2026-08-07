@@ -1,4 +1,12 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type KeyboardEvent as ReactKeyboardEvent,
+  type ReactNode,
+} from "react";
 
 type Lang = "zh" | "en";
 type Localized = { zh: string; en: string };
@@ -71,6 +79,202 @@ const applications = [
       zh: "将前沿技术转化为可用、可及、可持续的真实场景方案，让更多人获得平等而有尊严的交互支持。",
       en: "Translate frontier technology into usable, accessible, and sustainable systems that support more equitable, dignified experiences.",
     },
+  },
+];
+
+type ResearchFigure = {
+  image: string;
+  alt: Localized;
+  label: string;
+  title: Localized;
+  pdf: string;
+  source: string;
+  fit?: "cover" | "contain";
+  objectPosition?: string;
+};
+
+type ResearchStory = {
+  id: string;
+  tag: string;
+  title: Localized;
+  note: Localized;
+  figures: [ResearchFigure, ResearchFigure];
+};
+
+const researchStories: ResearchStory[] = [
+  {
+    id: "rehabilitation-in-practice",
+    tag: "ADAPTIVE REHAB / 01",
+    title: { zh: "让训练强度跟随人的状态变化。", en: "Let training intensity move with the person." },
+    note: {
+      zh: "自适应并不是简单地变难或变容易，而是在挑战、信心与持续参与之间寻找动态平衡。",
+      en: "Adaptation is not simply making a task harder or easier. It is a moving balance between challenge, confidence, and sustained participation.",
+    },
+    figures: [
+      {
+        image: "/images/research/xr-prototype-session.jpg",
+        alt: { zh: "研究人员体验扩展现实康复原型", en: "Researcher experiencing an extended reality rehabilitation prototype" },
+        label: "PROTOTYPE / 01A",
+        title: { zh: "空间交互原型测试", en: "Spatial interaction prototyping" },
+        pdf: "/papers/emotional-responses-adaptive-ivr-exergaming.pdf",
+        source: "IEEE COMPSAC 2024",
+        objectPosition: "50% 50%",
+      },
+      {
+        image: "/images/research/xr-rehabilitation-exergame.jpg",
+        alt: { zh: "虚拟现实康复训练游戏画面", en: "Virtual reality rehabilitation exergame scene" },
+        label: "EXPERIMENT / 01B",
+        title: { zh: "游戏化康复与动态反馈", en: "Gamified rehabilitation & adaptive feedback" },
+        pdf: "/papers/emotional-responses-adaptive-ivr-exergaming.pdf",
+        source: "IEEE COMPSAC 2024",
+        objectPosition: "55% 50%",
+      },
+    ],
+  },
+  {
+    id: "collaborative-immersion",
+    tag: "SOCIAL PRESENCE / 02",
+    title: { zh: "共同进入，也共同在场。", en: "Enter together. Feel present together." },
+    note: {
+      zh: "当人们共同进入沉浸式世界，界面不再只是一块屏幕，而会成为承载合作、熟悉感与社会临场感的空间。",
+      en: "When people enter an immersive world together, the interface becomes a social space—carrying collaboration, familiarity, and presence beyond the screen.",
+    },
+    figures: [
+      {
+        image: "/images/research/collaborative-gameplay-conditions.png",
+        alt: { zh: "协作式沉浸游戏的多种任务与场景条件", en: "Multiple tasks and scene conditions in a collaborative immersive game" },
+        label: "GAMEPLAY / 02A",
+        title: { zh: "协作游戏的实验条件", en: "Collaborative gameplay conditions" },
+        pdf: "/papers/differential-effects-vr-ar-collaborative-gaming.pdf",
+        source: "IEEE VR 2026",
+        fit: "contain",
+      },
+      {
+        image: "/images/research/collaborative-study-protocol.png",
+        alt: { zh: "虚拟与增强现实协作游戏实验流程", en: "Study protocol for collaborative gaming in virtual and augmented reality" },
+        label: "PROTOCOL / 02B",
+        title: { zh: "从游戏阶段到参与者体验", en: "From gameplay phases to participant experience" },
+        pdf: "/papers/differential-effects-vr-ar-collaborative-gaming.pdf",
+        source: "IEEE VR 2026",
+        fit: "contain",
+      },
+    ],
+  },
+  {
+    id: "embodied-data",
+    tag: "EMBODIED DATA / 03",
+    title: { zh: "让双手成为数据的接口。", en: "Let the hands become the interface to data." },
+    note: {
+      zh: "当抽象数据获得尺度、方向与触感，理解不再只发生在屏幕上，而发生在身体与空间的协同之中。",
+      en: "When abstract data gains scale, direction, and tactility, understanding moves beyond the screen and into the coordination of body and space.",
+    },
+    figures: [
+      {
+        image: "/images/research/embodied-two-handed-interactions.png",
+        alt: { zh: "沉浸式数据探索中的双手交互条件", en: "Two-handed interaction conditions for immersive data exploration" },
+        label: "INTERACTION / 03A",
+        title: { zh: "具身双手交互设计空间", en: "Embodied two-handed interaction design space" },
+        pdf: "/papers/embodied-two-handed-immersive-data-exploration.pdf",
+        source: "ACM CHI 2024 EA",
+        fit: "contain",
+      },
+      {
+        image: "/images/research/tangible-data-cubes.png",
+        alt: { zh: "混合现实中的可触数据立方体交互示意", en: "Tangible data-cube interactions in mixed reality" },
+        label: "TANGIBLE / 03B",
+        title: { zh: "手中的时空数据立方体", en: "Spatio-temporal data cubes in hand" },
+        pdf: "/papers/data-cubes-in-hand-mixed-reality.pdf",
+        source: "ACM CHI 2024",
+        fit: "contain",
+      },
+    ],
+  },
+  {
+    id: "gamified-collaboration",
+    tag: "GAMIFIED COLLABORATION / 04",
+    title: { zh: "把关系写进游戏机制。", en: "Write relationships into the game mechanics." },
+    note: {
+      zh: "参与者是否熟悉彼此，会改变他们对竞争、合作与奖励的偏好；设计需要把这种社会关系纳入证据链。",
+      en: "Whether participants know one another changes how they respond to competition, cooperation, and reward. Design must bring those social relationships into the evidence loop.",
+    },
+    figures: [
+      {
+        image: "/images/research/gamification-preference-concept.png",
+        alt: { zh: "人际关系如何影响沉浸式游戏化偏好的概念图", en: "Concept illustration of how interpersonal relationships shape immersive gamification preferences" },
+        label: "CO-LEARNING / 04A",
+        title: { zh: "关系如何塑造游戏化偏好", en: "How relationships shape gamification preferences" },
+        pdf: "/papers/interpersonal-relationships-gamification-ivr.pdf",
+        source: "IEEE VR 2025",
+        fit: "contain",
+      },
+      {
+        image: "/images/research/gamification-collaboration-study.png",
+        alt: { zh: "协作式沉浸游戏的前测、三项任务与后测流程", en: "Pre-study, three-task, and post-study flow for collaborative immersive gaming" },
+        label: "EVIDENCE LOOP / 04B",
+        title: { zh: "从设计走向可复现证据", en: "From game design to reproducible evidence" },
+        pdf: "/papers/interpersonal-relationships-gamification-ivr.pdf",
+        source: "IEEE VR 2025",
+        fit: "contain",
+      },
+    ],
+  },
+  {
+    id: "social-intelligence",
+    tag: "SOCIAL INTELLIGENCE / 05",
+    title: { zh: "以差异促成共同理解。", en: "Let differences lead to shared understanding." },
+    note: {
+      zh: "非对称信息可以推动合作，虚拟同伴可以提供支持；社会智能来自对人与人之间差异、关系与需要的持续理解。",
+      en: "Asymmetric information can prompt collaboration, while virtual peers can provide support. Social intelligence begins with understanding differences, relationships, and needs.",
+    },
+    figures: [
+      {
+        image: "/images/research/context-dependent-collaboration-scenes.png",
+        alt: { zh: "数据、位置与视角三类非对称协作谜题", en: "Data-, position-, and perspective-based asymmetric collaboration puzzles" },
+        label: "ASYMMETRY / 05A",
+        title: { zh: "以差异驱动协作与共同理解", en: "Using asymmetry to drive collaboration" },
+        pdf: "/papers/context-dependent-social-engagement-immersive-learning.pdf",
+        source: "CHBR 2026",
+        fit: "contain",
+      },
+      {
+        image: "/images/research/virtual-peer-mentor-framework.png",
+        alt: { zh: "虚拟同伴导师提供信息、动作与情感支持的框架", en: "Virtual peer mentor framework for informational, instrumental, and emotional support" },
+        label: "PEER SUPPORT / 05B",
+        title: { zh: "把同伴支持嵌入康复训练", en: "Embedding peer support into rehabilitation" },
+        pdf: "/papers/virtual-peer-mentor-vr-rehabilitation.pdf",
+        source: "IEEE TVCG 2026",
+        fit: "contain",
+      },
+    ],
+  },
+  {
+    id: "spatial-visualisation",
+    tag: "SPATIAL VISUALISATION / 06",
+    title: { zh: "让时间、人物与数据在空间相遇。", en: "Let time, people, and data meet in space." },
+    note: {
+      zh: "空间可视化把复杂信息变得可探索：一端是跨越时间的人物轨迹，另一端是从系统综述中提炼出的交互设计秩序。",
+      en: "Spatial visualisation makes complex information explorable—from character trajectories across time to interaction patterns distilled through systematic review.",
+    },
+    figures: [
+      {
+        image: "/images/research/3dstoryline-trajectories.png",
+        alt: { zh: "沉浸式故事线可视化的总览与细节视图", en: "Overview and detail views in immersive storyline visualization" },
+        label: "STORYLINE / 06A",
+        title: { zh: "在三维空间中阅读故事轨迹", en: "Reading story trajectories in three dimensions" },
+        pdf: "/papers/3dstoryline-immersive-visual-storytelling.pdf",
+        source: "Journal of Visualization 2025",
+        fit: "contain",
+      },
+      {
+        image: "/images/research/visualization-widget-taxonomy.png",
+        alt: { zh: "实物数据探索任务、交互与可视化组件的分类图", en: "Taxonomy of tasks, interactions, and visualization widgets for tangible data exploration" },
+        label: "DESIGN SPACE / 06B",
+        title: { zh: "从研究证据中提炼交互秩序", en: "Distilling interaction patterns from evidence" },
+        pdf: "/papers/visualization-widgets-tangible-data-exploration.pdf",
+        source: "IEEE VIS 2025",
+        fit: "contain",
+      },
+    ],
   },
 ];
 
@@ -161,8 +365,8 @@ type Publication = {
   authors: string;
   venue: string;
   badge?: string;
+  pdf?: string;
   url?: string;
-  local?: boolean;
   resources?: Array<{ label: string; url: string }>;
 };
 
@@ -175,6 +379,7 @@ const publications: Publication[] = [
     authors: "L. Zheng, G. Cheng, S. Ke, J. Yuan, Y. Fan, B. G. Lee, M. Pike & A. Guerra-Manzanares",
     venue: "IEEE Conference on Virtual Reality and 3D User Interfaces (IEEE VR)",
     badge: "CCF-A",
+    pdf: "/papers/differential-effects-vr-ar-collaborative-gaming.pdf",
     url: "https://doi.org/10.1109/VR67842.2026.00063",
     resources: [{ label: "UNNC", url: "https://research.nottingham.edu.cn/en/publications/differential-effects-of-virtual-and-augmented-reality-on-social-p/" }],
   },
@@ -183,8 +388,9 @@ const publications: Publication[] = [
     year: "2026",
     type: { zh: "期刊论文", en: "Journal" },
     title: "Context-Dependent Roles of Familiarity, Discipline, and Personality in Shaping Social Engagement in Cooperative Immersive Learning",
-    authors: "L. Zheng, S. Ke, Y. Zang, L. Sun, B. G. Lee & M. Pike",
+    authors: "L. Zheng, S. Ke, Y. Zang, L. Sun, M. Pike & B. G. Lee",
     venue: "Computers in Human Behavior Reports",
+    pdf: "/papers/context-dependent-social-engagement-immersive-learning.pdf",
     url: "https://doi.org/10.1016/j.chbr.2026.101089",
     resources: [{ label: "Open access", url: "https://www.sciencedirect.com/science/article/pii/S2451958826001636" }],
   },
@@ -196,6 +402,7 @@ const publications: Publication[] = [
     authors: "L. Zheng, G. Cheng, S. Ke, J. Yuan, B. G. Lee & M. Pike",
     venue: "ACM UIST 2025 Adjunct",
     badge: "CCF-A",
+    pdf: "/papers/understanding-asymmetric-collaboration-ar-vr.pdf",
     url: "https://doi.org/10.1145/3746058.3758399",
     resources: [{ label: "ACM DL", url: "https://dl.acm.org/doi/10.1145/3746058.3758399" }],
   },
@@ -207,6 +414,7 @@ const publications: Publication[] = [
     authors: "S. Ke, L. Zheng & B. G. Lee",
     venue: "IEEE VR 2025 · pp. 104–114",
     badge: "CCF-A",
+    pdf: "/papers/interpersonal-relationships-gamification-ivr.pdf",
     url: "https://doi.org/10.1109/VR59515.2025.00035",
     resources: [{ label: "IEEE Xplore", url: "https://ieeexplore.ieee.org/document/10937399/" }],
   },
@@ -217,6 +425,7 @@ const publications: Publication[] = [
     title: "3DStoryline: Immersive Visual Storytelling",
     authors: "H. Yao, L. Zhao, B. Chen, K. Li, H. N. Liang & L. Yu",
     venue: "Journal of Visualization · 28(3), 681–697",
+    pdf: "/papers/3dstoryline-immersive-visual-storytelling.pdf",
     url: "https://doi.org/10.1007/s12650-025-01058-5",
     resources: [{ label: "arXiv", url: "https://arxiv.org/abs/2408.01775" }],
   },
@@ -227,6 +436,7 @@ const publications: Publication[] = [
     title: "Designing Visualization Widgets for Tangible Data Exploration: A Systematic Review",
     authors: "H. Yao, L. Yu & L. Yao",
     venue: "IEEE Visualization and Visual Analytics (VIS) · pp. 261–265",
+    pdf: "/papers/visualization-widgets-tangible-data-exploration.pdf",
     url: "https://doi.org/10.1109/VIS60296.2025.00058",
     resources: [{ label: "arXiv", url: "https://arxiv.org/abs/2507.00775" }],
   },
@@ -234,10 +444,11 @@ const publications: Publication[] = [
     owner: "haonan",
     year: "2024",
     type: { zh: "会议论文", en: "Conference" },
-    title: "Data Cubes in Hand: A Design Space of Tangible Cubes for Visualizing 3D Space-Time Data in Mixed Reality",
+    title: "Data Cubes in Hand: A Design Space of Tangible Cubes for Visualizing 3D Spatio-Temporal Data in Mixed Reality",
     authors: "S. He, H. Yao, L. Jiang, K. Li, N. Xiang, Y. Li, H. N. Liang & L. Yu",
     venue: "ACM CHI 2024",
     badge: "CCF-A",
+    pdf: "/papers/data-cubes-in-hand-mixed-reality.pdf",
     url: "https://doi.org/10.1145/3613904.3642740",
     resources: [{ label: "arXiv", url: "https://arxiv.org/abs/2403.06891" }],
   },
@@ -249,6 +460,7 @@ const publications: Publication[] = [
     authors: "H. Yao, L. Zhao, H. N. Liang, Y. Liu, Y. Li & L. Yu",
     venue: "ACM CHI 2024 Extended Abstracts",
     badge: "CCF-A",
+    pdf: "/papers/embodied-two-handed-immersive-data-exploration.pdf",
     url: "https://doi.org/10.1145/3613905.3650777",
     resources: [{ label: "ACM DL", url: "https://dl.acm.org/doi/10.1145/3613905.3650777" }],
   },
@@ -259,6 +471,7 @@ const publications: Publication[] = [
     title: "A Virtual Peer Mentor to Enhance Social Presence in VR Rehabilitation for Recovering Heart-Attack Patients",
     authors: "R. Han et al.",
     venue: "IEEE Transactions on Visualization and Computer Graphics · 32(5), 3809–3819",
+    pdf: "/papers/virtual-peer-mentor-vr-rehabilitation.pdf",
     url: "https://doi.org/10.1109/TVCG.2026.3679134",
     resources: [
       { label: "PubMed", url: "https://pubmed.ncbi.nlm.nih.gov/41911123/" },
@@ -282,8 +495,7 @@ const publications: Publication[] = [
     title: "Research on Gamification to Enhance User Motivation in Extended Reality (XR) Rehabilitation",
     authors: "Renzhi Han",
     venue: "University of Nottingham Ningbo China · First-Year Annual Review Report",
-    url: "/papers/renzhi-han-xr-rehabilitation-annual-review.pdf",
-    local: true,
+    pdf: "/papers/renzhi-han-xr-rehabilitation-annual-review.pdf",
   },
   {
     owner: "renzhi",
@@ -292,6 +504,7 @@ const publications: Publication[] = [
     title: "Exploring Emotional Responses with Dynamic Difficulty Adjustment Adaptation in Immersive Virtual Reality Exergaming",
     authors: "R. Han, B. G. Lee, D. Towey, Y. Yao & M. Pike",
     venue: "IEEE COMPSAC 2024",
+    pdf: "/papers/emotional-responses-adaptive-ivr-exergaming.pdf",
     url: "https://doi.org/10.1109/COMPSAC61105.2024.00089",
     resources: [{ label: "IEEE Xplore", url: "https://ieeexplore.ieee.org/document/10633336/" }],
   },
@@ -371,6 +584,200 @@ function ArrowLink({ href, children, download }: { href: string; children: React
       <span>{children}</span>
       <span aria-hidden="true">↗</span>
     </a>
+  );
+}
+
+function ResearchFigureCard({ figure, lang }: { figure: ResearchFigure; lang: Lang }) {
+  const openLabel = lang === "zh" ? "打开论文 PDF（新标签页）" : "Open the paper PDF in a new tab";
+
+  return (
+    <figure className={`research-figure research-figure-${figure.fit ?? "cover"}`}>
+      <a
+        className="research-visual-link"
+        href={figure.pdf}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${t(figure.title, lang)} · ${figure.source} · ${openLabel}`}
+      >
+        <span className="research-visual">
+          <img
+            src={figure.image}
+            alt={t(figure.alt, lang)}
+            style={{ objectPosition: figure.objectPosition }}
+            loading="lazy"
+            decoding="async"
+          />
+          <span className="research-frame-code">{figure.label}</span>
+        </span>
+      </a>
+      <figcaption>
+        <span>
+          <small>{figure.source}</small>
+          <strong>{t(figure.title, lang)}</strong>
+        </span>
+        <a
+          className="research-source-link"
+          href={figure.pdf}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${lang === "zh" ? "PDF 出处" : "PDF source"}: ${t(figure.title, lang)} · ${openLabel}`}
+        >
+          {lang === "zh" ? "PDF 出处" : "PDF source"}<i aria-hidden="true">↗</i>
+        </a>
+      </figcaption>
+    </figure>
+  );
+}
+
+function ResearchCarousel({ stories, lang }: { stories: ResearchStory[]; lang: Lang }) {
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const scrollFrameRef = useRef<number | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const goTo = useCallback((requestedIndex: number) => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+
+    const index = Math.max(0, Math.min(requestedIndex, stories.length - 1));
+    const slide = viewport.querySelector<HTMLElement>(`[data-research-index="${index}"]`);
+    if (!slide) return;
+
+    let reducedMotion = false;
+    try { reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch { /* media queries may be unavailable */ }
+    viewport.scrollTo({ left: slide.offsetLeft, behavior: reducedMotion ? "auto" : "smooth" });
+  }, [stories.length]);
+
+  const handleScroll = useCallback(() => {
+    if (scrollFrameRef.current !== null) return;
+    scrollFrameRef.current = window.requestAnimationFrame(() => {
+      const viewport = viewportRef.current;
+      if (viewport) {
+        const viewportCenter = viewport.scrollLeft + viewport.clientWidth / 2;
+        const slides = Array.from(viewport.querySelectorAll<HTMLElement>("[data-research-slide]"));
+        let nearestIndex = 0;
+        let nearestDistance = Number.POSITIVE_INFINITY;
+
+        slides.forEach((slide, index) => {
+          const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
+          const distance = Math.abs(slideCenter - viewportCenter);
+          if (distance < nearestDistance) {
+            nearestDistance = distance;
+            nearestIndex = index;
+          }
+        });
+
+        setActiveIndex((current) => current === nearestIndex ? current : nearestIndex);
+      }
+      scrollFrameRef.current = null;
+    });
+  }, []);
+
+  const handleKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      goTo(activeIndex - 1);
+    } else if (event.key === "ArrowRight") {
+      event.preventDefault();
+      goTo(activeIndex + 1);
+    } else if (event.key === "Home") {
+      event.preventDefault();
+      goTo(0);
+    } else if (event.key === "End") {
+      event.preventDefault();
+      goTo(stories.length - 1);
+    }
+  };
+
+  useEffect(() => () => {
+    if (scrollFrameRef.current !== null) window.cancelAnimationFrame(scrollFrameRef.current);
+  }, []);
+
+  return (
+    <div
+      className="research-carousel reveal"
+      role="region"
+      aria-roledescription="carousel"
+      aria-label={lang === "zh" ? "研究图像与论文 PDF" : "Research imagery and paper PDFs"}
+    >
+      <div className="research-carousel-toolbar">
+        <div className="research-carousel-intro">
+          <span>I² / RESEARCH ATLAS</span>
+          <p>{lang === "zh" ? "12 份视觉记录 · 6 组研究线索 · 每张图片直达来源 PDF" : "12 visual records · 6 research pairings · every image opens its source PDF"}</p>
+        </div>
+        <div className="research-carousel-controls">
+          <span aria-hidden="true"><b>{String(activeIndex + 1).padStart(2, "0")}</b> / {String(stories.length).padStart(2, "0")}</span>
+          <button
+            type="button"
+            onClick={() => goTo(activeIndex - 1)}
+            disabled={activeIndex === 0}
+            aria-controls="research-carousel-viewport"
+            aria-label={lang === "zh" ? "上一组研究图片" : "Previous research image group"}
+          >
+            <span aria-hidden="true">←</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => goTo(activeIndex + 1)}
+            disabled={activeIndex === stories.length - 1}
+            aria-controls="research-carousel-viewport"
+            aria-label={lang === "zh" ? "下一组研究图片" : "Next research image group"}
+          >
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </div>
+
+      <div
+        id="research-carousel-viewport"
+        className="research-carousel-viewport"
+        ref={viewportRef}
+        tabIndex={0}
+        onScroll={handleScroll}
+        onKeyDown={handleKeyDown}
+      >
+        <div className="research-carousel-track">
+          {stories.map((story, index) => (
+            <article
+              className="research-story"
+              key={story.id}
+              data-research-slide
+              data-research-index={index}
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`${index + 1} / ${stories.length} · ${t(story.title, lang)}`}
+            >
+              <ResearchFigureCard figure={story.figures[0]} lang={lang} />
+              <div className="research-story-note">
+                <span>{story.tag}</span>
+                <strong>{t(story.title, lang)}</strong>
+                <p>{t(story.note, lang)}</p>
+                <small>RESEARCH · PROTOTYPE · TRANSLATION</small>
+              </div>
+              <ResearchFigureCard figure={story.figures[1]} lang={lang} />
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div className="research-carousel-pagination" aria-label={lang === "zh" ? "选择研究图片组" : "Select research image group"}>
+        {stories.map((story, index) => (
+          <button
+            type="button"
+            key={story.id}
+            className={activeIndex === index ? "active" : ""}
+            onClick={() => goTo(index)}
+            aria-current={activeIndex === index ? "step" : undefined}
+            aria-label={`${lang === "zh" ? "查看第" : "View group"} ${index + 1}${lang === "zh" ? "组" : ""}: ${t(story.title, lang)}`}
+          >
+            <span />
+          </button>
+        ))}
+      </div>
+
+      <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {lang === "zh" ? `当前为第 ${activeIndex + 1} 组，共 ${stories.length} 组` : `Group ${activeIndex + 1} of ${stories.length}`}
+      </span>
+    </div>
   );
 }
 
@@ -796,20 +1203,7 @@ function App() {
               title={{ zh: "研究，只有进入生活才真正发生价值。", en: "Research creates value when it enters real life." }}
             />
 
-            <div className="research-showcase">
-              <figure className="research-image research-image-primary reveal">
-                <img src="/images/research/xr-prototype-session.jpg" alt={lang === "zh" ? "研究人员体验扩展现实原型" : "Researcher experiencing an extended reality prototype"} loading="lazy" decoding="async" />
-                <figcaption><span>PROTOTYPE / 01</span><p>{lang === "zh" ? "空间交互原型测试" : "Spatial interaction prototyping"}</p></figcaption>
-              </figure>
-              <div className="research-note reveal">
-                <span>I² LAB / FIELD NOTES</span>
-                <p>{lang === "zh" ? "沉浸式环境并不是终点。真正重要的是，它能否理解人、适配人，并在复杂情境中持续可靠地工作。" : "Immersion is not the endpoint. What matters is whether a system can understand people, adapt to them, and remain dependable in complex contexts."}</p>
-              </div>
-              <figure className="research-image research-image-secondary reveal">
-                <img src="/images/research/xr-rehabilitation-exergame.jpg" alt={lang === "zh" ? "扩展现实康复训练游戏画面" : "Extended reality rehabilitation exergame"} loading="lazy" decoding="async" />
-                <figcaption><span>EXPERIMENT / 02</span><p>{lang === "zh" ? "游戏化康复与动态反馈" : "Gamified rehabilitation & adaptive feedback"}</p></figcaption>
-              </figure>
-            </div>
+            <ResearchCarousel stories={researchStories} lang={lang} />
 
             <div className="applications-grid">
               {applications.map((application) => (
@@ -920,24 +1314,29 @@ function App() {
                         <div className="paper-year"><strong>{paper.year}</strong><span>{t(paper.type, lang)}</span></div>
                         <div className="paper-main">
                           <h3 lang="en">
-                            {paper.url ? <a className="paper-title-link" href={paper.url} target="_blank" rel="noopener noreferrer" aria-label={`${paper.title} · ${lang === "zh" ? "在新标签页打开" : "opens in a new tab"}`}>{paper.title}<span aria-hidden="true">↗</span></a> : paper.title}
+                            {paper.pdf ? <a className="paper-title-link" href={paper.pdf} target="_blank" rel="noopener noreferrer" aria-label={`${paper.title} · ${lang === "zh" ? "打开论文 PDF（新标签页）" : "open paper PDF in a new tab"}`}>{paper.title}<span aria-hidden="true">↗</span></a> : paper.title}
                           </h3>
                           <p lang="en">{paper.authors}</p>
                           <div className="paper-meta"><span lang="en">{paper.venue}</span>{paper.badge && <b lang="en">{paper.badge}</b>}</div>
                         </div>
                         <div className="paper-action">
-                          {paper.url ? (
-                            <div className="paper-resource-links">
-                              <a href={paper.url} target="_blank" rel="noopener noreferrer" aria-label={`${paper.local ? (lang === "zh" ? "研究报告" : "Report") : (lang === "zh" ? "论文" : "Paper")}: ${paper.title} · ${lang === "zh" ? "在新标签页打开" : "opens in a new tab"}`}>
-                                {paper.local ? (lang === "zh" ? "研究报告" : "Report") : (lang === "zh" ? "论文" : "Paper")} <span aria-hidden="true">↗</span>
+                          <div className="paper-resource-links">
+                            {paper.pdf ? (
+                              <a className="paper-pdf-link" href={paper.pdf} target="_blank" rel="noopener noreferrer" aria-label={`PDF: ${paper.title} · ${lang === "zh" ? "在新标签页打开" : "opens in a new tab"}`}>
+                                PDF <span aria-hidden="true">↗</span>
                               </a>
-                              {paper.resources?.map((resource) => (
-                                <a key={resource.url} href={resource.url} target="_blank" rel="noopener noreferrer" aria-label={`${resource.label}: ${paper.title} · ${lang === "zh" ? "在新标签页打开" : "opens in a new tab"}`}>{resource.label} <span aria-hidden="true">↗</span></a>
-                              ))}
-                            </div>
-                          ) : (
-                            <span className="link-pending">{lang === "zh" ? "论文记录" : "Publication record"}</span>
-                          )}
+                            ) : (
+                              <span className="link-pending"><b>PDF</b><small>{lang === "zh" ? "待补充" : "Pending"}</small></span>
+                            )}
+                            {paper.url && (
+                              <a href={paper.url} target="_blank" rel="noopener noreferrer" aria-label={`DOI: ${paper.title} · ${lang === "zh" ? "在新标签页打开" : "opens in a new tab"}`}>
+                                DOI <span aria-hidden="true">↗</span>
+                              </a>
+                            )}
+                            {paper.resources?.map((resource) => (
+                              <a key={resource.url} href={resource.url} target="_blank" rel="noopener noreferrer" aria-label={`${resource.label}: ${paper.title} · ${lang === "zh" ? "在新标签页打开" : "opens in a new tab"}`}>{resource.label} <span aria-hidden="true">↗</span></a>
+                            ))}
+                          </div>
                         </div>
                       </article>
                     ))}
