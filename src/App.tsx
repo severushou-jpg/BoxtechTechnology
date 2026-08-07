@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
 type Lang = "zh" | "en";
 type Localized = { zh: string; en: string };
@@ -313,7 +313,7 @@ const ownerNames: Record<PublicationOwner, Localized> = {
   renzhi: { zh: "韩仁智 · 精选研究", en: "Renzhi Han · Selected research" },
 };
 
-function usePageObservers(setActiveSection: (id: string) => void) {
+function usePageObservers(setActiveSection: (id: string) => void, refreshKey: string) {
   useEffect(() => {
     const revealObserver = new IntersectionObserver(
       (entries) => {
@@ -342,7 +342,7 @@ function usePageObservers(setActiveSection: (id: string) => void) {
       revealObserver.disconnect();
       sectionObserver.disconnect();
     };
-  }, [setActiveSection]);
+  }, [refreshKey, setActiveSection]);
 }
 
 function SectionHeading({
@@ -367,57 +367,149 @@ function SectionHeading({
 
 function ArrowLink({ href, children, download }: { href: string; children: ReactNode; download?: boolean }) {
   return (
-    <a className="arrow-link" href={href} target="_blank" rel="noreferrer" download={download}>
+    <a className="arrow-link" href={href} target="_blank" rel="noopener noreferrer" download={download}>
       <span>{children}</span>
       <span aria-hidden="true">↗</span>
     </a>
   );
 }
 
-function IntroSequence({ onComplete }: { onComplete: () => void }) {
+function IntroSequence({ onComplete, lang }: { onComplete: () => void; lang: Lang }) {
   const [leaving, setLeaving] = useState(false);
+  const [scene, setScene] = useState(0);
+  const [mediaReady, setMediaReady] = useState(false);
+  const [mediaFailed, setMediaFailed] = useState(false);
+  const [reducedMotion] = useState(() => {
+    try { return window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch { return false; }
+  });
+  const finishedRef = useRef(false);
+  const exitTimerRef = useRef<number | null>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const skipButtonRef = useRef<HTMLButtonElement>(null);
+
+  const finish = useCallback(() => {
+    if (finishedRef.current) return;
+    finishedRef.current = true;
+    setLeaving(true);
+    exitTimerRef.current = window.setTimeout(onComplete, reducedMotion ? 280 : 720);
+  }, [onComplete, reducedMotion]);
 
   useEffect(() => {
-    const finishTimer = window.setTimeout(() => setLeaving(true), 3300);
-    const removeTimer = window.setTimeout(onComplete, 4000);
+    const timers: number[] = [];
+    if (reducedMotion) {
+      setScene(3);
+      timers.push(window.setTimeout(finish, 1250));
+    } else {
+      timers.push(window.setTimeout(() => setScene(1), 1880));
+      timers.push(window.setTimeout(() => setScene(2), 4050));
+      timers.push(window.setTimeout(() => setScene(3), 6050));
+      timers.push(window.setTimeout(finish, 7750));
+    }
     return () => {
-      window.clearTimeout(finishTimer);
-      window.clearTimeout(removeTimer);
+      timers.forEach((timer) => window.clearTimeout(timer));
+      if (exitTimerRef.current !== null) window.clearTimeout(exitTimerRef.current);
     };
-  }, [onComplete]);
+  }, [finish, reducedMotion]);
 
-  const skip = () => {
-    setLeaving(true);
-    window.setTimeout(onComplete, 520);
-  };
+  useEffect(() => {
+    dialogRef.current?.focus({ preventScroll: true });
+
+    const handleDialogKeydown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        finish();
+      } else if (event.key === "Tab") {
+        event.preventDefault();
+        skipButtonRef.current?.focus({ preventScroll: true });
+      }
+    };
+
+    document.addEventListener("keydown", handleDialogKeydown);
+    return () => {
+      document.removeEventListener("keydown", handleDialogKeydown);
+    };
+  }, [finish]);
 
   return (
-    <div className={`intro-sequence ${leaving ? "is-leaving" : ""}`} role="dialog" aria-label="Boxtech introduction">
-      <div className="intro-grid" aria-hidden="true" />
-      <div className="intro-field" aria-hidden="true">
-        <i className="intro-ring intro-ring-one" />
-        <i className="intro-ring intro-ring-two" />
-        <i className="intro-ring intro-ring-three" />
-        <span className="intro-channel intro-channel-xr"><b>XR</b></span>
-        <span className="intro-channel intro-channel-wave"><b>mmWAVE</b></span>
-        <span className="intro-channel intro-channel-sense"><b>SMART SENSING</b></span>
+    <div
+      ref={dialogRef}
+      className={`intro-sequence scene-${scene} ${mediaReady ? "media-ready" : ""} ${mediaFailed ? "media-failed" : ""} ${reducedMotion ? "reduced" : ""} ${leaving ? "is-leaving" : ""}`}
+      role="dialog"
+      aria-modal="true"
+      aria-label={lang === "zh" ? "纸合科技开场影片" : "Boxtech opening film"}
+      tabIndex={-1}
+    >
+      <div className="intro-media" aria-hidden="true">
+        {!reducedMotion && (
+          <video
+            className="intro-film"
+            autoPlay
+            muted
+            playsInline
+            preload="auto"
+            poster="/media/intro-spatial.jpg"
+            onLoadedData={() => setMediaReady(true)}
+            onEnded={finish}
+            onError={() => setMediaFailed(true)}
+          >
+            <source src="/media/boxtech-intro.mp4" type="video/mp4" />
+          </video>
+        )}
+        <div className="intro-fallback">
+          <i style={{ backgroundImage: "url('/media/intro-spatial.jpg')" }} />
+          <i style={{ backgroundImage: "url('/media/intro-radar.jpg')" }} />
+          <i style={{ backgroundImage: "url('/media/intro-xr.jpg')" }} />
+        </div>
+        <div className="intro-grade" />
+        <div className="intro-grain" />
+        <div className="intro-grid" />
+        <div className="intro-scanline" />
+      </div>
+
+      <div className="intro-topline">
+        <div className="intro-mini-brand">
+          <span className="brand-mark" aria-hidden="true"><i /><b /></span>
+          <span><strong>BOXTECH</strong><small>NINGBO / CHINA</small></span>
+        </div>
+        <p>RESEARCH FILM <span>·</span> 00:07 <span>·</span> I² / 2026</p>
+      </div>
+
+      <div className="intro-chapters" aria-hidden="true">
+        <span><b>01</b><i />SPATIAL</span>
+        <span><b>02</b><i />SENSING</span>
+        <span><b>03</b><i />INTERACTION</span>
+      </div>
+
+      <div className="intro-narrative" aria-hidden="true">
+        <div className="intro-copy-frame intro-copy-0"><span>EXTENDED REALITY</span><strong>Sense the<br />invisible.</strong></div>
+        <div className="intro-copy-frame intro-copy-1"><span>mmWAVE RADAR</span><strong>Read motion<br />without contact.</strong></div>
+        <div className="intro-copy-frame intro-copy-2"><span>HUMAN–SYSTEM LOOP</span><strong>Turn interaction<br />into evidence.</strong></div>
+      </div>
+
+      <div className="intro-sensor-lock" aria-hidden="true"><i /><i /><span>HCI</span></div>
+
+      <div className="intro-final-brand" aria-hidden="true">
         <span className="brand-mark intro-brand-mark"><i /><b /></span>
-        <span className="intro-scan" />
+        <div><strong>BOXTECH</strong><small>纸合科技 · TURNING RESEARCH INTO REVOLUTION</small></div>
       </div>
-      <div className="intro-wordmark">
-        <span>NINGBO BOXTECH TECHNOLOGY</span>
-        <strong>Turning Research<br />into Revolution.</strong>
-      </div>
-      <div className="intro-progress"><i /></div>
-      <button type="button" className="intro-skip" onClick={skip}>SKIP <span>↗</span></button>
+
+      <div className="intro-progress"><i /><span>XR&nbsp;&nbsp;/&nbsp;&nbsp;mmWAVE&nbsp;&nbsp;/&nbsp;&nbsp;SMART SENSING</span></div>
+      <button ref={skipButtonRef} type="button" className="intro-skip" onClick={finish}>{lang === "zh" ? "跳过影片" : "SKIP FILM"}<span aria-hidden="true">↗</span></button>
     </div>
   );
 }
 
 function App() {
-  const [lang, setLang] = useState<Lang>(() => (localStorage.getItem("boxtech-lang") === "en" ? "en" : "zh"));
+  const [lang, setLang] = useState<Lang>(() => {
+    try {
+      return localStorage.getItem("boxtech-lang") === "en" ? "en" : "zh";
+    } catch {
+      return "zh";
+    }
+  });
   const [activeSection, setActiveSection] = useState("about");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isCompactNav, setIsCompactNav] = useState(() => window.matchMedia("(max-width: 1180px)").matches);
   const [publicationFilter, setPublicationFilter] = useState<"all" | PublicationOwner>("all");
   const [introVisible, setIntroVisible] = useState(() => {
     try {
@@ -426,17 +518,55 @@ function App() {
       return true;
     }
   });
+  const menuToggleRef = useRef<HTMLButtonElement>(null);
+  const firstNavLinkRef = useRef<HTMLAnchorElement>(null);
+  const introReplayTriggerRef = useRef<HTMLButtonElement | null>(null);
 
-  usePageObservers(setActiveSection);
+  usePageObservers(setActiveSection, publicationFilter);
 
   useEffect(() => {
     document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
-    localStorage.setItem("boxtech-lang", lang);
+    try { localStorage.setItem("boxtech-lang", lang); } catch { /* storage may be unavailable */ }
   }, [lang]);
 
   useEffect(() => {
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && menuOpen) {
+        setMenuOpen(false);
+        menuToggleRef.current?.focus({ preventScroll: true });
+      }
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [menuOpen]);
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 1180px)");
+    const syncNavigationMode = () => {
+      setIsCompactNav(media.matches);
+      if (!media.matches) setMenuOpen(false);
+    };
+    syncNavigationMode();
+    media.addEventListener("change", syncNavigationMode);
+    return () => media.removeEventListener("change", syncNavigationMode);
+  }, []);
+
+  useEffect(() => {
     document.body.style.overflow = introVisible ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    const backgroundElements = document.querySelectorAll<HTMLElement>(".site-shell > :not(.intro-sequence)");
+    backgroundElements.forEach((element) => element.toggleAttribute("inert", introVisible));
+    return () => {
+      document.body.style.overflow = "";
+      backgroundElements.forEach((element) => element.removeAttribute("inert"));
+    };
+  }, [introVisible]);
+
+  useEffect(() => {
+    if (introVisible || !introReplayTriggerRef.current) return;
+    const replayTrigger = introReplayTriggerRef.current;
+    introReplayTriggerRef.current = null;
+    const focusTimer = window.setTimeout(() => replayTrigger.focus({ preventScroll: true }), 0);
+    return () => window.clearTimeout(focusTimer);
   }, [introVisible]);
 
   const completeIntro = useCallback(() => {
@@ -451,10 +581,26 @@ function App() {
 
   const toggleLanguage = () => setLang((current) => (current === "zh" ? "en" : "zh"));
 
+  const toggleMenu = () => {
+    if (menuOpen) {
+      setMenuOpen(false);
+      window.requestAnimationFrame(() => menuToggleRef.current?.focus({ preventScroll: true }));
+    } else {
+      setMenuOpen(true);
+      window.requestAnimationFrame(() => firstNavLinkRef.current?.focus({ preventScroll: true }));
+    }
+  };
+
   return (
     <div className="site-shell">
-      {introVisible && <IntroSequence onComplete={completeIntro} />}
-      <a className="skip-link" href="#main">{lang === "zh" ? "跳到主要内容" : "Skip to content"}</a>
+      {introVisible && <IntroSequence onComplete={completeIntro} lang={lang} />}
+      <a
+        className="skip-link"
+        href="#main"
+        onClick={() => window.requestAnimationFrame(() => document.getElementById("main")?.focus({ preventScroll: true }))}
+      >
+        {lang === "zh" ? "跳到主要内容" : "Skip to content"}
+      </a>
       <header className="topbar">
         <a className="brand" href="#top" aria-label={lang === "zh" ? "纸合科技首页" : "Boxtech home"}>
           <span className="brand-mark" aria-hidden="true"><i /><b /></span>
@@ -464,13 +610,24 @@ function App() {
           </span>
         </a>
 
-        <nav className={`desktop-nav ${menuOpen ? "is-open" : ""}`} aria-label={lang === "zh" ? "主要导航" : "Primary navigation"}>
-          {navItems.map((item) => (
+        <nav
+          id="primary-navigation"
+          className={`desktop-nav ${menuOpen ? "is-open" : ""}`}
+          aria-label={lang === "zh" ? "主要导航" : "Primary navigation"}
+          aria-hidden={isCompactNav && !menuOpen ? true : undefined}
+          inert={isCompactNav && !menuOpen ? true : undefined}
+        >
+          {navItems.map((item, index) => (
             <a
+              ref={index === 0 ? firstNavLinkRef : undefined}
               key={item.id}
               className={activeSection === item.id ? "active" : ""}
               href={`#${item.id}`}
-              onClick={() => setMenuOpen(false)}
+              onClick={() => {
+                setMenuOpen(false);
+                if (isCompactNav) window.requestAnimationFrame(() => menuToggleRef.current?.focus({ preventScroll: true }));
+              }}
+              aria-current={activeSection === item.id ? "location" : undefined}
             >
               {t(item.label, lang)}
             </a>
@@ -478,7 +635,15 @@ function App() {
         </nav>
 
         <div className="nav-actions">
-          <button className="intro-replay" type="button" onClick={() => setIntroVisible(true)}>
+          <button
+            className="intro-replay"
+            type="button"
+            onClick={(event) => {
+              introReplayTriggerRef.current = event.currentTarget;
+              setIntroVisible(true);
+            }}
+            aria-label={lang === "zh" ? "重播开场影片" : "Replay opening film"}
+          >
             <span aria-hidden="true">◎</span>{lang === "zh" ? "重播" : "REPLAY"}
           </button>
           <button className="language-toggle" type="button" onClick={toggleLanguage} aria-label={lang === "zh" ? "Switch to English" : "切换至中文"}>
@@ -487,18 +652,22 @@ function App() {
             <span className={lang === "en" ? "selected" : ""}>EN</span>
           </button>
           <button
+            ref={menuToggleRef}
             className={`menu-toggle ${menuOpen ? "is-open" : ""}`}
             type="button"
-            onClick={() => setMenuOpen((open) => !open)}
+            onClick={toggleMenu}
             aria-expanded={menuOpen}
-            aria-label={lang === "zh" ? "打开导航菜单" : "Open navigation menu"}
+            aria-controls="primary-navigation"
+            aria-label={menuOpen
+              ? (lang === "zh" ? "关闭导航菜单" : "Close navigation menu")
+              : (lang === "zh" ? "打开导航菜单" : "Open navigation menu")}
           >
             <span /><span />
           </button>
         </div>
       </header>
 
-      <main id="main">
+      <main id="main" tabIndex={-1}>
         <section className="hero" id="top">
           <div className="hero-grid" aria-hidden="true" />
           <div className="hero-glow hero-glow-one" aria-hidden="true" />
@@ -722,13 +891,14 @@ function App() {
                   en: "Research is grouped in the same order as the team above, with room for the collection to keep growing.",
                 }}
               />
-              <div className="publication-filter reveal" role="group" aria-label={lang === "zh" ? "筛选论文" : "Filter publications"}>
+              <div className="publication-filter reveal" role="group" aria-label={lang === "zh" ? "筛选论文" : "Filter publications"} aria-controls="publication-results">
                 {(["all", "lijie", "haonan", "renzhi"] as const).map((filter) => (
                   <button
                     type="button"
                     key={filter}
                     className={publicationFilter === filter ? "active" : ""}
                     onClick={() => setPublicationFilter(filter)}
+                    aria-pressed={publicationFilter === filter}
                   >
                     {filter === "all" ? (lang === "zh" ? "全部" : "All") : filter === "lijie" ? (lang === "zh" ? "郑力杰" : "Lijie") : filter === "haonan" ? (lang === "zh" ? "姚淏楠" : "Haonan") : (lang === "zh" ? "韩仁智" : "Renzhi")}
                   </button>
@@ -736,30 +906,33 @@ function App() {
               </div>
             </div>
 
-            <div className="publication-groups">
+            <div className="publication-groups" id="publication-results">
+              <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+                {lang === "zh" ? `当前显示 ${publicationGroups.reduce((total, group) => total + group.items.length, 0)} 篇论文` : `Showing ${publicationGroups.reduce((total, group) => total + group.items.length, 0)} publications`}
+              </span>
               {publicationGroups.map((group) => (
                 <div className="publication-group" key={group.owner}>
-                  <div className="publication-owner reveal"><span>{t(ownerNames[group.owner], lang)}</span><i /></div>
+                  <div className="publication-owner"><span>{t(ownerNames[group.owner], lang)}</span><i /></div>
                   <div className="publication-list">
                     {group.items.map((paper, index) => (
-                      <article className="publication-item reveal" key={paper.title}>
+                      <article className="publication-item" key={paper.title}>
                         <div className="paper-index">{String(index + 1).padStart(2, "0")}</div>
                         <div className="paper-year"><strong>{paper.year}</strong><span>{t(paper.type, lang)}</span></div>
                         <div className="paper-main">
-                          <h3>
-                            {paper.url ? <a className="paper-title-link" href={paper.url} target="_blank" rel="noreferrer">{paper.title}<span aria-hidden="true">↗</span></a> : paper.title}
+                          <h3 lang="en">
+                            {paper.url ? <a className="paper-title-link" href={paper.url} target="_blank" rel="noopener noreferrer" aria-label={`${paper.title} · ${lang === "zh" ? "在新标签页打开" : "opens in a new tab"}`}>{paper.title}<span aria-hidden="true">↗</span></a> : paper.title}
                           </h3>
-                          <p>{paper.authors}</p>
-                          <div className="paper-meta"><span>{paper.venue}</span>{paper.badge && <b>{paper.badge}</b>}</div>
+                          <p lang="en">{paper.authors}</p>
+                          <div className="paper-meta"><span lang="en">{paper.venue}</span>{paper.badge && <b lang="en">{paper.badge}</b>}</div>
                         </div>
                         <div className="paper-action">
                           {paper.url ? (
                             <div className="paper-resource-links">
-                              <a href={paper.url} target="_blank" rel="noreferrer">
-                                {paper.local ? (lang === "zh" ? "研究报告" : "Report") : (lang === "zh" ? "论文" : "Paper")} <span>↗</span>
+                              <a href={paper.url} target="_blank" rel="noopener noreferrer" aria-label={`${paper.local ? (lang === "zh" ? "研究报告" : "Report") : (lang === "zh" ? "论文" : "Paper")}: ${paper.title} · ${lang === "zh" ? "在新标签页打开" : "opens in a new tab"}`}>
+                                {paper.local ? (lang === "zh" ? "研究报告" : "Report") : (lang === "zh" ? "论文" : "Paper")} <span aria-hidden="true">↗</span>
                               </a>
                               {paper.resources?.map((resource) => (
-                                <a key={resource.url} href={resource.url} target="_blank" rel="noreferrer">{resource.label} <span>↗</span></a>
+                                <a key={resource.url} href={resource.url} target="_blank" rel="noopener noreferrer" aria-label={`${resource.label}: ${paper.title} · ${lang === "zh" ? "在新标签页打开" : "opens in a new tab"}`}>{resource.label} <span aria-hidden="true">↗</span></a>
                               ))}
                             </div>
                           ) : (
@@ -799,7 +972,10 @@ function App() {
           <p>{lang === "zh" ? "中国 · 宁波" : "Ningbo · China"}</p>
           <p>Turning Research into Revolution.</p>
         </div>
-        <p className="copyright">© 2026 Ningbo Boxtech Technology Co., Ltd.</p>
+        <div className="footer-credits">
+          <p className="producer-credit"><span>DESIGN &amp; CREATED BY</span><strong>Bingxu HOU</strong></p>
+          <p className="copyright">© 2026 Ningbo Boxtech Technology Co., Ltd.</p>
+        </div>
       </footer>
     </div>
   );

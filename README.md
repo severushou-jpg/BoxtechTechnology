@@ -19,7 +19,7 @@ npm run build
 
 - Team, advisor, and publication records live in `src/App.tsx`.
 - Add new papers to the `publications` array and keep the owner order `lijie`, `haonan`, `renzhi`.
-- Put public downloadable documents in `public/papers/` and images in `public/images/`.
+- Put public downloadable documents in `public/papers/`, team images in `public/images/`, and opening-film assets in `public/media/`.
 - Renzhi Han intentionally has no displayed company title until an official title is confirmed.
 - Do not publish the source company-introduction PDF; it is an internal reference document.
 
@@ -29,4 +29,4 @@ The project is a Vite/React static site configured for Vercel through `vercel.js
 
 ## Design and accessibility
 
-The site includes a reduced-motion-safe opening sequence, keyboard skip link, semantic publication links, responsive navigation, image lazy loading, and Chinese/English language persistence.
+The site includes a generated 7-second research film with a still-image fallback, a reduced-motion-safe opening state, keyboard skip link, semantic publication filters and links, responsive navigation, image lazy loading, and Chinese/English language persistence.
