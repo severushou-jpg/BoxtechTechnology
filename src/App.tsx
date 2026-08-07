@@ -675,7 +675,7 @@ function App() {
           <div className="hero-copy">
             <div className="hero-kicker reveal is-visible">
               <span className="status-dot" />
-              {lang === "zh" ? "宁波 · 研究驱动型科技企业" : "NINGBO · RESEARCH-DRIVEN TECHNOLOGY"}
+              {lang === "zh" ? "智能交互技术研究实验室 · 宁波" : "INTELLIGENT INTERACTION LABORATORY"}
             </div>
             <h1 className="reveal is-visible">
               {lang === "zh" ? (
@@ -686,15 +686,15 @@ function App() {
             </h1>
             <p className="hero-lead reveal is-visible">
               {lang === "zh"
-                ? "我们将扩展现实、毫米波雷达与智能传感，转化为可部署、可验证、可持续迭代的医疗与教育解决方案。"
-                : "We translate Extended Reality, millimetre-wave radar, and smart sensing into deployable, verifiable, and continuously evolving solutions for healthcare and education."}
+                ? "智能交互技术研究实验室融合扩展现实、毫米波雷达与智能传感，研究可感知、可验证、可持续演进的人机交互系统，并在医疗与教育场景中验证其价值。"
+                : "The Intelligent Interaction Laboratory combines Extended Reality, millimetre-wave radar, and intelligent sensing to build perceptive, verifiable, and adaptive human–computer systems for healthcare and education."}
             </p>
             <div className="hero-cta reveal is-visible">
               <a className="primary-button" href="#technology">
-                <span>{lang === "zh" ? "探索技术路径" : "Explore our technology"}</span><span aria-hidden="true">↓</span>
+                <span>{lang === "zh" ? "探索研究方向" : "Explore our research"}</span><span aria-hidden="true">↓</span>
               </a>
               <a className="text-button" href="#publications">
-                {lang === "zh" ? "查看精选论文" : "View selected research"}<span aria-hidden="true">↗</span>
+                {lang === "zh" ? "阅读精选论文" : "Read selected research"}<span aria-hidden="true">↗</span>
               </a>
             </div>
           </div>
@@ -707,16 +707,16 @@ function App() {
             <div className="stage-core"><span>HCI</span><small>human / system</small></div>
             <div className="stage-scan" />
             <div className="stage-caption">
-              <span>{lang === "zh" ? "智能交互技术研究" : "INTELLIGENT INTERACTION"}</span>
+              <span>{lang === "zh" ? "智能交互技术研究实验室" : "INTELLIGENT INTERACTION LABORATORY"}</span>
               <span>Spatial · Sensing · Adaptive</span>
             </div>
           </div>
 
           <div className="hero-metrics reveal is-visible">
-            <div><strong>2023</strong><span>{lang === "zh" ? "成立于宁波" : "Founded in Ningbo"}</span></div>
-            <div><strong>03</strong><span>{lang === "zh" ? "核心技术路径" : "Core technology tracks"}</span></div>
-            <div><strong>02</strong><span>{lang === "zh" ? "重点应用领域" : "Priority application fields"}</span></div>
-            <p>Turning Research into Revolution.</p>
+            <div><strong>I²</strong><span>{lang === "zh" ? "智能交互实验室" : "Intelligent Interaction Lab"}</span></div>
+            <div><strong>03</strong><span>{lang === "zh" ? "核心研究方向" : "Research directions"}</span></div>
+            <div><strong>02</strong><span>{lang === "zh" ? "重点验证场景" : "Validation domains"}</span></div>
+            <p>Research · Prototype · Translation.</p>
           </div>
         </section>
 
@@ -729,30 +729,30 @@ function App() {
             <div className="about-statement reveal">
               <p className="statement-lead">
                 {lang === "zh" ? (
-                  <>纸合科技是一家建立在科研成果与技术积累之上的<em>空间交互创新公司</em>。</>
+                  <>纸合科技是一家承接智能交互技术研究实验室科研成果、推动其进入真实场景的<em>研究转化型科技公司</em>。</>
                 ) : (
-                  <>Boxtech is a <em>spatial interaction company</em> built on scientific outcomes and deep technical practice.</>
+                  <>Boxtech is a <em>research-driven technology company</em> translating work from the Intelligent Interaction Laboratory into real-world practice.</>
                 )}
               </p>
               <div className="about-body">
                 <p>
                   {lang === "zh"
-                    ? "公司成立于 2023 年 3 月，依托智能交互技术研究基础，聚焦空间交互技术的研发与落地，为医疗与教育提供新一代数字化实践与解决方案。"
-                    : "Founded in March 2023 and grounded in intelligent interaction research, we develop and deploy spatial technologies that enable next-generation digital practice in healthcare and education."}
+                    ? "公司成立于 2023 年 3 月，围绕空间交互、毫米波感知与智能传感，打通从学术研究、原型验证到系统部署的路径，为医疗与教育提供新一代数字化解决方案。"
+                    : "Founded in March 2023, Boxtech takes work in spatial interaction, millimetre-wave sensing, and intelligent sensing from research and prototype validation through to deployment in healthcare and education."}
                 </p>
                 <p>
                   {lang === "zh"
-                    ? "我们关注真实世界中的复杂需求：把技术嵌入日常环境，在不增加额外负担的前提下，持续优化体验、支持行为，并帮助形成更早的风险识别与更有效的干预决策。"
-                    : "We address complex real-world needs by embedding technology into everyday environments—improving experiences and supporting behaviour without adding burden, while enabling earlier risk detection and more effective intervention decisions."}
+                    ? "我们从真实世界的复杂需求出发，将经过实验室验证的技术嵌入日常环境，在不增加额外负担的前提下优化体验、支持行为，并支持合作伙伴开展更早的风险识别与更有效的干预决策。"
+                    : "We begin with complex real-world needs, embedding laboratory-validated technologies into everyday environments to improve experiences and support behaviour without added burden—supporting earlier risk detection and more effective intervention decisions."}
                 </p>
               </div>
             </div>
             <div className="about-principle reveal">
-              <span>{lang === "zh" ? "我们的愿景" : "OUR VISION"}</span>
+              <span>{lang === "zh" ? "共同愿景" : "SHARED VISION"}</span>
               <blockquote>
                 {lang === "zh"
-                  ? "让高质量的人机交互能力，在任何时间、任何地点、任何环境下，稳定服务于医疗与教育实践。"
-                  : "High-quality interaction that works reliably—anytime, anywhere, and in any context—for healthcare and education."}
+                  ? "让源于实验室的高质量人机交互能力，在任何时间、任何地点、任何环境中，稳定服务于医疗与教育实践。"
+                  : "To make research-led intelligent interaction reliable—anytime, anywhere, and in any context—for healthcare and education."}
               </blockquote>
             </div>
           </div>

@@ -1,6 +1,6 @@
 # Boxtech Technology
 
-Official bilingual company website for Ningbo Boxtech Technology Co., Ltd. (宁波纸合科技有限公司), presenting its research-driven work in extended reality, millimetre-wave radar, smart sensing, healthcare, and education.
+Official bilingual website for the Intelligent Interaction Laboratory (智能交互技术研究实验室), presenting its work in extended reality, millimetre-wave radar, smart sensing, healthcare, and education, with Boxtech supporting research translation and real-world deployment.
 
 ## Local development
 
