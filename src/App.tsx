@@ -7,6 +7,14 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode,
 } from "react";
+import {
+  recruitmentHighlights,
+  recruitmentInfoGroups,
+  researchOpportunities,
+  visibleResearchOpportunities,
+  type OpportunityStatus,
+  type ResearchOpportunity,
+} from "./recruitment";
 
 type Lang = "zh" | "en";
 type Localized = { zh: string; en: string };
@@ -16,6 +24,7 @@ const t = (value: Localized, lang: Lang) => value[lang];
 
 const navItems: Array<{ id: string; label: Localized }> = [
   { id: "about", label: { zh: "关于", en: "About" } },
+  { id: "opportunities", label: { zh: "机会", en: "Opportunities" } },
   { id: "technology", label: { zh: "技术", en: "Technology" } },
   { id: "work", label: { zh: "实践", en: "Work" } },
   { id: "team", label: { zh: "团队", en: "Team" } },
@@ -545,7 +554,10 @@ function usePageObservers(setActiveSection: (id: string) => void, refreshKey: st
         const visible = entries
           .filter((entry) => entry.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible?.target.id) setActiveSection(visible.target.id);
+        if (visible?.target.id) {
+          const section = visible.target as HTMLElement;
+          setActiveSection(section.dataset.navSection ?? section.id);
+        }
       },
       { rootMargin: "-20% 0px -65% 0px", threshold: [0, 0.15, 0.5] },
     );
@@ -585,6 +597,214 @@ function ArrowLink({ href, children, download }: { href: string; children: React
       <span>{children}</span>
       <span aria-hidden="true">↗</span>
     </a>
+  );
+}
+
+const opportunityStatusLabels: Record<OpportunityStatus, Localized> = {
+  open: { zh: "开放申请", en: "Open" },
+  upcoming: { zh: "即将开放", en: "Upcoming" },
+  closed: { zh: "已截止", en: "Closed" },
+};
+
+function OpportunityStatus({ status, lang }: { status: OpportunityStatus; lang: Lang }) {
+  return (
+    <span className={`opportunity-status opportunity-status-${status}`}>
+      <i aria-hidden="true" />
+      {t(opportunityStatusLabels[status], lang)}
+    </span>
+  );
+}
+
+function OpportunitiesOverview({ lang }: { lang: Lang }) {
+  return (
+    <section className="opportunities-overview dark-section" id="opportunities" data-nav-section="opportunities">
+      <div className="section-frame">
+        <SectionHeading
+          lang={lang}
+          eyebrow={{ zh: "研究机会", en: "RESEARCH OPPORTUNITIES" }}
+          title={{ zh: "从参与真实研究开始，建立自己的学术路径。", en: "Begin with real research. Build your own academic path." }}
+          description={{
+            zh: "加入智能交互技术研究实验室正在开展的项目，在长期协作中经历从系统开发、实验设计到论文写作的完整研究过程。",
+            en: "Join an active Intelligent Interaction Laboratory project and experience the complete research process—from system development and experimental design to academic writing.",
+          }}
+        />
+
+        <div className="opportunity-highlights reveal" aria-label={lang === "zh" ? "申请关键信息" : "Key application information"}>
+          {recruitmentHighlights.map((highlight) => (
+            <div key={highlight.value}>
+              <strong>{highlight.value}</strong>
+              <span>{t(highlight.label, lang)}</span>
+            </div>
+          ))}
+          <p>I² LAB / RESEARCH ASSISTANT</p>
+        </div>
+
+        <div className="recruitment-info-list">
+          {recruitmentInfoGroups.map((group) => (
+            <article className="recruitment-info-row reveal" key={group.index}>
+              <span className="recruitment-info-index">{group.index}</span>
+              <h3>{t(group.title, lang)}</h3>
+              <ul>
+                {group.items.map((item) => <li key={item.en}>{t(item, lang)}</li>)}
+              </ul>
+            </article>
+          ))}
+        </div>
+
+        <div className="application-protocol reveal">
+          <div>
+            <span>{lang === "zh" ? "申请邮件标题" : "EMAIL SUBJECT"}</span>
+            <code>RA Application – Name – Programme – Year</code>
+          </div>
+          <p>
+            {lang === "zh"
+              ? "请在选择项目后联系对应负责人。邮件正文使用英文要点形式，不超过 200 词，并附上个人简历与相关作品链接。"
+              : "Choose a project, then contact its project lead. Use no more than 200 words in English bullet points and attach your CV and relevant project links."}
+          </p>
+          <a className="primary-button" href="#available-projects">
+            <span>{lang === "zh" ? "查看可申请项目" : "View available projects"}</span>
+            <span aria-hidden="true">↓</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function OpportunityDirectory({ lang }: { lang: Lang }) {
+  return (
+    <section className="opportunity-directory light-section" id="available-projects" data-nav-section="opportunities">
+      <div className="section-frame">
+        <div className="opportunity-directory-heading">
+          <SectionHeading
+            lang={lang}
+            eyebrow={{ zh: "可申请研究项目", en: "AVAILABLE RESEARCH PROJECTS" }}
+            title={{ zh: "选择一个值得长期投入的问题。", en: "Choose a question worth staying with." }}
+            description={{
+              zh: "项目将随实验室研究进展持续更新。点击项目进入详情页，查看研究背景、参与要求与申请方式。",
+              en: "Opportunities evolve with the laboratory’s research. Open a project to review its context, participation requirements, and application route.",
+            }}
+          />
+          <div className="opportunity-count reveal" aria-label={lang === "zh" ? `当前 ${visibleResearchOpportunities.length} 个项目开放展示` : `${visibleResearchOpportunities.length} projects currently listed`}>
+            <strong>{String(visibleResearchOpportunities.length).padStart(2, "0")}</strong>
+            <span>{lang === "zh" ? "当前项目" : "CURRENT PROJECTS"}</span>
+          </div>
+        </div>
+
+        <div className="opportunity-index-list">
+          {visibleResearchOpportunities.map((project, index) => (
+            <a className="opportunity-index-row reveal" href={`/opportunities/${project.slug}`} key={project.slug}>
+              <span className="opportunity-project-index">P.{String(index + 1).padStart(2, "0")}</span>
+              <div className="opportunity-project-heading">
+                <OpportunityStatus status={project.status} lang={lang} />
+                <h3>{t(project.title, lang)}</h3>
+                <p>{t(project.summary, lang)}</p>
+              </div>
+              <div className="opportunity-project-meta">
+                <span>{lang === "zh" ? "负责人" : "PROJECT LEAD"}</span>
+                <strong>{t(project.leader, lang)}</strong>
+                <div>{project.tags.map((tag) => <small key={tag}>{tag}</small>)}</div>
+              </div>
+              <span className="opportunity-project-link">
+                {lang === "zh" ? "查看项目详情" : "View project"}<i aria-hidden="true">↗</i>
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function OpportunityDetailPage({ project, lang }: { project: ResearchOpportunity; lang: Lang }) {
+  const mailSubject = encodeURIComponent("RA Application – Name – Programme – Year");
+
+  return (
+    <main className="opportunity-detail-main" id="main" tabIndex={-1}>
+      <section className="opportunity-detail-hero dark-section" id="project-detail" data-nav-section="opportunities" aria-labelledby="project-title">
+        <div className="opportunity-detail-grid" aria-hidden="true" />
+        <div className="section-frame opportunity-detail-hero-frame">
+          <a className="project-back-link reveal is-visible" href="/#available-projects">
+            <span aria-hidden="true">←</span>{lang === "zh" ? "返回可申请项目" : "Back to available projects"}
+          </a>
+          <div className="project-detail-heading reveal is-visible">
+            <div className="project-detail-kicker">
+              <span>P.{String(project.order).padStart(2, "0")}</span>
+              <OpportunityStatus status={project.status} lang={lang} />
+            </div>
+            <h1 id="project-title">{t(project.title, lang)}</h1>
+            <p>{t(project.summary, lang)}</p>
+          </div>
+          <div className="project-detail-rail reveal is-visible">
+            <div>
+              <span>{lang === "zh" ? "项目负责人" : "PROJECT LEAD"}</span>
+              <strong>{t(project.leader, lang)}</strong>
+            </div>
+            <div>
+              <span>{lang === "zh" ? "联系邮箱" : "CONTACT"}</span>
+              <a href={`mailto:${project.email}`}>{project.email}<i aria-hidden="true">↗</i></a>
+            </div>
+            <div className="project-detail-tags">{project.tags.map((tag) => <small key={tag}>{tag}</small>)}</div>
+          </div>
+        </div>
+      </section>
+
+      <section className="opportunity-detail-body light-section">
+        <div className="section-frame project-detail-content">
+          <aside className="project-detail-aside reveal">
+            <span>I² / RESEARCH OPPORTUNITY</span>
+            <p>{lang === "zh" ? "长期参与 · 真实研究 · 可验证成果" : "LONG-TERM · REAL RESEARCH · VERIFIABLE OUTCOMES"}</p>
+          </aside>
+          <div className="project-detail-sections">
+            {project.sections.map((section, sectionIndex) => (
+              <article className="project-detail-section reveal" key={section.id}>
+                <span>{String(sectionIndex + 1).padStart(2, "0")}</span>
+                <h2>{t(section.title, lang)}</h2>
+                <div>
+                  {section.paragraphs?.map((paragraph) => <p key={paragraph.en}>{t(paragraph, lang)}</p>)}
+                  {section.items && (
+                    <ol>
+                      {section.items.map((item) => <li key={item.en}>{t(item, lang)}</li>)}
+                    </ol>
+                  )}
+                </div>
+              </article>
+            ))}
+
+            {project.closing && <blockquote className="project-detail-closing reveal">{t(project.closing, lang)}</blockquote>}
+            {project.note && <p className="project-detail-note reveal">{t(project.note, lang)}</p>}
+
+            {project.references && project.references.length > 0 && (
+              <section className="project-reference-list reveal" aria-labelledby="project-references-title">
+                <h2 id="project-references-title">{lang === "zh" ? "参考研究" : "Reference Research"}</h2>
+                {project.references.map((reference, index) => (
+                  <article key={reference.title}>
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                    <div><h3>{reference.title}</h3>{reference.citation && <p>{reference.citation}</p>}</div>
+                    <div>
+                      {reference.doi && <a href={reference.doi} target="_blank" rel="noopener noreferrer">DOI <i aria-hidden="true">↗</i></a>}
+                      {reference.pdf && <a href={reference.pdf} target="_blank" rel="noopener noreferrer">PDF <i aria-hidden="true">↗</i></a>}
+                    </div>
+                  </article>
+                ))}
+              </section>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <section className="project-application-band">
+        <div>
+          <span>{lang === "zh" ? "准备加入这个项目？" : "READY TO JOIN THIS PROJECT?"}</span>
+          <h2>{lang === "zh" ? "从一封清晰的申请邮件开始。" : "Start with a clear application email."}</h2>
+          <p>{lang === "zh" ? "邮件正文使用英文要点形式，不超过 200 词，并附个人简历及相关项目链接。" : "Use no more than 200 words in English bullet points and attach your CV and relevant project links."}</p>
+        </div>
+        <a className="primary-button light-button" href={`mailto:${project.email}?subject=${mailSubject}`}>
+          <span>{lang === "zh" ? `联系${t(project.leader, lang)}` : `Email ${t(project.leader, lang)}`}</span>
+          <span aria-hidden="true">↗</span>
+        </a>
+      </section>
+    </main>
   );
 }
 
@@ -908,6 +1128,10 @@ function IntroSequence({ onComplete, lang }: { onComplete: () => void; lang: Lan
 }
 
 function App() {
+  const projectSlug = window.location.pathname.match(/^\/opportunities\/([^/]+)\/?$/)?.[1];
+  const activeProject = projectSlug
+    ? researchOpportunities.find((project) => project.published && project.slug === projectSlug)
+    : undefined;
   const [lang, setLang] = useState<Lang>(() => {
     try {
       return localStorage.getItem("boxtech-lang") === "en" ? "en" : "zh";
@@ -915,12 +1139,13 @@ function App() {
       return "zh";
     }
   });
-  const [activeSection, setActiveSection] = useState("about");
+  const [activeSection, setActiveSection] = useState(activeProject ? "opportunities" : "about");
   const [menuOpen, setMenuOpen] = useState(false);
   const [isCompactNav, setIsCompactNav] = useState(() => window.matchMedia("(max-width: 1180px)").matches);
   const [publicationFilter, setPublicationFilter] = useState<"all" | PublicationOwner>("all");
   const [introVisible, setIntroVisible] = useState(() => {
     try {
+      if (activeProject) return false;
       return !window.matchMedia("(prefers-reduced-motion: reduce)").matches && sessionStorage.getItem("boxtech-intro-seen") !== "true";
     } catch {
       return true;
@@ -930,12 +1155,22 @@ function App() {
   const firstNavLinkRef = useRef<HTMLAnchorElement>(null);
   const introReplayTriggerRef = useRef<HTMLButtonElement | null>(null);
 
-  usePageObservers(setActiveSection, publicationFilter);
+  usePageObservers(setActiveSection, `${publicationFilter}:${activeProject?.slug ?? "home"}`);
 
   useEffect(() => {
     document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
     try { localStorage.setItem("boxtech-lang", lang); } catch { /* storage may be unavailable */ }
   }, [lang]);
+
+  useEffect(() => {
+    if (activeProject) {
+      try { sessionStorage.setItem("boxtech-intro-seen", "true"); } catch { /* session storage may be unavailable */ }
+      document.title = `${t(activeProject.title, lang)} · I² Lab`;
+      window.scrollTo({ top: 0, behavior: "auto" });
+    } else {
+      document.title = "智能交互技术研究实验室 · Intelligent Interaction Laboratory";
+    }
+  }, [activeProject, lang]);
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
@@ -1010,7 +1245,7 @@ function App() {
         {lang === "zh" ? "跳到主要内容" : "Skip to content"}
       </a>
       <header className="topbar">
-        <a className="brand" href="#top" aria-label={lang === "zh" ? "纸合科技首页" : "Boxtech home"}>
+        <a className="brand" href={activeProject ? "/" : "#top"} aria-label={lang === "zh" ? "纸合科技首页" : "Boxtech home"}>
           <span className="brand-mark" aria-hidden="true"><i /><b /></span>
           <span className="brand-name">
             <strong>{lang === "zh" ? "纸合科技" : "BOXTECH"}</strong>
@@ -1030,7 +1265,7 @@ function App() {
               ref={index === 0 ? firstNavLinkRef : undefined}
               key={item.id}
               className={activeSection === item.id ? "active" : ""}
-              href={`#${item.id}`}
+              href={activeProject ? `/#${item.id}` : `#${item.id}`}
               onClick={() => {
                 setMenuOpen(false);
                 if (isCompactNav) window.requestAnimationFrame(() => menuToggleRef.current?.focus({ preventScroll: true }));
@@ -1075,6 +1310,9 @@ function App() {
         </div>
       </header>
 
+      {activeProject ? (
+        <OpportunityDetailPage project={activeProject} lang={lang} />
+      ) : (
       <main id="main" tabIndex={-1}>
         <section className="hero" id="top">
           <div className="hero-grid" aria-hidden="true" />
@@ -1165,6 +1403,10 @@ function App() {
             </div>
           </div>
         </section>
+
+        <OpportunitiesOverview lang={lang} />
+
+        <OpportunityDirectory lang={lang} />
 
         <section className="technology-section dark-section" id="technology">
           <div className="section-frame">
@@ -1362,9 +1604,10 @@ function App() {
           <div className="closing-mark reveal" aria-hidden="true"><span>I</span><sup>2</sup></div>
         </section>
       </main>
+      )}
 
       <footer>
-        <a className="brand footer-brand" href="#top">
+        <a className="brand footer-brand" href={activeProject ? "/" : "#top"}>
           <span className="brand-mark" aria-hidden="true"><i /><b /></span>
           <span className="brand-name"><strong>{lang === "zh" ? "纸合科技" : "BOXTECH"}</strong><small>NINGBO BOXTECH TECHNOLOGY CO., LTD.</small></span>
         </a>
