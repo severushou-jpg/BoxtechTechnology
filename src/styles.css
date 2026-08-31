@@ -2951,6 +2951,10 @@ button:focus-visible {
   letter-spacing: -0.068em;
 }
 
+[data-project="ai-assisted-3d-content-mixed-reality"] .project-detail-heading h1 {
+  text-wrap: balance;
+}
+
 .project-detail-heading > p {
   max-width: 760px;
   margin: 0;
@@ -3171,7 +3175,7 @@ button:focus-visible {
   line-height: 1.6;
 }
 
-.project-reference-list article > div:last-child {
+.project-reference-actions {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -3182,6 +3186,17 @@ button:focus-visible {
   color: var(--red-deep);
   font-size: 9px;
   font-weight: 700;
+}
+
+.project-reference-list .project-reference-title {
+  color: inherit;
+  font: inherit;
+}
+
+.project-reference-list a:hover {
+  color: var(--red-deep);
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .project-reference-list i {
@@ -4286,7 +4301,7 @@ footer {
     grid-template-columns: 28px minmax(0, 1fr);
   }
 
-  .project-reference-list article > div:last-child {
+  .project-reference-actions {
     grid-column: 2;
     align-items: flex-start;
     flex-direction: row;

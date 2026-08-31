@@ -720,7 +720,7 @@ function OpportunityDetailPage({ project, lang }: { project: ResearchOpportunity
   const mailSubject = encodeURIComponent("RA Application – Name – Programme – Year");
 
   return (
-    <main className="opportunity-detail-main" id="main" tabIndex={-1}>
+    <main className="opportunity-detail-main" id="main" tabIndex={-1} data-project={project.slug}>
       <section className="opportunity-detail-hero dark-section" id="project-detail" data-nav-section="opportunities" aria-labelledby="project-title">
         <div className="opportunity-detail-grid" aria-hidden="true" />
         <div className="section-frame opportunity-detail-hero-frame">
@@ -776,14 +776,21 @@ function OpportunityDetailPage({ project, lang }: { project: ResearchOpportunity
 
             {project.references && project.references.length > 0 && (
               <section className="project-reference-list reveal" aria-labelledby="project-references-title">
-                <h2 id="project-references-title">{lang === "zh" ? "参考研究" : "Reference Research"}</h2>
+                <h2 id="project-references-title">{lang === "zh" ? "相关研究" : "Related Articles"}</h2>
                 {project.references.map((reference, index) => (
                   <article key={reference.title}>
                     <span>{String(index + 1).padStart(2, "0")}</span>
-                    <div><h3>{reference.title}</h3>{reference.citation && <p>{reference.citation}</p>}</div>
                     <div>
-                      {reference.doi && <a href={reference.doi} target="_blank" rel="noopener noreferrer">DOI <i aria-hidden="true">↗</i></a>}
-                      {reference.pdf && <a href={reference.pdf} target="_blank" rel="noopener noreferrer">PDF <i aria-hidden="true">↗</i></a>}
+                      <h3>
+                        {reference.pdf || reference.doi ? (
+                          <a className="project-reference-title" href={reference.pdf ?? reference.doi} target="_blank" rel="noopener noreferrer">{reference.title}</a>
+                        ) : reference.title}
+                      </h3>
+                      {reference.citation && <p>{reference.citation}</p>}
+                    </div>
+                    <div className="project-reference-actions">
+                      {reference.doi && <a href={reference.doi} target="_blank" rel="noopener noreferrer" aria-label={`DOI: ${reference.title}`}>DOI <i aria-hidden="true">↗</i></a>}
+                      {reference.pdf && <a href={reference.pdf} target="_blank" rel="noopener noreferrer" aria-label={`PDF: ${reference.title}`}>PDF <i aria-hidden="true">↗</i></a>}
                     </div>
                   </article>
                 ))}

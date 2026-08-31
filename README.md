@@ -20,6 +20,8 @@ npm run build
 - Team, advisor, and publication records live in `src/App.tsx`.
 - Add new papers to the `publications` array and keep the owner order `lijie`, `haonan`, `renzhi`.
 - Put public downloadable documents in `public/papers/`, team images in `public/images/`, and opening-film assets in `public/media/`.
+- Research opportunities and their bilingual detail-page content live in `src/recruitment.ts`. Add a record with a unique `slug` and `order`; set `published: false` to hide a project, or change `status` to `upcoming` / `closed`.
+- Each project's optional `references` list supports a title, citation, DOI URL, and local PDF URL. Project-related PDFs are stored in `public/papers/related/`; omit `pdf` when no file is available. Titles open the PDF when available, otherwise the DOI. Keep reference order aligned with any numbered citations in the project text.
 - Renzhi Han intentionally has no displayed company title until an official title is confirmed.
 - Do not publish the source company-introduction PDF; it is an internal reference document.
 
