@@ -931,6 +931,35 @@ button:focus-visible {
   color: rgba(255, 255, 255, 0.54);
 }
 
+.lab-brand {
+  min-width: 0;
+  max-width: 100%;
+  padding-right: 12px;
+}
+
+.lab-brand .brand-mark {
+  flex-shrink: 0;
+}
+
+.lab-brand .brand-name {
+  min-width: 0;
+  max-width: 225px;
+}
+
+.lab-brand .brand-name strong {
+  font-size: 14px;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  text-wrap: balance;
+}
+
+.lab-brand .brand-name small {
+  font-size: 8px;
+  line-height: 1.3;
+  letter-spacing: 0.025em;
+  text-wrap: balance;
+}
+
 .desktop-nav {
   display: flex;
   align-items: center;
@@ -3974,6 +4003,28 @@ footer {
 
   .brand-name strong {
     font-size: 13px;
+  }
+
+  .lab-brand {
+    gap: 9px;
+    padding-right: 8px;
+  }
+
+  .lab-brand .brand-mark {
+    width: 24px;
+    height: 24px;
+  }
+
+  .lab-brand .brand-name strong {
+    font-size: 11px;
+  }
+
+  .lab-brand .brand-name small {
+    font-size: 7px;
+  }
+
+  .topbar .nav-actions {
+    gap: 5px;
   }
 
   .language-toggle {

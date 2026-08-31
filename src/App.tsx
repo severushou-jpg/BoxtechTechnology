@@ -1071,7 +1071,7 @@ function IntroSequence({ onComplete, lang }: { onComplete: () => void; lang: Lan
       className={`intro-sequence scene-${scene} ${mediaReady ? "media-ready" : ""} ${mediaFailed ? "media-failed" : ""} ${reducedMotion ? "reduced" : ""} ${leaving ? "is-leaving" : ""}`}
       role="dialog"
       aria-modal="true"
-      aria-label={lang === "zh" ? "纸合科技开场影片" : "Boxtech opening film"}
+      aria-label={lang === "zh" ? "I²Lab 智能交互技术研究实验室开场影片" : "I²Lab Intelligent Interaction Laboratory opening film"}
       tabIndex={-1}
     >
       <div className="intro-media" aria-hidden="true">
@@ -1104,7 +1104,7 @@ function IntroSequence({ onComplete, lang }: { onComplete: () => void; lang: Lan
       <div className="intro-topline">
         <div className="intro-mini-brand">
           <span className="brand-mark" aria-hidden="true"><i /><b /></span>
-          <span><strong>BOXTECH</strong><small>NINGBO / CHINA</small></span>
+          <span><strong>I²Lab</strong><small>NINGBO / CHINA</small></span>
         </div>
         <p>RESEARCH FILM <span>·</span> 00:07 <span>·</span> I² / 2026</p>
       </div>
@@ -1125,7 +1125,7 @@ function IntroSequence({ onComplete, lang }: { onComplete: () => void; lang: Lan
 
       <div className="intro-final-brand" aria-hidden="true">
         <span className="brand-mark intro-brand-mark"><i /><b /></span>
-        <div><strong>BOXTECH</strong><small>纸合科技 · TURNING RESEARCH INTO REVOLUTION</small></div>
+        <div><strong>I²Lab</strong><small>{lang === "zh" ? "智能交互技术研究实验室" : "Intelligent Interaction Laboratory"}</small></div>
       </div>
 
       <div className="intro-progress"><i /><span>XR&nbsp;&nbsp;/&nbsp;&nbsp;mmWAVE&nbsp;&nbsp;/&nbsp;&nbsp;SMART SENSING</span></div>
@@ -1252,11 +1252,11 @@ function App() {
         {lang === "zh" ? "跳到主要内容" : "Skip to content"}
       </a>
       <header className="topbar">
-        <a className="brand" href={activeProject ? "/" : "#top"} aria-label={lang === "zh" ? "纸合科技首页" : "Boxtech home"}>
+        <a className="brand lab-brand" href={activeProject ? "/" : "#top"} aria-label={lang === "zh" ? "智能交互技术研究实验室首页" : "Intelligent Interaction Laboratory home"}>
           <span className="brand-mark" aria-hidden="true"><i /><b /></span>
           <span className="brand-name">
-            <strong>{lang === "zh" ? "纸合科技" : "BOXTECH"}</strong>
-            <small>{lang === "zh" ? "BOXTECH TECHNOLOGY" : "宁波纸合科技"}</small>
+            <strong>{lang === "zh" ? "智能交互技术研究实验室" : "Intelligent Interaction Laboratory"}</strong>
+            <small>{lang === "zh" ? "Intelligent Interaction Laboratory" : "智能交互技术研究实验室"}</small>
           </span>
         </a>
 
@@ -1377,31 +1377,31 @@ function App() {
           <div className="section-frame about-grid">
             <div className="about-aside reveal">
               <span>01</span>
-              <p>{lang === "zh" ? "关于纸合" : "ABOUT BOXTECH"}</p>
+              <p>{lang === "zh" ? "关于 I²Lab" : "ABOUT I²Lab"}</p>
             </div>
             <div className="about-statement reveal">
               <p className="statement-lead">
                 {lang === "zh" ? (
-                  <>纸合科技是一家承接智能交互技术研究实验室科研成果、推动其进入真实场景的<em>研究转化型科技公司</em>。</>
+                  <>智能交互技术研究实验室（I²Lab）以<em>智能交互研究</em>为核心，探索人与数字世界、物理环境之间更自然、可信的连接。</>
                 ) : (
-                  <>Boxtech is a <em>research-driven technology company</em> translating work from the Intelligent Interaction Laboratory into real-world practice.</>
+                  <>I²Lab is an <em>intelligent interaction research laboratory</em> exploring more natural, trustworthy connections between people, digital worlds, and physical environments.</>
                 )}
               </p>
               <div className="about-body">
                 <p>
                   {lang === "zh"
-                    ? "公司成立于 2023 年 3 月，围绕空间交互、毫米波感知与智能传感，打通从学术研究、原型验证到系统部署的路径，为医疗与教育提供新一代数字化解决方案。"
-                    : "Founded in March 2023, Boxtech takes work in spatial interaction, millimetre-wave sensing, and intelligent sensing from research and prototype validation through to deployment in healthcare and education."}
+                    ? "我们围绕扩展现实、毫米波感知与智能传感开展研究，结合人机交互、原型开发和实验评估，探索能够感知情境、理解行为并持续适应用户需求的交互系统。"
+                    : "We investigate extended reality, millimetre-wave sensing, and intelligent sensors, combining human–computer interaction research, prototype development, and experimental evaluation to explore systems that perceive context, understand behaviour, and adapt to users’ needs."}
                 </p>
                 <p>
                   {lang === "zh"
-                    ? "我们从真实世界的复杂需求出发，将经过实验室验证的技术嵌入日常环境，在不增加额外负担的前提下优化体验、支持行为，并支持合作伙伴开展更早的风险识别与更有效的干预决策。"
-                    : "We begin with complex real-world needs, embedding laboratory-validated technologies into everyday environments to improve experiences and support behaviour without added burden—supporting earlier risk detection and more effective intervention decisions."}
+                    ? "我们从医疗与教育中的真实需求出发，通过用户研究与可复现的实验连接学术探索和现实应用。实验室致力于在不增加额外负担的前提下改善交互体验，支持学习、康复与长期健康管理，让研究成果走入日常生活。"
+                    : "We begin with real needs in healthcare and education, connecting academic exploration with practical applications through user studies and reproducible experiments. Our laboratory aims to improve interaction without adding burden, supporting learning, rehabilitation, and long-term health management while bringing research into everyday life."}
                 </p>
               </div>
             </div>
             <div className="about-principle reveal">
-              <span>{lang === "zh" ? "共同愿景" : "SHARED VISION"}</span>
+              <span>{lang === "zh" ? "实验室愿景" : "OUR VISION"}</span>
               <blockquote>
                 {lang === "zh"
                   ? "让源于实验室的高质量人机交互能力，在任何时间、任何地点、任何环境中，稳定服务于医疗与教育实践。"
