@@ -15,6 +15,8 @@ import {
   type OpportunityStatus,
   type ResearchOpportunity,
 } from "./recruitment";
+import { alumni } from "./alumni";
+import { AlumniDetailPage, AlumniSection } from "./AlumniViews";
 
 type Lang = "zh" | "en";
 type Localized = { zh: string; en: string };
@@ -666,6 +668,11 @@ function OpportunitiesOverview({ lang }: { lang: Lang }) {
             <span aria-hidden="true">↓</span>
           </a>
         </div>
+        <a className="alumni-recruitment-link reveal" href="#alumni">
+          <span>{lang === "zh" ? "从研究参与，到下一段旅程" : "FROM RESEARCH TO WHAT COMES NEXT"}</span>
+          <strong>{lang === "zh" ? "了解往届 RA 的成长路径" : "Discover our RA alumni’s pathways"}</strong>
+          <i aria-hidden="true">↗</i>
+        </a>
       </div>
     </section>
   );
@@ -1139,6 +1146,9 @@ function App() {
   const activeProject = projectSlug
     ? researchOpportunities.find((project) => project.published && project.slug === projectSlug)
     : undefined;
+  const alumniSlug = window.location.pathname.match(/^\/alumni\/([^/]+)\/?$/)?.[1];
+  const activeAlumnus = alumni.find((profile) => profile.slug === alumniSlug);
+  const isDetailPage = Boolean(activeProject || activeAlumnus);
   const [lang, setLang] = useState<Lang>(() => {
     try {
       return localStorage.getItem("boxtech-lang") === "en" ? "en" : "zh";
@@ -1146,13 +1156,13 @@ function App() {
       return "zh";
     }
   });
-  const [activeSection, setActiveSection] = useState(activeProject ? "opportunities" : "about");
+  const [activeSection, setActiveSection] = useState(activeProject ? "opportunities" : activeAlumnus ? "team" : "about");
   const [menuOpen, setMenuOpen] = useState(false);
   const [isCompactNav, setIsCompactNav] = useState(() => window.matchMedia("(max-width: 1180px)").matches);
   const [publicationFilter, setPublicationFilter] = useState<"all" | PublicationOwner>("all");
   const [introVisible, setIntroVisible] = useState(() => {
     try {
-      if (activeProject) return false;
+      if (isDetailPage) return false;
       return !window.matchMedia("(prefers-reduced-motion: reduce)").matches && sessionStorage.getItem("boxtech-intro-seen") !== "true";
     } catch {
       return true;
@@ -1162,7 +1172,7 @@ function App() {
   const firstNavLinkRef = useRef<HTMLAnchorElement>(null);
   const introReplayTriggerRef = useRef<HTMLButtonElement | null>(null);
 
-  usePageObservers(setActiveSection, `${publicationFilter}:${activeProject?.slug ?? "home"}`);
+  usePageObservers(setActiveSection, `${publicationFilter}:${activeProject?.slug ?? activeAlumnus?.slug ?? "home"}`);
 
   useEffect(() => {
     document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
@@ -1170,14 +1180,16 @@ function App() {
   }, [lang]);
 
   useEffect(() => {
-    if (activeProject) {
+    if (isDetailPage) {
       try { sessionStorage.setItem("boxtech-intro-seen", "true"); } catch { /* session storage may be unavailable */ }
-      document.title = `${t(activeProject.title, lang)} · I² Lab`;
+      document.title = activeProject
+        ? `${t(activeProject.title, lang)} · I² Lab`
+        : `${activeAlumnus!.name[lang]} · ${lang === "zh" ? "往届研究助理" : "RA Alumni"} · I²Lab`;
       window.scrollTo({ top: 0, behavior: "auto" });
     } else {
       document.title = "智能交互技术研究实验室 · Intelligent Interaction Laboratory";
     }
-  }, [activeProject, lang]);
+  }, [activeProject, activeAlumnus, isDetailPage, lang]);
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
@@ -1210,6 +1222,15 @@ function App() {
       backgroundElements.forEach((element) => element.removeAttribute("inert"));
     };
   }, [introVisible]);
+
+  // The browser can resolve a returning #anchor before React mounts the homepage.
+  useEffect(() => {
+    if (isDetailPage || introVisible || !window.location.hash) return;
+    const target = document.getElementById(window.location.hash.slice(1));
+    if (!target) return;
+    const frame = window.requestAnimationFrame(() => target.scrollIntoView({ behavior: "instant", block: "start" }));
+    return () => window.cancelAnimationFrame(frame);
+  }, [isDetailPage, introVisible]);
 
   useEffect(() => {
     if (introVisible || !introReplayTriggerRef.current) return;
@@ -1252,7 +1273,7 @@ function App() {
         {lang === "zh" ? "跳到主要内容" : "Skip to content"}
       </a>
       <header className="topbar">
-        <a className="brand lab-brand" href={activeProject ? "/" : "#top"} aria-label={lang === "zh" ? "智能交互技术研究实验室首页" : "Intelligent Interaction Laboratory home"}>
+        <a className="brand lab-brand" href={isDetailPage ? "/" : "#top"} aria-label={lang === "zh" ? "智能交互技术研究实验室首页" : "Intelligent Interaction Laboratory home"}>
           <span className="brand-mark" aria-hidden="true"><i /><b /></span>
           <span className="brand-name">
             <strong>{lang === "zh" ? "智能交互技术研究实验室" : "Intelligent Interaction Laboratory"}</strong>
@@ -1272,7 +1293,7 @@ function App() {
               ref={index === 0 ? firstNavLinkRef : undefined}
               key={item.id}
               className={activeSection === item.id ? "active" : ""}
-              href={activeProject ? `/#${item.id}` : `#${item.id}`}
+              href={isDetailPage ? `/#${item.id}` : `#${item.id}`}
               onClick={() => {
                 setMenuOpen(false);
                 if (isCompactNav) window.requestAnimationFrame(() => menuToggleRef.current?.focus({ preventScroll: true }));
@@ -1319,6 +1340,8 @@ function App() {
 
       {activeProject ? (
         <OpportunityDetailPage project={activeProject} lang={lang} />
+      ) : activeAlumnus ? (
+        <AlumniDetailPage profile={activeAlumnus} lang={lang} />
       ) : (
       <main id="main" tabIndex={-1}>
         <section className="hero" id="top">
@@ -1523,6 +1546,8 @@ function App() {
           </div>
         </section>
 
+        <AlumniSection lang={lang} />
+
         <section className="publications-section light-section" id="publications">
           <div className="section-frame">
             <div className="publications-heading-row">
@@ -1614,7 +1639,7 @@ function App() {
       )}
 
       <footer>
-        <a className="brand footer-brand" href={activeProject ? "/" : "#top"}>
+        <a className="brand footer-brand" href={isDetailPage ? "/" : "#top"}>
           <span className="brand-mark" aria-hidden="true"><i /><b /></span>
           <span className="brand-name"><strong>{lang === "zh" ? "纸合科技" : "BOXTECH"}</strong><small>NINGBO BOXTECH TECHNOLOGY CO., LTD.</small></span>
         </a>
