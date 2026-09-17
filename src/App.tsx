@@ -1648,7 +1648,10 @@ function App() {
           <p>Turning Research into Revolution.</p>
         </div>
         <div className="footer-credits">
-          <p className="producer-credit"><span>DESIGN &amp; CREATED BY</span><strong>Bingxu HOU</strong></p>
+          <p className="producer-credit">
+            <span>DESIGN &amp; CREATED BY</span>
+            <a href="https://bingxuhou.com" target="_blank" rel="noopener noreferrer"><strong>Bingxu HOU</strong></a>
+          </p>
           <p className="copyright">© 2026 Ningbo Boxtech Technology Co., Ltd.</p>
         </div>
       </footer>
