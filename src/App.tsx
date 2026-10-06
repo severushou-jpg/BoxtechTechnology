@@ -1354,7 +1354,6 @@ function App() {
   const menuToggleRef = useRef<HTMLButtonElement>(null);
   const firstNavLinkRef = useRef<HTMLAnchorElement>(null);
   const introReplayTriggerRef = useRef<HTMLButtonElement | null>(null);
-  const returnHomeAfterFirstIntroRef = useRef(introVisible);
 
   usePageObservers(setActiveSection, `${publicationFilter}:${activeProject?.slug ?? activeAlumnus?.slug ?? activeMainProject?.slug ?? "home"}`);
 
@@ -1409,14 +1408,15 @@ function App() {
     };
   }, [introVisible]);
 
-  // The browser can resolve a returning #anchor before React mounts the homepage.
+  // Resolve a deep link on initial mount only. Replaying the film must never
+  // make an old section hash scroll the page again when the film unmounts.
   useEffect(() => {
     if (isDetailPage || introVisible || !window.location.hash) return;
     const target = document.getElementById(window.location.hash.slice(1));
     if (!target) return;
     const frame = window.requestAnimationFrame(() => target.scrollIntoView({ behavior: "instant", block: "start" }));
     return () => window.cancelAnimationFrame(frame);
-  }, [isDetailPage, introVisible]);
+  }, [isDetailPage]);
 
   useEffect(() => {
     if (introVisible || !introReplayTriggerRef.current) return;
@@ -1428,10 +1428,12 @@ function App() {
 
   const completeIntro = useCallback(() => {
     try { sessionStorage.setItem("boxtech-intro-seen", "true"); } catch { /* session storage may be unavailable */ }
-    if (returnHomeAfterFirstIntroRef.current) {
-      window.scrollTo({ top: 0, behavior: "instant" });
-      returnHomeAfterFirstIntroRef.current = false;
+    // The overlay is still mounted here, so reset the underlying page before
+    // revealing it. This applies equally to the first play and any replay.
+    if (window.location.hash) {
+      window.history.replaceState(window.history.state, "", window.location.pathname + window.location.search);
     }
+    window.scrollTo({ top: 0, behavior: "instant" });
     setIntroVisible(false);
   }, []);
 
