@@ -54,7 +54,7 @@ export const alumni: AlumniProfile[] = [
         title: { zh: "实验室经历与研究", en: "Laboratory Experience & Research" },
         paragraphs: [
           {
-            zh: "曾在 I²Lab 担任研究助理，并在宁波诺丁汉大学 Dr. Boon Giin Lee 指导下从事人机交互研究，具备 VR 与游戏开发经历。",
+            zh: "曾在 I²Lab 担任研究助理，并在宁波诺丁汉大学李汶锦博士指导下从事人机交互研究，具备 VR 与游戏开发经历。",
             en: "Shaoteng previously worked as a research assistant at I²Lab and conducted human–computer interaction research under the guidance of Dr. Boon Giin Lee at UNNC, with experience in VR and game development.",
           },
           {

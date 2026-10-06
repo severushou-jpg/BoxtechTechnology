@@ -64,7 +64,7 @@ const applications = [
 type ResearchFigure = {
   image: string;
   alt: Localized;
-  label: string;
+  label: Localized;
   title: Localized;
   pdf: string;
   source: string;
@@ -74,7 +74,7 @@ type ResearchFigure = {
 
 type ResearchStory = {
   id: string;
-  tag: string;
+  tag: Localized;
   title: Localized;
   note: Localized;
   figures: [ResearchFigure, ResearchFigure];
@@ -83,7 +83,7 @@ type ResearchStory = {
 const researchStories: ResearchStory[] = [
   {
     id: "rehabilitation-in-practice",
-    tag: "ADAPTIVE REHAB / 01",
+    tag: { zh: "自适应康复 / 01", en: "ADAPTIVE REHAB / 01" },
     title: { zh: "让训练强度跟随人的状态变化。", en: "Let training intensity move with the person." },
     note: {
       zh: "自适应并不是简单地变难或变容易，而是在挑战、信心与持续参与之间寻找动态平衡。",
@@ -93,7 +93,7 @@ const researchStories: ResearchStory[] = [
       {
         image: "/images/research/xr-prototype-session.jpg",
         alt: { zh: "研究人员体验扩展现实康复原型", en: "Researcher experiencing an extended reality rehabilitation prototype" },
-        label: "PROTOTYPE / 01A",
+        label: { zh: "原型 / 01A", en: "PROTOTYPE / 01A" },
         title: { zh: "空间交互原型测试", en: "Spatial interaction prototyping" },
         pdf: "/papers/emotional-responses-adaptive-ivr-exergaming.pdf",
         source: "IEEE COMPSAC 2024",
@@ -102,7 +102,7 @@ const researchStories: ResearchStory[] = [
       {
         image: "/images/research/xr-rehabilitation-exergame.jpg",
         alt: { zh: "虚拟现实康复训练游戏画面", en: "Virtual reality rehabilitation exergame scene" },
-        label: "EXPERIMENT / 01B",
+        label: { zh: "实验 / 01B", en: "EXPERIMENT / 01B" },
         title: { zh: "游戏化康复与动态反馈", en: "Gamified rehabilitation & adaptive feedback" },
         pdf: "/papers/emotional-responses-adaptive-ivr-exergaming.pdf",
         source: "IEEE COMPSAC 2024",
@@ -112,7 +112,7 @@ const researchStories: ResearchStory[] = [
   },
   {
     id: "collaborative-immersion",
-    tag: "SOCIAL PRESENCE / 02",
+    tag: { zh: "社会临场感 / 02", en: "SOCIAL PRESENCE / 02" },
     title: { zh: "共同进入，也共同在场。", en: "Enter together. Feel present together." },
     note: {
       zh: "当人们共同进入沉浸式世界，界面不再只是一块屏幕，而会成为承载合作、熟悉感与社会临场感的空间。",
@@ -122,7 +122,7 @@ const researchStories: ResearchStory[] = [
       {
         image: "/images/research/collaborative-gameplay-conditions.png",
         alt: { zh: "协作式沉浸游戏的多种任务与场景条件", en: "Multiple tasks and scene conditions in a collaborative immersive game" },
-        label: "GAMEPLAY / 02A",
+        label: { zh: "游戏机制 / 02A", en: "GAMEPLAY / 02A" },
         title: { zh: "协作游戏的实验条件", en: "Collaborative gameplay conditions" },
         pdf: "/papers/differential-effects-vr-ar-collaborative-gaming.pdf",
         source: "IEEE VR 2026",
@@ -131,7 +131,7 @@ const researchStories: ResearchStory[] = [
       {
         image: "/images/research/collaborative-study-protocol.png",
         alt: { zh: "虚拟与增强现实协作游戏实验流程", en: "Study protocol for collaborative gaming in virtual and augmented reality" },
-        label: "PROTOCOL / 02B",
+        label: { zh: "研究流程 / 02B", en: "PROTOCOL / 02B" },
         title: { zh: "从游戏阶段到参与者体验", en: "From gameplay phases to participant experience" },
         pdf: "/papers/differential-effects-vr-ar-collaborative-gaming.pdf",
         source: "IEEE VR 2026",
@@ -141,7 +141,7 @@ const researchStories: ResearchStory[] = [
   },
   {
     id: "embodied-data",
-    tag: "EMBODIED DATA / 03",
+    tag: { zh: "具身数据 / 03", en: "EMBODIED DATA / 03" },
     title: { zh: "让双手成为数据的接口。", en: "Let the hands become the interface to data." },
     note: {
       zh: "当抽象数据获得尺度、方向与触感，理解不再只发生在屏幕上，而发生在身体与空间的协同之中。",
@@ -151,7 +151,7 @@ const researchStories: ResearchStory[] = [
       {
         image: "/images/research/embodied-two-handed-interactions.png",
         alt: { zh: "沉浸式数据探索中的双手交互条件", en: "Two-handed interaction conditions for immersive data exploration" },
-        label: "INTERACTION / 03A",
+        label: { zh: "交互 / 03A", en: "INTERACTION / 03A" },
         title: { zh: "具身双手交互设计空间", en: "Embodied two-handed interaction design space" },
         pdf: "/papers/embodied-two-handed-immersive-data-exploration.pdf",
         source: "ACM CHI 2024 EA",
@@ -160,7 +160,7 @@ const researchStories: ResearchStory[] = [
       {
         image: "/images/research/tangible-data-cubes.png",
         alt: { zh: "混合现实中的可触数据立方体交互示意", en: "Tangible data-cube interactions in mixed reality" },
-        label: "TANGIBLE / 03B",
+        label: { zh: "实物交互 / 03B", en: "TANGIBLE / 03B" },
         title: { zh: "手中的时空数据立方体", en: "Spatio-temporal data cubes in hand" },
         pdf: "/papers/data-cubes-in-hand-mixed-reality.pdf",
         source: "ACM CHI 2024",
@@ -170,7 +170,7 @@ const researchStories: ResearchStory[] = [
   },
   {
     id: "gamified-collaboration",
-    tag: "GAMIFIED COLLABORATION / 04",
+    tag: { zh: "游戏化协作 / 04", en: "GAMIFIED COLLABORATION / 04" },
     title: { zh: "把关系写进游戏机制。", en: "Write relationships into the game mechanics." },
     note: {
       zh: "参与者是否熟悉彼此，会改变他们对竞争、合作与奖励的偏好；设计需要把这种社会关系纳入证据链。",
@@ -180,7 +180,7 @@ const researchStories: ResearchStory[] = [
       {
         image: "/images/research/gamification-preference-concept.png",
         alt: { zh: "人际关系如何影响沉浸式游戏化偏好的概念图", en: "Concept illustration of how interpersonal relationships shape immersive gamification preferences" },
-        label: "CO-LEARNING / 04A",
+        label: { zh: "协作学习 / 04A", en: "CO-LEARNING / 04A" },
         title: { zh: "关系如何塑造游戏化偏好", en: "How relationships shape gamification preferences" },
         pdf: "/papers/interpersonal-relationships-gamification-ivr.pdf",
         source: "IEEE VR 2025",
@@ -189,7 +189,7 @@ const researchStories: ResearchStory[] = [
       {
         image: "/images/research/gamification-collaboration-study.png",
         alt: { zh: "协作式沉浸游戏的前测、三项任务与后测流程", en: "Pre-study, three-task, and post-study flow for collaborative immersive gaming" },
-        label: "EVIDENCE LOOP / 04B",
+        label: { zh: "证据闭环 / 04B", en: "EVIDENCE LOOP / 04B" },
         title: { zh: "从设计走向可复现证据", en: "From game design to reproducible evidence" },
         pdf: "/papers/interpersonal-relationships-gamification-ivr.pdf",
         source: "IEEE VR 2025",
@@ -199,7 +199,7 @@ const researchStories: ResearchStory[] = [
   },
   {
     id: "social-intelligence",
-    tag: "SOCIAL INTELLIGENCE / 05",
+    tag: { zh: "社会智能 / 05", en: "SOCIAL INTELLIGENCE / 05" },
     title: { zh: "以差异促成共同理解。", en: "Let differences lead to shared understanding." },
     note: {
       zh: "非对称信息可以推动合作，虚拟同伴可以提供支持；社会智能来自对人与人之间差异、关系与需要的持续理解。",
@@ -209,7 +209,7 @@ const researchStories: ResearchStory[] = [
       {
         image: "/images/research/context-dependent-collaboration-scenes.png",
         alt: { zh: "数据、位置与视角三类非对称协作谜题", en: "Data-, position-, and perspective-based asymmetric collaboration puzzles" },
-        label: "ASYMMETRY / 05A",
+        label: { zh: "非对称协作 / 05A", en: "ASYMMETRY / 05A" },
         title: { zh: "以差异驱动协作与共同理解", en: "Using asymmetry to drive collaboration" },
         pdf: "/papers/context-dependent-social-engagement-immersive-learning.pdf",
         source: "CHBR 2026",
@@ -218,7 +218,7 @@ const researchStories: ResearchStory[] = [
       {
         image: "/images/research/virtual-peer-mentor-framework.png",
         alt: { zh: "虚拟同伴导师提供信息、动作与情感支持的框架", en: "Virtual peer mentor framework for informational, instrumental, and emotional support" },
-        label: "PEER SUPPORT / 05B",
+        label: { zh: "同伴支持 / 05B", en: "PEER SUPPORT / 05B" },
         title: { zh: "把同伴支持嵌入康复训练", en: "Embedding peer support into rehabilitation" },
         pdf: "/papers/virtual-peer-mentor-vr-rehabilitation.pdf",
         source: "IEEE TVCG 2026",
@@ -228,7 +228,7 @@ const researchStories: ResearchStory[] = [
   },
   {
     id: "spatial-visualisation",
-    tag: "SPATIAL VISUALISATION / 06",
+    tag: { zh: "空间可视化 / 06", en: "SPATIAL VISUALISATION / 06" },
     title: { zh: "让时间、人物与数据在空间相遇。", en: "Let time, people, and data meet in space." },
     note: {
       zh: "空间可视化把复杂信息变得可探索：一端是跨越时间的人物轨迹，另一端是从系统综述中提炼出的交互设计秩序。",
@@ -238,7 +238,7 @@ const researchStories: ResearchStory[] = [
       {
         image: "/images/research/3dstoryline-trajectories.png",
         alt: { zh: "沉浸式故事线可视化的总览与细节视图", en: "Overview and detail views in immersive storyline visualization" },
-        label: "STORYLINE / 06A",
+        label: { zh: "故事线 / 06A", en: "STORYLINE / 06A" },
         title: { zh: "在三维空间中阅读故事轨迹", en: "Reading story trajectories in three dimensions" },
         pdf: "/papers/3dstoryline-immersive-visual-storytelling.pdf",
         source: "Journal of Visualization 2025",
@@ -247,7 +247,7 @@ const researchStories: ResearchStory[] = [
       {
         image: "/images/research/visualization-widget-taxonomy.png",
         alt: { zh: "实物数据探索任务、交互与可视化组件的分类图", en: "Taxonomy of tasks, interactions, and visualization widgets for tangible data exploration" },
-        label: "DESIGN SPACE / 06B",
+        label: { zh: "设计空间 / 06B", en: "DESIGN SPACE / 06B" },
         title: { zh: "从研究证据中提炼交互秩序", en: "Distilling interaction patterns from evidence" },
         pdf: "/papers/visualization-widgets-tangible-data-exploration.pdf",
         source: "IEEE VIS 2025",
@@ -264,7 +264,11 @@ const team = [
     imagePosition: "50% 42%",
     personalWebsite: "https://zhenglijie.com/",
     profileUrl: "https://www.nottingham.edu.cn/en/science-engineering/departments-schools/cs/research/aiop/aiop-people.aspx",
-    tags: ["XR", "Smart Healthcare", "EdTech"],
+    tags: [
+      { zh: "扩展现实", en: "XR" },
+      { zh: "智慧医疗", en: "Smart Healthcare" },
+      { zh: "教育科技", en: "EdTech" },
+    ],
     bio: {
       zh: "宁波诺丁汉大学计算机与运筹学博士在读。本科专业为计算机科学与人工智能，2025 年以一等学位毕业后直升博士项目。研究聚焦扩展现实、智慧医疗与教育科技，成果发表于 IEEE VR、UIST 与 Computers in Human Behavior Reports。",
       en: "A PhD candidate in Computer Science and Operations Research at the University of Nottingham Ningbo China. After graduating with First-Class Honours in Computer Science with Artificial Intelligence in 2025, he progressed directly into doctoral study. His XR, smart healthcare, and EdTech research has appeared at IEEE VR, UIST, and Computers in Human Behavior Reports.",
@@ -276,7 +280,11 @@ const team = [
     imagePosition: "50% 42%",
     personalWebsite: "https://haonanyao.pages.dev/",
     profileUrl: "https://www.nottingham.edu.cn/en/science-engineering/departments-schools/cs/research/aiop/aiop-people.aspx",
-    tags: ["Tangible Interaction", "AI for Accessibility", "Digital Art"],
+    tags: [
+      { zh: "实物交互", en: "Tangible Interaction" },
+      { zh: "无障碍人工智能", en: "AI for Accessibility" },
+      { zh: "数字艺术", en: "Digital Art" },
+    ],
     bio: {
       zh: "宁波诺丁汉大学计算机科学博士在读、XR 独立开发者与数字艺术家。具备从概念设计、科研原型到迭代落地的完整能力，长期研究扩展现实、实物交互与面向无障碍的人工智能。",
       en: "A Computer Science PhD candidate at the University of Nottingham Ningbo China, independent XR developer, and digital artist. His end-to-end practice spans concept design, research prototypes, and iterative delivery, with a long-term focus on XR, tangible interaction, and AI for accessibility.",
@@ -288,7 +296,11 @@ const team = [
     imagePosition: "50% 38%",
     personalWebsite: "https://xiaolei1998.github.io/people/",
     profileUrl: "https://www.nottingham.edu.cn/en/science-engineering/departments-schools/cs/research/aiop/aiop-people.aspx",
-    tags: ["AIoT", "Biomedical Systems", "Systems Design"],
+    tags: [
+      { zh: "智能物联网", en: "AIoT" },
+      { zh: "生物医学系统", en: "Biomedical Systems" },
+      { zh: "系统设计", en: "Systems Design" },
+    ],
     bio: {
       zh: "宁波诺丁汉大学计算机科学博士在读，拥有新加坡国立大学计算机工程硕士学位与加拿大阿尔伯塔大学学士学位。曾任博世 ADAS 泊车系统工程师，研究聚焦 AI 赋能的物联网、智能生物医学应用与健康福祉系统设计。",
       en: "A Computer Science PhD candidate at the University of Nottingham Ningbo China, with an M.Eng. from the National University of Singapore and a bachelor’s degree from the University of Alberta. A former BOSCH ADAS parking systems engineer, she researches AI-enabled IoT, intelligent biomedical applications, and systems for healthcare and wellbeing.",
@@ -299,7 +311,11 @@ const team = [
     image: "/images/team/renzhi-han-2026.png",
     imagePosition: "50% 50%",
     profileUrl: "https://www.nottingham.edu.cn/en/science-engineering/departments-schools/cs/research/aiop/aiop-people.aspx",
-    tags: ["XR Rehabilitation", "Gamification", "Unity"],
+    tags: [
+      { zh: "扩展现实康复", en: "XR Rehabilitation" },
+      { zh: "游戏化设计", en: "Gamification" },
+      { zh: "Unity", en: "Unity" },
+    ],
     bio: {
       zh: "宁波诺丁汉大学计算机科学博士在读、XR 康复严肃游戏研发者。研究沉浸式虚拟现实智能康复，关注以游戏化、虚拟角色与交互设计提升康复体验，并持续与宁波医疗机构合作推动临床验证与应用转化。",
       en: "A Computer Science PhD candidate at the University of Nottingham Ningbo China and developer of XR rehabilitation serious games. His work explores immersive intelligent rehabilitation through gamification, virtual characters, and interaction design, alongside long-term clinical collaboration with healthcare institutions in Ningbo.",
@@ -658,6 +674,54 @@ function usePageObservers(setActiveSection: (id: string) => void, refreshKey: st
   }, [refreshKey, setActiveSection]);
 }
 
+function useScrollFocus(refreshKey: string) {
+  useEffect(() => {
+    const sections = Array.from(document.querySelectorAll<HTMLElement>("main > section"));
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const compact = window.matchMedia("(max-width: 700px)");
+    let frame = 0;
+
+    const update = () => {
+      frame = 0;
+      const viewportHeight = window.innerHeight;
+      const readingLine = viewportHeight * 0.55;
+      const fadeDistance = viewportHeight * 0.7;
+      const minimumOpacity = compact.matches ? 0.78 : 0.52;
+      const maximumBlur = compact.matches ? 1.5 : 4;
+
+      sections.forEach((section) => {
+        const progress = reducedMotion.matches
+          ? 0
+          : Math.min(1, Math.max(0, (readingLine - section.getBoundingClientRect().bottom) / fadeDistance));
+        const eased = progress * progress * (3 - 2 * progress);
+        section.style.setProperty("--scroll-focus-opacity", String(1 - (1 - minimumOpacity) * eased));
+        section.style.setProperty("--scroll-focus-blur", `${maximumBlur * eased}px`);
+      });
+    };
+    const schedule = () => { if (!frame) frame = window.requestAnimationFrame(update); };
+
+    sections.forEach((section) => section.classList.add("scroll-focus-section"));
+    schedule();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    reducedMotion.addEventListener("change", schedule);
+    compact.addEventListener("change", schedule);
+
+    return () => {
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      reducedMotion.removeEventListener("change", schedule);
+      compact.removeEventListener("change", schedule);
+      if (frame) window.cancelAnimationFrame(frame);
+      sections.forEach((section) => {
+        section.classList.remove("scroll-focus-section");
+        section.style.removeProperty("--scroll-focus-opacity");
+        section.style.removeProperty("--scroll-focus-blur");
+      });
+    };
+  }, [refreshKey]);
+}
+
 function SectionHeading({
   eyebrow,
   title,
@@ -718,12 +782,12 @@ function OpportunitiesOverview({ lang }: { lang: Lang }) {
 
         <div className="opportunity-highlights reveal" aria-label={lang === "zh" ? "申请关键信息" : "Key application information"}>
           {recruitmentHighlights.map((highlight) => (
-            <div key={highlight.value}>
-              <strong>{highlight.value}</strong>
+            <div key={highlight.value.en}>
+              <strong>{t(highlight.value, lang)}</strong>
               <span>{t(highlight.label, lang)}</span>
             </div>
           ))}
-          <p>I² LAB / RESEARCH ASSISTANT</p>
+          <p>{lang === "zh" ? "I²Lab / 研究助理" : "I² LAB / RESEARCH ASSISTANT"}</p>
         </div>
 
         <div className="recruitment-info-list">
@@ -755,7 +819,7 @@ function OpportunitiesOverview({ lang }: { lang: Lang }) {
         </div>
         <a className="alumni-recruitment-link reveal" href="#alumni">
           <span>{lang === "zh" ? "从研究参与，到下一段旅程" : "FROM RESEARCH TO WHAT COMES NEXT"}</span>
-          <strong>{lang === "zh" ? "了解往届 RA 的成长路径" : "Discover our RA alumni’s pathways"}</strong>
+          <strong>{lang === "zh" ? "了解往届研究助理的成长路径" : "Discover our RA alumni’s pathways"}</strong>
           <i aria-hidden="true">↗</i>
         </a>
       </div>
@@ -795,7 +859,7 @@ function OpportunityDirectory({ lang }: { lang: Lang }) {
               <div className="opportunity-project-meta">
                 <span>{lang === "zh" ? "负责人" : "PROJECT LEAD"}</span>
                 <strong>{t(project.leader, lang)}</strong>
-                <div>{project.tags.map((tag) => <small key={tag}>{tag}</small>)}</div>
+                <div>{project.tags.map((tag) => <small key={tag.en}>{t(tag, lang)}</small>)}</div>
               </div>
               <span className="opportunity-project-link">
                 {lang === "zh" ? "查看项目详情" : "View project"}<i aria-hidden="true">↗</i>
@@ -836,7 +900,7 @@ function OpportunityDetailPage({ project, lang }: { project: ResearchOpportunity
               <span>{lang === "zh" ? "联系邮箱" : "CONTACT"}</span>
               <a href={`mailto:${project.email}`}>{project.email}<i aria-hidden="true">↗</i></a>
             </div>
-            <div className="project-detail-tags">{project.tags.map((tag) => <small key={tag}>{tag}</small>)}</div>
+            <div className="project-detail-tags">{project.tags.map((tag) => <small key={tag.en}>{t(tag, lang)}</small>)}</div>
           </div>
         </div>
       </section>
@@ -844,7 +908,7 @@ function OpportunityDetailPage({ project, lang }: { project: ResearchOpportunity
       <section className="opportunity-detail-body light-section">
         <div className="section-frame project-detail-content">
           <aside className="project-detail-aside reveal">
-            <span>I² / RESEARCH OPPORTUNITY</span>
+            <span>{lang === "zh" ? "I² / 研究机会" : "I² / RESEARCH OPPORTUNITY"}</span>
             <p>{lang === "zh" ? "长期参与 · 真实研究 · 可验证成果" : "LONG-TERM · REAL RESEARCH · VERIFIABLE OUTCOMES"}</p>
           </aside>
           <div className="project-detail-sections">
@@ -923,7 +987,7 @@ function MainProjectsSection({ lang }: { lang: Lang }) {
         <div className="main-projects-list">
           {mainProjects.map((project) => (
             <a className="main-project-card reveal" href={`/projects/${project.slug}`} key={project.slug}>
-              <div className="main-project-index"><span>{project.number}</span><small>{project.code}</small></div>
+              <div className="main-project-index"><span>{project.number}</span><small>{t(project.code, lang)}</small></div>
               <div className="main-project-copy">
                 <h3>{t(project.title, lang)}</h3>
                 <p>{t(project.summary, lang)}</p>
@@ -948,7 +1012,7 @@ function MainProjectDetailPage({ project, lang }: { project: MainProject; lang: 
         <div className="section-frame">
           <a className="project-back-link reveal is-visible" href="/#projects"><span aria-hidden="true">←</span>{lang === "zh" ? "返回主要项目" : "Back to main projects"}</a>
           <div className="main-project-detail-heading reveal is-visible">
-            <span className="main-project-detail-kicker">I² LAB / {project.number} / {project.code}</span>
+            <span className="main-project-detail-kicker">{lang === "zh" ? "I²Lab" : "I² LAB"} / {project.number} / {t(project.code, lang)}</span>
             <h1 id="main-project-title">{t(project.title, lang)}</h1>
             <p>{t(project.summary, lang)}</p>
             <small>{t(project.setting, lang)}</small>
@@ -959,7 +1023,7 @@ function MainProjectDetailPage({ project, lang }: { project: MainProject; lang: 
         <div className="section-frame main-project-detail-layout">
           <div className="main-project-detail-visual reveal">
             <img src={project.visual} alt={t(project.visualAlt, lang)} loading="eager" decoding="async" />
-            <div><span>{project.code}</span><p>{t(project.visualCaption, lang)}</p></div>
+            <div><span>{t(project.code, lang)}</span><p>{t(project.visualCaption, lang)}</p></div>
           </div>
           <div className="main-project-detail-sections">
             {project.sections.map((section, index) => (
@@ -1017,7 +1081,7 @@ function ResearchFigureCard({ figure, lang }: { figure: ResearchFigure; lang: La
             loading="lazy"
             decoding="async"
           />
-          <span className="research-frame-code">{figure.label}</span>
+          <span className="research-frame-code">{t(figure.label, lang)}</span>
         </span>
       </a>
       <figcaption>
@@ -1111,7 +1175,7 @@ function ResearchCarousel({ stories, lang }: { stories: ResearchStory[]; lang: L
     >
       <div className="research-carousel-toolbar">
         <div className="research-carousel-intro">
-          <span>I² / RESEARCH ATLAS</span>
+          <span>{lang === "zh" ? "I² / 研究图谱" : "I² / RESEARCH ATLAS"}</span>
           <p>{lang === "zh" ? "12 份视觉记录 · 6 组研究线索 · 每张图片直达来源 PDF" : "12 visual records · 6 research pairings · every image opens its source PDF"}</p>
         </div>
         <div className="research-carousel-controls">
@@ -1158,10 +1222,10 @@ function ResearchCarousel({ stories, lang }: { stories: ResearchStory[]; lang: L
             >
               <ResearchFigureCard figure={story.figures[0]} lang={lang} />
               <div className="research-story-note">
-                <span>{story.tag}</span>
+                <span>{t(story.tag, lang)}</span>
                 <strong>{t(story.title, lang)}</strong>
                 <p>{t(story.note, lang)}</p>
-                <small>RESEARCH · PROTOTYPE · TRANSLATION</small>
+                <small>{lang === "zh" ? "研究 · 原型 · 转化" : "RESEARCH · PROTOTYPE · TRANSLATION"}</small>
               </div>
               <ResearchFigureCard figure={story.figures[1]} lang={lang} />
             </article>
@@ -1286,31 +1350,31 @@ function IntroSequence({ onComplete, lang }: { onComplete: () => void; lang: Lan
       <div className="intro-topline">
         <div className="intro-mini-brand">
           <span className="brand-mark" aria-hidden="true"><i /><b /></span>
-          <span><strong>I²Lab</strong><small>NINGBO / CHINA</small></span>
+          <span><strong>I²Lab</strong><small>{lang === "zh" ? "中国 / 宁波" : "NINGBO / CHINA"}</small></span>
         </div>
-        <p>RESEARCH FILM <span>·</span> 00:07 <span>·</span> I² / 2026</p>
+        <p>{lang === "zh" ? "研究影像" : "RESEARCH FILM"} <span>·</span> 00:07 <span>·</span> I² / 2026</p>
       </div>
 
       <div className="intro-chapters" aria-hidden="true">
-        <span><b>01</b><i />SPATIAL</span>
-        <span><b>02</b><i />SENSING</span>
-        <span><b>03</b><i />INTERACTION</span>
+        <span><b>01</b><i />{lang === "zh" ? "空间" : "SPATIAL"}</span>
+        <span><b>02</b><i />{lang === "zh" ? "感知" : "SENSING"}</span>
+        <span><b>03</b><i />{lang === "zh" ? "交互" : "INTERACTION"}</span>
       </div>
 
       <div className="intro-narrative" aria-hidden="true">
-        <div className="intro-copy-frame intro-copy-0"><span>EXTENDED REALITY</span><strong>Sense the<br />invisible.</strong></div>
-        <div className="intro-copy-frame intro-copy-1"><span>mmWAVE RADAR</span><strong>Read motion<br />without contact.</strong></div>
-        <div className="intro-copy-frame intro-copy-2"><span>HUMAN–SYSTEM LOOP</span><strong>Turn interaction<br />into evidence.</strong></div>
+        <div className="intro-copy-frame intro-copy-0"><span>{lang === "zh" ? "扩展现实" : "EXTENDED REALITY"}</span><strong>{lang === "zh" ? <>感知<br />不可见之物。</> : <>Sense the<br />invisible.</>}</strong></div>
+        <div className="intro-copy-frame intro-copy-1"><span>{lang === "zh" ? "毫米波雷达" : "mmWAVE RADAR"}</span><strong>{lang === "zh" ? <>无需接触，<br />洞察动作。</> : <>Read motion<br />without contact.</>}</strong></div>
+        <div className="intro-copy-frame intro-copy-2"><span>{lang === "zh" ? "人机交互闭环" : "HUMAN–SYSTEM LOOP"}</span><strong>{lang === "zh" ? <>让交互成为<br />可验证的证据。</> : <>Turn interaction<br />into evidence.</>}</strong></div>
       </div>
 
-      <div className="intro-sensor-lock" aria-hidden="true"><i /><i /><span>HCI</span></div>
+      <div className="intro-sensor-lock" aria-hidden="true"><i /><i /><span>{lang === "zh" ? "人机交互" : "HCI"}</span></div>
 
       <div className="intro-final-brand" aria-hidden="true">
         <span className="brand-mark intro-brand-mark"><i /><b /></span>
         <div><strong>I²Lab</strong><small>{lang === "zh" ? "智能交互技术研究实验室" : "Intelligent Interaction Laboratory"}</small></div>
       </div>
 
-      <div className="intro-progress"><i /><span>XR&nbsp;&nbsp;/&nbsp;&nbsp;mmWAVE&nbsp;&nbsp;/&nbsp;&nbsp;SMART SENSING</span></div>
+      <div className="intro-progress"><i /><span>{lang === "zh" ? "扩展现实 / 毫米波雷达 / 智能感知" : "XR  /  mmWAVE  /  SMART SENSING"}</span></div>
       <button ref={skipButtonRef} type="button" className="intro-skip" onClick={finish}>{lang === "zh" ? "跳过影片" : "SKIP FILM"}<span aria-hidden="true">↗</span></button>
     </div>
   );
@@ -1356,6 +1420,7 @@ function App() {
   const introReplayTriggerRef = useRef<HTMLButtonElement | null>(null);
 
   usePageObservers(setActiveSection, `${publicationFilter}:${activeProject?.slug ?? activeAlumnus?.slug ?? activeMainProject?.slug ?? "home"}`);
+  useScrollFocus(`${lang}:${activeProject?.slug ?? activeAlumnus?.slug ?? activeMainProject?.slug ?? "home"}`);
 
   useEffect(() => {
     document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
@@ -1599,11 +1664,11 @@ function App() {
             <div className="orbit orbit-outer"><span className="node node-xr">XR</span></div>
             <div className="orbit orbit-middle"><span className="node node-wave">mmW</span></div>
             <div className="orbit orbit-inner"><span className="node node-sense">S²</span></div>
-            <div className="stage-core"><span>HCI</span><small>human / system</small></div>
+            <div className="stage-core"><span>{lang === "zh" ? "人机交互" : "HCI"}</span><small>{lang === "zh" ? "人与系统" : "human / system"}</small></div>
             <div className="stage-scan" />
             <div className="stage-caption">
               <span>{lang === "zh" ? "智能交互技术研究实验室" : "INTELLIGENT INTERACTION LABORATORY"}</span>
-              <span>Spatial · Sensing · Adaptive</span>
+              <span>{lang === "zh" ? "空间 · 感知 · 适应" : "Spatial · Sensing · Adaptive"}</span>
             </div>
           </div>
 
@@ -1611,7 +1676,7 @@ function App() {
             <div><strong>I²</strong><span>{lang === "zh" ? "智能交互实验室" : "Intelligent Interaction Lab"}</span></div>
             <div><strong>03</strong><span>{lang === "zh" ? "核心研究方向" : "Research directions"}</span></div>
             <div><strong>02</strong><span>{lang === "zh" ? "重点验证场景" : "Validation domains"}</span></div>
-            <p>Research · Prototype · Translation.</p>
+            <p>{lang === "zh" ? "研究 · 原型 · 转化。" : "Research · Prototype · Translation."}</p>
           </div>
         </section>
 
@@ -1733,7 +1798,7 @@ function App() {
                       </div>
                     </div>
                     <p className="team-bio">{t(member.bio, lang)}</p>
-                    <div className="tag-list">{member.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+                    <div className="tag-list">{member.tags.map((tag) => <span key={tag.en}>{t(tag, lang)}</span>)}</div>
                     <div className="team-links">
                       {"personalWebsite" in member && member.personalWebsite && (
                         <ArrowLink href={member.personalWebsite}>{lang === "zh" ? "个人网站" : "Personal website"}</ArrowLink>
@@ -1843,7 +1908,7 @@ function App() {
         <section className="closing-section">
           <div className="closing-grid" aria-hidden="true" />
           <div className="closing-copy reveal">
-            <span>I² LAB · NINGBO</span>
+            <span>{lang === "zh" ? "I²Lab · 宁波" : "I² LAB · NINGBO"}</span>
             <h2>{lang === "zh" ? <>下一代交互，<br />从真实问题开始。</> : <>The next interaction<br />starts with a real need.</>}</h2>
             <p>{lang === "zh" ? "与产业、学术和医疗伙伴共同构建面向未来的交互创新生态。" : "Building the future of interaction with partners across industry, academia, and healthcare."}</p>
             <div>
@@ -1859,18 +1924,18 @@ function App() {
       <footer>
         <a className="brand footer-brand" href={isDetailPage ? "/" : "#top"}>
           <span className="brand-mark" aria-hidden="true"><i /><b /></span>
-          <span className="brand-name"><strong>{lang === "zh" ? "纸合科技" : "BOXTECH"}</strong><small>NINGBO BOXTECH TECHNOLOGY CO., LTD.</small></span>
+          <span className="brand-name"><strong>{lang === "zh" ? "纸合科技" : "BOXTECH"}</strong><small>{lang === "zh" ? "宁波纸合科技有限公司" : "NINGBO BOXTECH TECHNOLOGY CO., LTD."}</small></span>
         </a>
         <div className="footer-meta">
           <p>{lang === "zh" ? "中国 · 宁波" : "Ningbo · China"}</p>
-          <p>Turning Research into Revolution.</p>
+          <p>{lang === "zh" ? "让研究走向真实世界。" : "Turning Research into Revolution."}</p>
         </div>
         <div className="footer-credits">
           <p className="producer-credit">
-            <span>DESIGN &amp; CREATED BY</span>
+            <span>{lang === "zh" ? "网站设计与制作" : "DESIGN & CREATED BY"}</span>
             <a href="https://bingxuhou.com" target="_blank" rel="noopener noreferrer"><strong>Bingxu HOU</strong></a>
           </p>
-          <p className="copyright">© 2026 Ningbo Boxtech Technology Co., Ltd.</p>
+          <p className="copyright">{lang === "zh" ? "© 2026 宁波纸合科技有限公司" : "© 2026 Ningbo Boxtech Technology Co., Ltd."}</p>
         </div>
       </footer>
     </div>

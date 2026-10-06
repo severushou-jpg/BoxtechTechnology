@@ -31,7 +31,7 @@ export type ResearchOpportunity = {
   summary: RecruitmentLocalized;
   leader: RecruitmentLocalized;
   email: string;
-  tags: string[];
+  tags: RecruitmentLocalized[];
   sections: ProjectDetailSection[];
   closing?: RecruitmentLocalized;
   note?: RecruitmentLocalized;
@@ -39,19 +39,19 @@ export type ResearchOpportunity = {
 };
 
 export const recruitmentHighlights: Array<{
-  value: string;
+  value: RecruitmentLocalized;
   label: RecruitmentLocalized;
 }> = [
   {
-    value: "Y1–2",
+    value: { zh: "大一至大二", en: "Y1–2" },
     label: { zh: "主要申请年级", en: "Primary cohort" },
   },
   {
-    value: "≥ 1Y",
+    value: { zh: "至少一年", en: "≥ 1Y" },
     label: { zh: "建议参与周期", en: "Expected commitment" },
   },
   {
-    value: "IN-PERSON",
+    value: { zh: "线下", en: "IN-PERSON" },
     label: { zh: "线下协作与开发", en: "Research mode" },
   },
 ];
@@ -185,7 +185,11 @@ export const researchOpportunities: ResearchOpportunity[] = [
     },
     leader: { zh: "郑力杰", en: "Lijie Zheng" },
     email: "Lijie.Zheng@nottingham.edu.cn",
-    tags: ["LLM", "UX RESEARCH", "EXPLAINABLE AI"],
+    tags: [
+      { zh: "大语言模型", en: "LLM" },
+      { zh: "用户体验研究", en: "UX RESEARCH" },
+      { zh: "可解释人工智能", en: "EXPLAINABLE AI" },
+    ],
     references: [
       {
         title: "The Emerging Use of GenAI for UX Research in Software Development: Challenges and Opportunities",
@@ -264,7 +268,11 @@ export const researchOpportunities: ResearchOpportunity[] = [
     },
     leader: { zh: "张小蕾（Michelle）", en: "Michelle Xiaolei Zhang" },
     email: "Xiaolei.Zhang@nottingham.edu.cn",
-    tags: ["mmWAVE", "SMART AGEING", "HEALTH SENSING"],
+    tags: [
+      { zh: "毫米波雷达", en: "mmWAVE" },
+      { zh: "智慧养老", en: "SMART AGEING" },
+      { zh: "健康感知", en: "HEALTH SENSING" },
+    ],
     sections: [
       {
         id: "context",
@@ -323,7 +331,11 @@ export const researchOpportunities: ResearchOpportunity[] = [
     },
     leader: { zh: "姚淏楠", en: "Haonan Yao" },
     email: "Haonan.YAO@nottingham.edu.cn",
-    tags: ["MIXED REALITY", "AI-ASSISTED CREATION", "TANGIBLE INTERACTION"],
+    tags: [
+      { zh: "混合现实", en: "MIXED REALITY" },
+      { zh: "人工智能辅助创作", en: "AI-ASSISTED CREATION" },
+      { zh: "实物交互", en: "TANGIBLE INTERACTION" },
+    ],
     sections: [
       {
         id: "context",

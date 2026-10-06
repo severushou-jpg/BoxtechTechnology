@@ -9,7 +9,7 @@ export type ProjectImage = {
 export type MainProject = {
   slug: string;
   number: string;
-  code: string;
+  code: ProjectText;
   title: ProjectText;
   summary: ProjectText;
   setting: ProjectText;
@@ -31,7 +31,7 @@ export const mainProjects: MainProject[] = [
   {
     slug: "ar-perioperative-education",
     number: "01",
-    code: "AR / EDUCATION",
+    code: { zh: "增强现实 / 患者宣教", en: "AR / EDUCATION" },
     title: { zh: "围术期 AR 患者宣教", en: "AR Perioperative Patient Education" },
     summary: {
       zh: "用可探索的三维情境，帮助患者理解术前准备、治疗过程与术后配合。",
@@ -123,7 +123,7 @@ export const mainProjects: MainProject[] = [
   {
     slug: "vr-postoperative-rehabilitation",
     number: "02",
-    code: "VR / REHABILITATION",
+    code: { zh: "虚拟现实 / 术后康复", en: "VR / REHABILITATION" },
     title: { zh: "术后 VR 床旁康复", en: "Bedside VR Postoperative Rehabilitation" },
     summary: {
       zh: "将床旁踝部与下肢练习转化为有进度、有反馈的沉浸式康复任务。",
@@ -154,7 +154,7 @@ export const mainProjects: MainProject[] = [
         images: [{
           src: "/images/projects/vr-clinical-overview.jpg",
           alt: { zh: "合作汇报中的 VR 床旁康复项目临床应用与设备示意", en: "Clinical context and equipment for the bedside VR rehabilitation project" },
-          caption: { zh: "床旁场景 / CICU 术后恢复", en: "BEDSIDE CONTEXT / CICU POSTOPERATIVE RECOVERY" },
+          caption: { zh: "床旁场景 / 心脏重症监护室术后恢复", en: "BEDSIDE CONTEXT / CICU POSTOPERATIVE RECOVERY" },
         }],
       },
       {

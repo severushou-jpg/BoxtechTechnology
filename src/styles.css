@@ -1,4 +1,9 @@
 :root {
+  --type-micro: 11px;
+  --type-caption: 12px;
+  --type-label: 13px;
+  --type-copy-small: 14px;
+  --type-body: 16px;
   --ink: #111313;
   --ink-soft: #1b1e1e;
   --paper: #f4f1eb;
@@ -3698,6 +3703,23 @@ footer {
   transform: translateY(0);
 }
 
+/* Fade only section content: the established light/dark section colours stay fixed. */
+.scroll-focus-section > :not([aria-hidden="true"]):not(.reveal),
+.scroll-focus-section > .reveal.is-visible {
+  opacity: var(--scroll-focus-opacity, 1);
+  filter: blur(var(--scroll-focus-blur, 0px));
+  transition: opacity 160ms linear, filter 160ms linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-focus-section > :not([aria-hidden="true"]):not(.reveal),
+  .scroll-focus-section > .reveal.is-visible {
+    opacity: 1;
+    filter: none;
+    transition: none;
+  }
+}
+
 .intro-sequence:focus {
   outline: none;
 }
@@ -5136,4 +5158,93 @@ footer {
     opacity: 1;
     transform: none;
   }
+}
+
+/* Shared lower-level type scale. Display headings and the established grid stay unchanged. */
+:is(.intro-channel b, .intro-mini-brand small, .intro-topline p, .intro-chapters span,
+  .intro-copy-frame > span, .intro-sequence .intro-progress span, .intro-skip,
+  .intro-replay, .brand-name small, .lab-brand .brand-name small,
+  .stage-index, .stage-caption, .hero-metrics span, .hero-metrics > p,
+  .about-aside p, .about-principle > span, .tech-number, .tech-copy > span,
+  .research-carousel-intro > span, .research-carousel-controls > span,
+  .research-frame-code, .research-story-note > span, .research-story-note > small,
+  .research-figure figcaption small, .application-card > span, .alumni-photo-index,
+  .alumni-role, .alumni-destination > span, .alumni-recruitment-link > span,
+  .team-image-wrap > span, .paper-index, .paper-year span, .paper-meta b,
+  .link-pending small, .opportunity-highlights span, .opportunity-highlights > p,
+  .recruitment-info-index, .application-protocol > div > span,
+  .opportunity-count span, .opportunity-project-index, .opportunity-status,
+  .opportunity-project-meta > span, .project-detail-kicker > span,
+  .project-detail-rail > div > span, .project-detail-aside span,
+  .project-detail-section > span, .project-detail-section li::before,
+  .project-reference-list article > span, .project-application-band > div > span,
+  .closing-copy > span, .copyright, .producer-credit span,
+  .main-project-index small, .main-project-setting, .main-project-detail-kicker,
+  .main-project-detail-heading small, .main-project-detail-visual span,
+  .main-project-detail-section > span, .main-project-detail-media figcaption,
+  .main-project-next span, .team-current-header span, .publication-scroll-control span) {
+  font-size: var(--type-micro);
+  line-height: 1.5;
+}
+
+:is(.eyebrow, .hero-kicker, .node, .language-toggle span, .intro-sensor-lock span,
+  .stage-core small, .about-aside span, .alumni-secondary-name,
+  .alumni-destination > p, .alumni-profile-link, .alumni-profile-other-name,
+  .team-name-row small, .advisor-card small, .tag-list span, .advisory-header span,
+  .arrow-link, .publication-filter button, .publication-owner span,
+  .paper-resource-links a, .paper-resource-links .paper-pdf-link,
+  .link-pending b, .opportunity-project-meta small, .project-detail-tags small,
+  .opportunity-project-link, .project-back-link, .project-detail-aside p,
+  .project-reference-list a, .main-project-index span, .main-project-detail-visual p,
+  .alumni-card .alumni-profile-link) {
+  font-size: var(--type-caption);
+  line-height: 1.55;
+}
+
+:is(.desktop-nav a, .primary-button, .text-button, .research-carousel-intro p,
+  .research-source-link, .research-figure figcaption strong,
+  .paper-main > p, .paper-meta, .project-detail-rail a,
+  .project-reference-list p, .producer-credit strong) {
+  font-size: var(--type-label);
+  line-height: 1.6;
+}
+
+:is(.application-card p, .alumni-summary, .alumni-card .alumni-summary,
+  .team-bio, .advisor-card div > p:not(.advisor-role),
+  .research-story-note p, .recruitment-info-row li,
+  .application-protocol > p, .opportunity-project-heading p,
+  .project-detail-section p, .project-detail-section li,
+  .project-detail-note, .project-application-band p,
+  .main-project-detail-section p, .main-project-detail-copy p) {
+  font-size: var(--type-copy-small);
+  line-height: 1.8;
+}
+
+:is(.about-body p, .section-heading > p, .tech-copy p,
+  .alumni-profile-summary, .project-detail-heading > p,
+  .closing-copy > p, .main-project-copy p) {
+  font-size: var(--type-body);
+  line-height: 1.8;
+}
+
+.advisor-role { font-size: var(--type-caption) !important; line-height: 1.55; }
+.opportunity-project-meta small, .project-detail-tags small { padding: 6px 9px; }
+.tag-list span { padding: 8px 10px; }
+.paper-resource-links { gap: 11px; }
+.paper-main > p { margin-top: 14px; }
+.project-detail-rail > div:not(.project-detail-tags) { gap: 10px; }
+.research-story-note > span, .research-story-note > small { letter-spacing: 0.055em; }
+.stage-core span:lang(zh) { font-size: clamp(10px, 1.3vw, 18px); letter-spacing: -0.08em; white-space: nowrap; }
+
+@media (max-width: 700px) {
+  :root { --type-micro: 10px; --type-caption: 11px; --type-label: 12px; --type-copy-small: 14px; --type-body: 15px; }
+  .lab-brand .brand-name small { font-size: 10px; }
+  .intro-chapters { gap: 13px; }
+  .intro-chapters span { grid-template-columns: 18px 18px auto; gap: 5px; }
+  .intro-topline p { font-size: 10px; }
+  .intro-sequence .intro-progress span { font-size: 10px; letter-spacing: 0.035em; }
+  .opportunity-highlights span, .opportunity-highlights > p { font-size: 11px; }
+  .main-project-index small, .main-project-setting { font-size: 11px; }
+  .main-project-detail-copy p { font-size: 14px; }
+  .publication-scroll-control span { font-size: 10px; }
 }
