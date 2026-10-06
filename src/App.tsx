@@ -1343,6 +1343,9 @@ function App() {
   const [introVisible, setIntroVisible] = useState(() => {
     try {
       if (isDetailPage) return false;
+      // A section URL is an intentional deep link: show its target directly,
+      // instead of playing the opening film and jumping away when it ends.
+      if (window.location.hash) return false;
       return !window.matchMedia("(prefers-reduced-motion: reduce)").matches && sessionStorage.getItem("boxtech-intro-seen") !== "true";
     } catch {
       return true;
@@ -1351,6 +1354,7 @@ function App() {
   const menuToggleRef = useRef<HTMLButtonElement>(null);
   const firstNavLinkRef = useRef<HTMLAnchorElement>(null);
   const introReplayTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const returnHomeAfterFirstIntroRef = useRef(introVisible);
 
   usePageObservers(setActiveSection, `${publicationFilter}:${activeProject?.slug ?? activeAlumnus?.slug ?? activeMainProject?.slug ?? "home"}`);
 
@@ -1424,6 +1428,10 @@ function App() {
 
   const completeIntro = useCallback(() => {
     try { sessionStorage.setItem("boxtech-intro-seen", "true"); } catch { /* session storage may be unavailable */ }
+    if (returnHomeAfterFirstIntroRef.current) {
+      window.scrollTo({ top: 0, behavior: "instant" });
+      returnHomeAfterFirstIntroRef.current = false;
+    }
     setIntroVisible(false);
   }, []);
 
