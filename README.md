@@ -18,11 +18,12 @@ npm run build
 ## Content maintenance
 
 - Team, advisor, and publication records live in `src/App.tsx`.
-- Former research assistant profiles live in `src/alumni.ts`, separately from current team members. `src/AlumniViews.tsx` renders the three-column directory and bilingual `/alumni/:slug` detail pages. Add a profile to the data list to create its page and directory entry; keep education, offers, and employment distinct, and only add verified dates.
+- Former research assistant profiles live in `src/alumni.ts`, separately from current team members. `src/AlumniViews.tsx` renders the compact directory within Research Opportunities and bilingual `/alumni/:slug` detail pages. Add a profile to the data list to create its page and directory entry; keep education, offers, and employment distinct, and only add verified dates.
 - Alumni portrait framing uses the original supplied screenshots in `public/images/alumni/`, with source dimensions and photograph bounds stored in each profile. No generated portraits are used. Replace the source and update its dimensions/bounds if an original portrait becomes available.
 - Add new papers to the `publications` array and keep the owner order `lijie`, `haonan`, `renzhi`.
 - Put public downloadable documents in `public/papers/`, team images in `public/images/`, and opening-film assets in `public/media/`.
 - Research opportunities and their bilingual detail-page content live in `src/recruitment.ts`. Add a record with a unique `slug` and `order`; set `published: false` to hide a project, or change `status` to `upcoming` / `closed`.
+- Main research projects and their bilingual `/projects/:slug` detail pages live in `src/mainProjects.ts`. The perioperative AR education and postoperative VR rehabilitation projects intentionally have separate aims and descriptions. Their optimised prototype illustrations live in `public/images/projects/`; the source presentation files are not published.
 - Each project's optional `references` list supports a title, citation, DOI URL, and local PDF URL. Project-related PDFs are stored in `public/papers/related/`; omit `pdf` when no file is available. Titles open the PDF when available, otherwise the DOI. Keep reference order aligned with any numbered citations in the project text.
 - Renzhi Han intentionally has no displayed company title until an official title is confirmed.
 - Do not publish the source company-introduction PDF; it is an internal reference document.

@@ -4809,6 +4809,218 @@ footer {
   }
 }
 
+/* Main projects replace the former technology catalogue. */
+.main-projects-section {
+  background: #101313;
+}
+
+.main-projects-list {
+  border-top: 1px solid var(--line-light);
+}
+
+.main-project-card {
+  position: relative;
+  min-height: 310px;
+  display: grid;
+  grid-template-columns: minmax(125px, 0.22fr) minmax(0, 1fr) minmax(150px, 0.24fr) 42px;
+  gap: clamp(20px, 3vw, 48px);
+  align-items: center;
+  padding: 42px 12px 42px 0;
+  border-bottom: 1px solid var(--line-light);
+  transition: background 240ms ease, padding 240ms ease;
+}
+
+.main-project-card:hover,
+.main-project-card:focus-visible {
+  padding-left: 22px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.main-project-index {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 22px;
+  color: var(--red);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.main-project-index span {
+  font-size: 11px;
+}
+
+.main-project-index small,
+.main-project-setting {
+  color: rgba(255, 255, 255, 0.43);
+  font-size: 8px;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.main-project-copy h3 {
+  max-width: 850px;
+  margin: 0;
+  font-size: clamp(32px, 4vw, 62px);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.055em;
+}
+
+.main-project-copy p {
+  max-width: 610px;
+  margin: 20px 0 32px;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.main-project-symbol {
+  position: relative;
+  width: min(100%, 190px);
+  aspect-ratio: 1;
+  justify-self: end;
+  border: 1px solid rgba(239, 64, 86, 0.4);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, rgba(239, 64, 86, 0.12), transparent 55%);
+  transition: transform 400ms ease, border-color 400ms ease;
+}
+
+.main-project-symbol i {
+  position: absolute;
+  inset: 17%;
+  border: 1px solid rgba(255, 255, 255, 0.17);
+  border-radius: 50%;
+}
+
+.main-project-symbol i:nth-child(2) { inset: 34%; border-color: rgba(239, 64, 86, 0.55); }
+.main-project-symbol i:nth-child(3) { inset: 48%; background: var(--red); border: 0; }
+.main-project-symbol-02 { border-radius: 2px; transform: rotate(45deg) scale(0.75); }
+.main-project-symbol-02 i { border-radius: 2px; }
+.main-project-card:hover .main-project-symbol { transform: rotate(14deg); border-color: var(--red); }
+.main-project-card:hover .main-project-symbol-02 { transform: rotate(59deg) scale(0.75); }
+
+.main-project-arrow {
+  align-self: start;
+  justify-self: end;
+  color: var(--red);
+  font-size: 26px;
+  transition: transform 200ms ease;
+}
+
+.main-project-card:hover .main-project-arrow { transform: translate(4px, -4px); }
+
+.main-project-detail { padding-top: 78px; }
+.main-project-detail-hero { position: relative; overflow: hidden; }
+.main-project-detail-hero::after {
+  content: "";
+  position: absolute;
+  top: 15%;
+  right: -9%;
+  width: min(60vw, 750px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(239, 64, 86, 0.18);
+  border-radius: 50%;
+  box-shadow: 0 0 0 90px rgba(239, 64, 86, 0.035), 0 0 0 180px rgba(239, 64, 86, 0.018);
+  pointer-events: none;
+}
+
+.main-project-detail-hero .section-frame { position: relative; z-index: 1; padding-top: 56px; padding-bottom: clamp(95px, 10vw, 160px); }
+.main-project-detail-heading { max-width: 1040px; margin-top: clamp(85px, 10vw, 145px); }
+.main-project-detail-kicker { color: var(--red); font: 700 9px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.15em; }
+.main-project-detail-heading h1 { margin: 28px 0; font-size: clamp(50px, 6.7vw, 106px); font-weight: 500; line-height: 1.06; letter-spacing: -0.065em; text-wrap: balance; }
+.main-project-detail-heading p { max-width: 760px; margin: 0 0 38px; color: rgba(255, 255, 255, 0.72); font-size: clamp(16px, 1.6vw, 23px); line-height: 1.7; }
+.main-project-detail-heading small { color: rgba(255, 255, 255, 0.38); font-size: 9px; letter-spacing: 0.12em; }
+
+.main-project-detail-layout { padding-top: clamp(72px, 9vw, 135px); }
+.main-project-detail-visual { margin-bottom: clamp(90px, 11vw, 155px); }
+.main-project-detail-visual img { width: 100%; max-height: 620px; object-fit: contain; background: #1b1e1e; }
+.main-project-detail-visual > div { display: flex; justify-content: space-between; gap: 24px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.main-project-detail-visual span { color: var(--red-deep); font: 700 9px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.1em; }
+.main-project-detail-visual p { margin: 0; color: var(--muted); font-size: 10px; }
+.main-project-detail-sections { border-top: 1px solid var(--line); }
+.main-project-detail-section { display: grid; grid-template-columns: minmax(130px, 0.25fr) minmax(0, 0.8fr) minmax(0, 0.9fr); gap: clamp(28px, 4vw, 65px); padding: clamp(52px, 6vw, 85px) 0; border-bottom: 1px solid var(--line); }
+.main-project-detail-section > span { color: var(--red-deep); font: 700 9px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.07em; }
+.main-project-detail-section h2 { margin: 0; font-size: clamp(26px, 2.5vw, 42px); font-weight: 500; line-height: 1.32; letter-spacing: -0.045em; }
+.main-project-detail-section p { margin: 0; color: #555956; font-size: 14px; line-height: 1.95; }
+.main-project-next .section-frame { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 30px; padding-top: 65px; padding-bottom: 75px; }
+.main-project-next span { color: var(--red); font-size: 9px; font-weight: 700; letter-spacing: 0.12em; }
+.main-project-next a { display: flex; align-items: baseline; gap: 30px; font-size: clamp(27px, 3.2vw, 48px); letter-spacing: -0.04em; }
+.main-project-next a:hover { color: var(--red); }
+.main-project-next i { color: var(--red); font-size: 24px; font-style: normal; }
+
+/* Advisers lead the team; all four current members share a portrait row. */
+.advisory-header { margin-top: 0; }
+.team-current-header { display: grid; grid-template-columns: minmax(180px, 0.31fr) 1fr; gap: 40px; align-items: baseline; margin-top: clamp(100px, 10vw, 150px); padding: 28px 0; border-top: 1px solid rgba(17, 19, 19, 0.18); border-bottom: 1px solid rgba(17, 19, 19, 0.18); }
+.team-current-header span { color: var(--red-deep); font-size: 10px; font-weight: 700; letter-spacing: 0.14em; }
+.team-current-header p { margin: 0; font-size: clamp(18px, 1.8vw, 28px); letter-spacing: -0.03em; }
+.team-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 36px; }
+.team-card { min-width: 0; display: flex; flex-direction: column; }
+.team-image-wrap { min-height: 0; aspect-ratio: 4 / 5; }
+.team-image-wrap img { width: 100%; height: 100%; object-fit: cover; }
+.team-info { flex: 1; padding: 25px 18px 27px; }
+.team-name-row { padding-bottom: 17px; }
+.team-name-row h3 { font-size: clamp(21px, 1.9vw, 30px); }
+.team-bio { margin: 18px 0 24px; font-size: 11px; line-height: 1.85; }
+.team-links { flex-direction: column; align-items: flex-start; gap: 3px; margin-top: 15px; }
+.team-links .arrow-link { margin-top: 10px; }
+
+/* The alumni preview now sits inside the research-opportunity journey. */
+.alumni-grid { gap: 18px; }
+.alumni-card { display: grid; grid-template-columns: clamp(130px, 10.5vw, 180px) minmax(0, 1fr); gap: 18px; align-items: start; padding: 0 0 28px; }
+.alumni-card-photo { width: 100%; }
+.alumni-card-content { min-width: 0; padding: 0; }
+.alumni-card h3 { margin: 9px 0 4px; font-size: clamp(19px, 1.8vw, 27px); overflow-wrap: anywhere; }
+.alumni-card .alumni-destination { margin-top: 17px; padding-top: 14px; }
+.alumni-card .alumni-destination > strong { font-size: 13px; }
+.alumni-card .alumni-summary { margin: 14px 0 18px; font-size: 10px; line-height: 1.7; }
+.alumni-card .alumni-profile-link { font-size: 9px; }
+
+@media (max-width: 1240px) {
+  .team-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+  .team-card { display: flex; }
+  .team-image-wrap { min-height: 0; aspect-ratio: 4 / 4.5; }
+  .alumni-grid { grid-template-columns: 1fr; }
+  .alumni-card { grid-template-columns: 145px minmax(0, 1fr); }
+}
+
+@media (max-width: 860px) {
+  .team-current-header { grid-template-columns: 1fr; gap: 14px; }
+  .team-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .team-card { display: flex; }
+  .team-image-wrap { min-height: 0; aspect-ratio: 4 / 5; }
+  .main-project-card { grid-template-columns: 75px minmax(0, 1fr) 38px; min-height: 255px; }
+  .main-project-symbol { display: none; }
+  .main-project-detail-section { grid-template-columns: 120px minmax(0, 1fr); }
+  .main-project-detail-section p { grid-column: 2; }
+}
+
+@media (max-width: 600px) {
+  .team-grid { grid-template-columns: 1fr; gap: 22px; }
+  .team-image-wrap { height: auto; min-height: 0; aspect-ratio: 4 / 4.5; }
+  .team-info { padding: 25px 22px 28px; }
+  .team-name-row h3 { font-size: 28px; }
+  .alumni-grid { gap: 30px; }
+  .alumni-card { grid-template-columns: 108px minmax(0, 1fr); gap: 14px; }
+  .alumni-card h3 { font-size: 20px; }
+  .alumni-card .alumni-destination > strong { font-size: 12px; }
+  .alumni-card .alumni-summary { font-size: 10px; }
+  .main-project-card { grid-template-columns: 1fr 28px; gap: 20px; min-height: 0; padding: 32px 0; }
+  .main-project-index { grid-column: 1 / -1; flex-direction: row; align-items: baseline; }
+  .main-project-copy h3 { font-size: clamp(30px, 8vw, 42px); }
+  .main-project-copy p { margin: 17px 0 24px; font-size: 12px; }
+  .main-project-detail { padding-top: 70px; }
+  .main-project-detail-hero .section-frame { padding-top: 42px; padding-bottom: 92px; }
+  .main-project-detail-heading { margin-top: 80px; }
+  .main-project-detail-heading h1 { font-size: clamp(43px, 11vw, 64px); }
+  .main-project-detail-layout { padding-top: 65px; }
+  .main-project-detail-visual { margin-bottom: 70px; }
+  .main-project-detail-visual > div { flex-direction: column; gap: 5px; }
+  .main-project-detail-section { grid-template-columns: 1fr; gap: 18px; padding: 45px 0; }
+  .main-project-detail-section p { grid-column: 1; font-size: 12px; }
+  .main-project-next .section-frame { flex-direction: column; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

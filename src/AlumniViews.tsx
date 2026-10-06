@@ -28,7 +28,7 @@ function AlumniPortrait({ profile, lang, eager = false }: { profile: AlumniProfi
 
 export function AlumniSection({ lang }: { lang: Lang }) {
   return (
-    <section className="alumni-section warm-section" id="alumni" data-nav-section="team" aria-labelledby="alumni-title">
+    <section className="alumni-section warm-section" id="alumni" data-nav-section="opportunities" aria-labelledby="alumni-title">
       <div className="section-frame">
         <div className="section-heading reveal">
           <div className="eyebrow"><span />{lang === "zh" ? "我们的往届成员" : "OUR ALUMNI"}</div>
@@ -65,7 +65,7 @@ export function AlumniSection({ lang }: { lang: Lang }) {
 export function AlumniDetailPage({ profile, lang }: { profile: AlumniProfile; lang: Lang }) {
   return (
     <main className="alumni-detail-main" id="main" tabIndex={-1}>
-      <section className="alumni-profile-hero dark-section" id="alumni-profile" data-nav-section="team" aria-labelledby="alumni-profile-name">
+      <section className="alumni-profile-hero dark-section" id="alumni-profile" data-nav-section="opportunities" aria-labelledby="alumni-profile-name">
         <div className="section-frame">
           <a className="project-back-link" href="/#alumni"><span aria-hidden="true">←</span>{lang === "zh" ? "返回往届研究助理" : "Back to RA alumni"}</a>
           <div className="alumni-profile-hero-grid">

@@ -17,6 +17,7 @@ import {
 } from "./recruitment";
 import { alumni } from "./alumni";
 import { AlumniDetailPage, AlumniSection } from "./AlumniViews";
+import { mainProjects, type MainProject } from "./mainProjects";
 
 type Lang = "zh" | "en";
 type Localized = { zh: string; en: string };
@@ -27,43 +28,10 @@ const t = (value: Localized, lang: Lang) => value[lang];
 const navItems: Array<{ id: string; label: Localized }> = [
   { id: "about", label: { zh: "关于", en: "About" } },
   { id: "opportunities", label: { zh: "机会", en: "Opportunities" } },
-  { id: "technology", label: { zh: "技术", en: "Technology" } },
+  { id: "projects", label: { zh: "项目", en: "Projects" } },
   { id: "work", label: { zh: "实践", en: "Work" } },
   { id: "team", label: { zh: "团队", en: "Team" } },
   { id: "publications", label: { zh: "论文", en: "Publications" } },
-];
-
-const technologies = [
-  {
-    index: "01",
-    code: "XR",
-    name: { zh: "扩展现实", en: "Extended Reality" },
-    description: {
-      zh: "以沉浸式与空间化交互，把抽象知识转化为可操作、可复现的临床训练与学习体验。",
-      en: "Immersive and spatial interaction turns abstract knowledge into practical, repeatable clinical training and learning experiences.",
-    },
-    signal: "spatial / immersive",
-  },
-  {
-    index: "02",
-    code: "mmW",
-    name: { zh: "毫米波雷达", en: "Millimetre-wave Radar" },
-    description: {
-      zh: "在自然活动中进行非接触式动作感知，为居家康复、术后随访与长期健康管理提供客观依据。",
-      en: "Contactless motion sensing captures natural activity, supporting objective home rehabilitation, follow-up care, and long-term health management.",
-    },
-    signal: "contactless / precise",
-  },
-  {
-    index: "03",
-    code: "S²",
-    name: { zh: "智能传感", en: "Smart Sensors" },
-    description: {
-      zh: "融合多模态数据、智能反馈与个性化适配，持续理解过程、评估表现并优化体验。",
-      en: "Multimodal data, intelligent feedback, and personalisation continuously interpret progress, assess performance, and improve experiences.",
-    },
-    signal: "multimodal / adaptive",
-  },
 ];
 
 const applications = [
@@ -822,6 +790,83 @@ function OpportunityDetailPage({ project, lang }: { project: ResearchOpportunity
   );
 }
 
+function MainProjectsSection({ lang }: { lang: Lang }) {
+  return (
+    <section className="main-projects-section dark-section" id="projects" data-nav-section="projects">
+      <div className="section-frame">
+        <SectionHeading
+          lang={lang}
+          eyebrow={{ zh: "研究与临床实践", en: "RESEARCH IN PRACTICE" }}
+          title={{ zh: "主要项目", en: "Main Projects" }}
+          description={{
+            zh: "从临床问题出发，走向可体验的研究系统。两个围术期项目分别回应患者对清晰信息和主动康复的需求；点击项目了解各自的研究路径。",
+            en: "From clinical questions to research systems people can experience. These two perioperative projects address different needs—understanding care and participating in recovery. Open each to explore its approach.",
+          }}
+        />
+        <div className="main-projects-list">
+          {mainProjects.map((project) => (
+            <a className="main-project-card reveal" href={`/projects/${project.slug}`} key={project.slug}>
+              <div className="main-project-index"><span>{project.number}</span><small>{project.code}</small></div>
+              <div className="main-project-copy">
+                <h3>{t(project.title, lang)}</h3>
+                <p>{t(project.summary, lang)}</p>
+                <span className="main-project-setting">{t(project.setting, lang)}</span>
+              </div>
+              <div className={`main-project-symbol main-project-symbol-${project.number}`} aria-hidden="true"><i /><i /><i /></div>
+              <span className="main-project-arrow" aria-label={lang === "zh" ? "查看项目详情" : "View project details"}>↗</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MainProjectDetailPage({ project, lang }: { project: MainProject; lang: Lang }) {
+  const nextProject = mainProjects.find((candidate) => candidate.slug !== project.slug);
+
+  return (
+    <main className="main-project-detail" id="main" tabIndex={-1}>
+      <section className="main-project-detail-hero dark-section" data-nav-section="projects" aria-labelledby="main-project-title">
+        <div className="section-frame">
+          <a className="project-back-link reveal is-visible" href="/#projects"><span aria-hidden="true">←</span>{lang === "zh" ? "返回主要项目" : "Back to main projects"}</a>
+          <div className="main-project-detail-heading reveal is-visible">
+            <span className="main-project-detail-kicker">I² LAB / {project.number} / {project.code}</span>
+            <h1 id="main-project-title">{t(project.title, lang)}</h1>
+            <p>{t(project.summary, lang)}</p>
+            <small>{t(project.setting, lang)}</small>
+          </div>
+        </div>
+      </section>
+      <section className="main-project-detail-body light-section">
+        <div className="section-frame main-project-detail-layout">
+          <div className="main-project-detail-visual reveal">
+            <img src={project.visual} alt={t(project.visualAlt, lang)} loading="eager" decoding="async" />
+            <div><span>{project.code}</span><p>{t(project.visualCaption, lang)}</p></div>
+          </div>
+          <div className="main-project-detail-sections">
+            {project.sections.map((section, index) => (
+              <article className="main-project-detail-section reveal" key={section.label.en}>
+                <span>{String(index + 1).padStart(2, "0")} / {t(section.label, lang)}</span>
+                <h2>{t(section.title, lang)}</h2>
+                <p>{t(section.text, lang)}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+      {nextProject && (
+        <section className="main-project-next dark-section">
+          <div className="section-frame">
+            <span>{lang === "zh" ? "继续探索" : "CONTINUE EXPLORING"}</span>
+            <a href={`/projects/${nextProject.slug}`}>{t(nextProject.title, lang)}<i aria-hidden="true">↗</i></a>
+          </div>
+        </section>
+      )}
+    </main>
+  );
+}
+
 function ResearchFigureCard({ figure, lang }: { figure: ResearchFigure; lang: Lang }) {
   const openLabel = lang === "zh" ? "打开论文 PDF（新标签页）" : "Open the paper PDF in a new tab";
 
@@ -1148,7 +1193,9 @@ function App() {
     : undefined;
   const alumniSlug = window.location.pathname.match(/^\/alumni\/([^/]+)\/?$/)?.[1];
   const activeAlumnus = alumni.find((profile) => profile.slug === alumniSlug);
-  const isDetailPage = Boolean(activeProject || activeAlumnus);
+  const mainProjectSlug = window.location.pathname.match(/^\/projects\/([^/]+)\/?$/)?.[1];
+  const activeMainProject = mainProjects.find((project) => project.slug === mainProjectSlug);
+  const isDetailPage = Boolean(activeProject || activeAlumnus || activeMainProject);
   const [lang, setLang] = useState<Lang>(() => {
     try {
       return localStorage.getItem("boxtech-lang") === "en" ? "en" : "zh";
@@ -1156,7 +1203,7 @@ function App() {
       return "zh";
     }
   });
-  const [activeSection, setActiveSection] = useState(activeProject ? "opportunities" : activeAlumnus ? "team" : "about");
+  const [activeSection, setActiveSection] = useState(activeMainProject ? "projects" : activeProject || activeAlumnus ? "opportunities" : "about");
   const [menuOpen, setMenuOpen] = useState(false);
   const [isCompactNav, setIsCompactNav] = useState(() => window.matchMedia("(max-width: 1180px)").matches);
   const [publicationFilter, setPublicationFilter] = useState<"all" | PublicationOwner>("all");
@@ -1172,7 +1219,7 @@ function App() {
   const firstNavLinkRef = useRef<HTMLAnchorElement>(null);
   const introReplayTriggerRef = useRef<HTMLButtonElement | null>(null);
 
-  usePageObservers(setActiveSection, `${publicationFilter}:${activeProject?.slug ?? activeAlumnus?.slug ?? "home"}`);
+  usePageObservers(setActiveSection, `${publicationFilter}:${activeProject?.slug ?? activeAlumnus?.slug ?? activeMainProject?.slug ?? "home"}`);
 
   useEffect(() => {
     document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
@@ -1184,12 +1231,14 @@ function App() {
       try { sessionStorage.setItem("boxtech-intro-seen", "true"); } catch { /* session storage may be unavailable */ }
       document.title = activeProject
         ? `${t(activeProject.title, lang)} · I² Lab`
-        : `${activeAlumnus!.name[lang]} · ${lang === "zh" ? "往届研究助理" : "RA Alumni"} · I²Lab`;
+        : activeAlumnus
+          ? `${activeAlumnus.name[lang]} · ${lang === "zh" ? "往届研究助理" : "RA Alumni"} · I²Lab`
+          : `${t(activeMainProject!.title, lang)} · I² Lab`;
       window.scrollTo({ top: 0, behavior: "auto" });
     } else {
       document.title = "智能交互技术研究实验室 · Intelligent Interaction Laboratory";
     }
-  }, [activeProject, activeAlumnus, isDetailPage, lang]);
+  }, [activeProject, activeAlumnus, activeMainProject, isDetailPage, lang]);
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
@@ -1342,6 +1391,8 @@ function App() {
         <OpportunityDetailPage project={activeProject} lang={lang} />
       ) : activeAlumnus ? (
         <AlumniDetailPage profile={activeAlumnus} lang={lang} />
+      ) : activeMainProject ? (
+        <MainProjectDetailPage project={activeMainProject} lang={lang} />
       ) : (
       <main id="main" tabIndex={-1}>
         <section className="hero" id="top">
@@ -1366,7 +1417,7 @@ function App() {
                 : "The Intelligent Interaction Laboratory combines Extended Reality, millimetre-wave radar, and intelligent sensing to build perceptive, verifiable, and adaptive human–computer systems for healthcare and education."}
             </p>
             <div className="hero-cta reveal is-visible">
-              <a className="primary-button" href="#technology">
+              <a className="primary-button" href="#projects">
                 <span>{lang === "zh" ? "探索研究方向" : "Explore our research"}</span><span aria-hidden="true">↓</span>
               </a>
               <a className="text-button" href="#publications">
@@ -1436,37 +1487,11 @@ function App() {
 
         <OpportunitiesOverview lang={lang} />
 
+        <AlumniSection lang={lang} />
+
         <OpportunityDirectory lang={lang} />
 
-        <section className="technology-section dark-section" id="technology">
-          <div className="section-frame">
-            <SectionHeading
-              lang={lang}
-              eyebrow={{ zh: "核心技术", en: "CORE TECHNOLOGY" }}
-              title={{ zh: "感知空间，理解行为，持续适配。", en: "Sense space. Understand behaviour. Adapt continuously." }}
-              description={{
-                zh: "三条技术路径彼此协同，构建从感知、理解到反馈的完整交互闭环。",
-                en: "Three complementary technology tracks form a complete loop from sensing and interpretation to meaningful feedback.",
-              }}
-            />
-            <div className="technology-list">
-              {technologies.map((tech) => (
-                <article className="technology-card reveal" key={tech.index}>
-                  <div className="tech-number">{tech.index}</div>
-                  <div className="tech-code">{tech.code}</div>
-                  <div className="tech-copy">
-                    <h3>{t(tech.name, lang)}</h3>
-                    <p>{t(tech.description, lang)}</p>
-                    <span>{tech.signal}</span>
-                  </div>
-                  <div className={`tech-visual tech-visual-${tech.index}`} aria-hidden="true">
-                    <i /><i /><i /><i />
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
+        <MainProjectsSection lang={lang} />
 
         <section className="work-section light-section" id="work">
           <div className="section-frame">
@@ -1502,6 +1527,29 @@ function App() {
               }}
             />
 
+            <div className="advisory-header reveal">
+              <span>{lang === "zh" ? "顾问委员会" : "EXTERNAL ADVISORY BOARD"}</span>
+              <p>{lang === "zh" ? "为科研深度与真实世界转化提供长期支持。" : "Long-term guidance for research depth and real-world translation."}</p>
+            </div>
+            <div className="advisor-grid">
+              {advisors.map((advisor) => (
+                <article className="advisor-card reveal" key={advisor.name.en}>
+                  <img src={advisor.image} alt={t(advisor.name, lang)} loading="lazy" decoding="async" />
+                  <div>
+                    <p className="advisor-role">{t(advisor.role, lang)}</p>
+                    <h3>{t(advisor.name, lang)}</h3>
+                    <small>{lang === "zh" ? advisor.name.en : advisor.name.zh}</small>
+                    <p>{t(advisor.bio, lang)}</p>
+                    {advisor.profileUrl && <ArrowLink href={advisor.profileUrl}>{lang === "zh" ? "诺丁汉官方主页" : "Official Nottingham profile"}</ArrowLink>}
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <div className="team-current-header reveal">
+              <span>{lang === "zh" ? "研究团队" : "RESEARCH TEAM"}</span>
+              <p>{lang === "zh" ? "以不同专长，共同推进智能交互研究。" : "Different strengths, one shared research practice."}</p>
+            </div>
             <div className="team-grid">
               {team.map((member, index) => (
                 <article className="team-card reveal" key={member.name.en}>
@@ -1528,29 +1576,8 @@ function App() {
                 </article>
               ))}
             </div>
-
-            <div className="advisory-header reveal">
-              <span>{lang === "zh" ? "顾问委员会" : "EXTERNAL ADVISORY BOARD"}</span>
-              <p>{lang === "zh" ? "为科研深度与真实世界转化提供长期支持。" : "Long-term guidance for research depth and real-world translation."}</p>
-            </div>
-            <div className="advisor-grid">
-              {advisors.map((advisor) => (
-                <article className="advisor-card reveal" key={advisor.name.en}>
-                  <img src={advisor.image} alt={t(advisor.name, lang)} loading="lazy" decoding="async" />
-                  <div>
-                    <p className="advisor-role">{t(advisor.role, lang)}</p>
-                    <h3>{t(advisor.name, lang)}</h3>
-                    <small>{lang === "zh" ? advisor.name.en : advisor.name.zh}</small>
-                    <p>{t(advisor.bio, lang)}</p>
-                    {advisor.profileUrl && <ArrowLink href={advisor.profileUrl}>{lang === "zh" ? "诺丁汉官方主页" : "Official Nottingham profile"}</ArrowLink>}
-                  </div>
-                </article>
-              ))}
-            </div>
           </div>
         </section>
-
-        <AlumniSection lang={lang} />
 
         <section className="publications-section light-section" id="publications">
           <div className="section-frame">
