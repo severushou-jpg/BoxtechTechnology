@@ -21,7 +21,7 @@ import { mainProjects, type MainProject } from "./mainProjects";
 
 type Lang = "zh" | "en";
 type Localized = { zh: string; en: string };
-type PublicationOwner = "lijie" | "haonan" | "renzhi";
+type PublicationOwner = "bryan" | "lijie" | "haonan" | "renzhi";
 
 const t = (value: Localized, lang: Lang) => value[lang];
 
@@ -351,6 +351,122 @@ type Publication = {
 
 const publications: Publication[] = [
   {
+    owner: "bryan", year: "2026", type: { zh: "期刊论文", en: "Journal" },
+    title: "Kolmogorov–Arnold Networks-Based GRU and LSTM for Loan Default Early Prediction",
+    authors: "Y. Yang, Z. Su, Y. Zhang, C. C. Goh, Y. Lin, A. G. Bellotti & B. G. Lee",
+    venue: "Applied Soft Computing", pdf: "/papers/bryan-kan-loan-default-prediction.pdf",
+    url: "https://doi.org/10.1016/j.asoc.2026.115213",
+  },
+  {
+    owner: "bryan", year: "2026", type: { zh: "会议论文", en: "Conference" },
+    title: "Cognitive Style Shapes Search Behaviours: An fNIRS Study of Exploratory Search",
+    authors: "H. Tang, B. G. Lee, D. Towey, M. L. Wilson & M. Pike",
+    venue: "ACM SIGIR 2026", pdf: "/papers/bryan-cognitive-style-fnirs-search.pdf",
+    url: "https://doi.org/10.1145/3805712.3809541",
+  },
+  {
+    owner: "bryan", year: "2026", type: { zh: "期刊论文", en: "Journal" },
+    title: "Context-Dependent Roles of Familiarity, Discipline, and Personality in Shaping Social Engagement in Cooperative Immersive Learning",
+    authors: "L. Zheng, S. Ke, Y. Zang, L. Sun, M. Pike & B. G. Lee",
+    venue: "Computers in Human Behavior Reports", pdf: "/papers/context-dependent-social-engagement-immersive-learning.pdf",
+    url: "https://doi.org/10.1016/j.chbr.2026.101089",
+  },
+  {
+    owner: "bryan", year: "2026", type: { zh: "期刊论文", en: "Journal" },
+    title: "A Virtual Peer Mentor to Enhance Social Presence in VR Rehabilitation for Recovering Heart-Attack Patients",
+    authors: "R. Han, B. G. Lee, D. Towey, Y. Yao & M. Pike",
+    venue: "IEEE Transactions on Visualization and Computer Graphics · 32(5), 3809–3819",
+    pdf: "/papers/virtual-peer-mentor-vr-rehabilitation.pdf",
+    url: "https://doi.org/10.1109/TVCG.2026.3679134",
+  },
+  {
+    owner: "bryan", year: "2026", type: { zh: "会议论文", en: "Conference" },
+    title: "Differential Effects of Virtual and Augmented Reality on Social Presence and Engagement in Collaborative Gaming for Unfamiliar Users",
+    authors: "L. Zheng, G. Cheng, S. Ke, J. Yuan, Y. Fan, B. G. Lee, M. Pike & A. Guerra-Manzanares",
+    venue: "IEEE Conference on Virtual Reality and 3D User Interfaces (IEEE VR)",
+    pdf: "/papers/differential-effects-vr-ar-collaborative-gaming.pdf",
+    url: "https://doi.org/10.1109/VR67842.2026.00063",
+  },
+  {
+    owner: "bryan", year: "2026", type: { zh: "会议论文", en: "Conference" },
+    title: "MAHJONG: An Augmented Reality Rehabilitation Serious Game for Motor-Cognitive Dual-Task Training in Older Adults",
+    authors: "Y. Zuo & B. G. Lee", venue: "IEEE VR 2026 Workshops",
+    pdf: "/papers/bryan-mahjong-ar-rehabilitation.pdf",
+    url: "https://doi.org/10.1109/VRW70859.2026.00199",
+  },
+  {
+    owner: "bryan", year: "2026", type: { zh: "期刊论文", en: "Journal" },
+    title: "MRT4Depth: Metamorphic Robustness Testing for Ground-Truth-Free Evaluation of Monocular Depth Estimation Models",
+    authors: "P. C. Y. Cheah, B. G. Lee, D. Towey, D. Chieng, T. Y. Chen & Z. Q. Zhou",
+    venue: "IEEE Transactions on Reliability · 75",
+    pdf: "/papers/bryan-mrt4depth-robustness-testing.pdf",
+    url: "https://doi.org/10.1109/TR.2026.3711986",
+  },
+  {
+    owner: "bryan", year: "2026", type: { zh: "会议论文", en: "Conference" },
+    title: "The Trust Gap in Agentic Search: How Verbal-Imagery Cognitive Styles Shape Behavioural Signals and AI Acceptance",
+    authors: "H. Tang, Y. Zhang, A. Guerra-Manzanares, B. G. Lee, D. Towey, M. L. Wilson & M. Pike",
+    venue: "IEEE COMPSAC 2026", pdf: "/papers/bryan-trust-gap-agentic-search.pdf",
+    url: "https://doi.org/10.1109/COMPSAC69091.2026.00161",
+  },
+  {
+    owner: "bryan", year: "2026", type: { zh: "期刊论文", en: "Journal" },
+    title: "Wi-ViTAL: Domain Generalization of Wireless Human Activity Recognition Using Linear Attention Vision Transformer With Adversarial Learning",
+    authors: "Y. Li, D. Chieng, B. G. Lee, C. F. Kwong, K. M. Lim & S. Li",
+    venue: "IEEE Transactions on Mobile Computing · 25(4)",
+    pdf: "/papers/bryan-wi-vital-wireless-activity-recognition.pdf",
+    url: "https://doi.org/10.1109/TMC.2025.3632752",
+  },
+  {
+    owner: "bryan", year: "2026", type: { zh: "期刊论文", en: "Journal" },
+    title: "Transforming Credit Risk Analysis: A Time-Series-Driven ResE-BiLSTM Framework for Post-Loan Default Detection",
+    authors: "Y. Yang, Y. Lin, Y. Zhang, Z. Su, C. C. Goh, T. Fang, A. Bellotti & B. G. Lee",
+    venue: "Information · 17(1), 5", pdf: "/papers/bryan-credit-risk-rese-bilstm.pdf",
+    url: "https://doi.org/10.3390/info17010005",
+  },
+  {
+    owner: "bryan", year: "2025", type: { zh: "期刊论文", en: "Journal" },
+    title: "IoT-FAR: A Multi-Sensor Fusion Approach for IoT-Based Firefighting Activity Recognition",
+    authors: "X. Chai, B. G. Lee, C. Hu, M. Pike, D. Chieng, R. Wu & W.-Y. Chung",
+    venue: "Information Fusion", pdf: "/papers/bryan-iot-far-firefighting-recognition.pdf",
+    url: "https://doi.org/10.1016/j.inffus.2024.102650",
+  },
+  {
+    owner: "bryan", year: "2025", type: { zh: "期刊论文", en: "Journal" },
+    title: "A Multimodal Decision–Fusion Network Approach for Activity Recognition in Firefighter Self-Contained Breathing Apparatus Endurance Training",
+    authors: "X. Chai, J. Yu, B. G. Lee, M. Pike, L. Nkenyereye & W.-Y. Chung",
+    venue: "IEEE Sensors Letters · 9(11)", pdf: "/papers/bryan-firefighter-multimodal-fusion.pdf",
+    url: "https://doi.org/10.1109/LSENS.2025.3614427",
+  },
+  {
+    owner: "bryan", year: "2025", type: { zh: "会议论文", en: "Conference" },
+    title: "Bridging Theory and Practice in Machine Learning Education Through Mixed Reality Gamification",
+    authors: "G. Zhang & B. G. Lee", venue: "IEEE TALE 2025",
+    pdf: "/papers/bryan-mixed-reality-machine-learning-education.pdf",
+    url: "https://doi.org/10.1109/TALE66047.2025.11346761",
+  },
+  {
+    owner: "bryan", year: "2025", type: { zh: "期刊论文", en: "Journal" },
+    title: "CNN-LiDAR-SLAM: Multimodal Fusion With Object Detection for Indoor Localization",
+    authors: "S. H. Kalan, B. G. Lee & W.-Y. Chung", venue: "IEEE Access",
+    pdf: "/papers/bryan-cnn-lidar-slam-indoor-localization.pdf",
+    url: "https://doi.org/10.1109/ACCESS.2025.3635243",
+  },
+  {
+    owner: "bryan", year: "2025", type: { zh: "期刊论文", en: "Journal" },
+    title: "Evaluating Denoising Approaches for RGB-Infrared Images: Systematic Review and Comparative Analysis of Traditional Methods and Performance Metrics",
+    authors: "Y. Yu, B. G. Lee, Q. Zhang & T. Cui", venue: "Journal of Signal Processing Systems · 97, 91–115",
+    pdf: "/papers/bryan-rgb-infrared-denoising-review.pdf",
+    url: "https://doi.org/10.1007/s11265-025-01957-8",
+  },
+  {
+    owner: "bryan", year: "2025", type: { zh: "期刊论文", en: "Journal" },
+    title: "Functionality-Aware Offloading Technique for Scheduling Containerized Edge Applications in IoT Edge Computing",
+    authors: "L. Nkenyereye, B. G. Lee & W.-Y. Chung", venue: "Journal of Cloud Computing · 14, Article 13",
+    pdf: "/papers/bryan-functionality-aware-edge-offloading.pdf",
+    url: "https://doi.org/10.1186/s13677-025-00737-w",
+  },
+  {
     owner: "lijie",
     year: "2026",
     type: { zh: "会议论文", en: "Conference" },
@@ -501,6 +617,7 @@ const publications: Publication[] = [
 ];
 
 const ownerNames: Record<PublicationOwner, Localized> = {
+  bryan: { zh: "李汶锦 · 精选研究", en: "Boon Giin Lee · Selected research" },
   lijie: { zh: "郑力杰 · 精选研究", en: "Lijie Zheng · Selected research" },
   haonan: { zh: "姚淏楠 · 精选研究", en: "Haonan Yao · Selected research" },
   renzhi: { zh: "韩仁智 · 精选研究", en: "Renzhi Han · Selected research" },
@@ -849,7 +966,20 @@ function MainProjectDetailPage({ project, lang }: { project: MainProject; lang: 
               <article className="main-project-detail-section reveal" key={section.label.en}>
                 <span>{String(index + 1).padStart(2, "0")} / {t(section.label, lang)}</span>
                 <h2>{t(section.title, lang)}</h2>
-                <p>{t(section.text, lang)}</p>
+                <div className="main-project-detail-copy">
+                  <p>{t(section.text, lang)}</p>
+                  {section.details?.map((paragraph, paragraphIndex) => <p key={paragraphIndex}>{t(paragraph, lang)}</p>)}
+                </div>
+                {section.images && (
+                  <div className={`main-project-detail-media ${section.images.length > 1 ? "main-project-detail-media-pair" : ""}`}>
+                    {section.images.map((visual) => (
+                      <figure key={visual.src}>
+                        <img src={visual.src} alt={t(visual.alt, lang)} loading="lazy" decoding="async" />
+                        <figcaption>{t(visual.caption, lang)}</figcaption>
+                      </figure>
+                    ))}
+                  </div>
+                )}
               </article>
             ))}
           </div>
@@ -1207,6 +1337,9 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isCompactNav, setIsCompactNav] = useState(() => window.matchMedia("(max-width: 1180px)").matches);
   const [publicationFilter, setPublicationFilter] = useState<"all" | PublicationOwner>("all");
+  const publicationViewportRef = useRef<HTMLDivElement>(null);
+  const [publicationScrollPercent, setPublicationScrollPercent] = useState(0);
+  const [publicationCanScroll, setPublicationCanScroll] = useState(false);
   const [introVisible, setIntroVisible] = useState(() => {
     try {
       if (isDetailPage) return false;
@@ -1295,9 +1428,34 @@ function App() {
   }, []);
 
   const publicationGroups = useMemo(() => {
-    const order: PublicationOwner[] = publicationFilter === "all" ? ["lijie", "haonan", "renzhi"] : [publicationFilter];
+    const order: PublicationOwner[] = publicationFilter === "all" ? ["bryan", "lijie", "haonan", "renzhi"] : [publicationFilter];
     return order.map((owner) => ({ owner, items: publications.filter((paper) => paper.owner === owner) }));
   }, [publicationFilter]);
+
+  const syncPublicationScroll = useCallback(() => {
+    const viewport = publicationViewportRef.current;
+    if (!viewport) return;
+    const distance = viewport.scrollHeight - viewport.clientHeight;
+    setPublicationCanScroll(distance > 1);
+    setPublicationScrollPercent(distance > 0 ? Math.round((viewport.scrollTop / distance) * 100) : 0);
+  }, []);
+
+  useEffect(() => {
+    const viewport = publicationViewportRef.current;
+    if (!viewport) return;
+    viewport.scrollTop = 0;
+    const observer = new ResizeObserver(syncPublicationScroll);
+    observer.observe(viewport);
+    if (viewport.firstElementChild) observer.observe(viewport.firstElementChild);
+    const frame = window.requestAnimationFrame(syncPublicationScroll);
+    return () => { observer.disconnect(); window.cancelAnimationFrame(frame); };
+  }, [publicationFilter, lang, syncPublicationScroll]);
+
+  const movePublicationScroll = (percentage: number) => {
+    const viewport = publicationViewportRef.current;
+    if (!viewport) return;
+    viewport.scrollTop = (percentage / 100) * (viewport.scrollHeight - viewport.clientHeight);
+  };
 
   const toggleLanguage = () => setLang((current) => (current === "zh" ? "en" : "zh"));
 
@@ -1580,7 +1738,7 @@ function App() {
         </section>
 
         <section className="publications-section light-section" id="publications">
-          <div className="section-frame">
+          <div className="section-frame publications-frame">
             <div className="publications-heading-row">
               <SectionHeading
                 lang={lang}
@@ -1592,7 +1750,7 @@ function App() {
                 }}
               />
               <div className="publication-filter reveal" role="group" aria-label={lang === "zh" ? "筛选论文" : "Filter publications"} aria-controls="publication-results">
-                {(["all", "lijie", "haonan", "renzhi"] as const).map((filter) => (
+                {(["all", "bryan", "lijie", "haonan", "renzhi"] as const).map((filter) => (
                   <button
                     type="button"
                     key={filter}
@@ -1600,13 +1758,15 @@ function App() {
                     onClick={() => setPublicationFilter(filter)}
                     aria-pressed={publicationFilter === filter}
                   >
-                    {filter === "all" ? (lang === "zh" ? "全部" : "All") : filter === "lijie" ? (lang === "zh" ? "郑力杰" : "Lijie") : filter === "haonan" ? (lang === "zh" ? "姚淏楠" : "Haonan") : (lang === "zh" ? "韩仁智" : "Renzhi")}
+                    {filter === "all" ? (lang === "zh" ? "全部" : "All") : filter === "bryan" ? (lang === "zh" ? "李汶锦" : "Boon Giin Lee") : filter === "lijie" ? (lang === "zh" ? "郑力杰" : "Lijie") : filter === "haonan" ? (lang === "zh" ? "姚淏楠" : "Haonan") : (lang === "zh" ? "韩仁智" : "Renzhi")}
                   </button>
                 ))}
               </div>
             </div>
 
-            <div className="publication-groups" id="publication-results">
+            <div className="publication-scroll-shell">
+              <div className="publication-groups" id="publication-results" ref={publicationViewportRef} onScroll={syncPublicationScroll} role="region" tabIndex={0} aria-label={lang === "zh" ? "可滚动的论文列表" : "Scrollable publication list"}>
+              <div className="publication-groups-inner">
               <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">
                 {lang === "zh" ? `当前显示 ${publicationGroups.reduce((total, group) => total + group.items.length, 0)} 篇论文` : `Showing ${publicationGroups.reduce((total, group) => total + group.items.length, 0)} publications`}
               </span>
@@ -1649,6 +1809,23 @@ function App() {
                   </div>
                 </div>
               ))}
+              </div>
+              </div>
+              <div className="publication-scroll-control">
+                <span aria-hidden="true">01</span>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={publicationScrollPercent}
+                  onChange={(event) => movePublicationScroll(Number(event.target.value))}
+                  disabled={!publicationCanScroll}
+                  aria-controls="publication-results"
+                  aria-label={lang === "zh" ? "拖动浏览论文列表" : "Drag to browse publications"}
+                  aria-valuetext={lang === "zh" ? `已浏览 ${publicationScrollPercent}%` : `${publicationScrollPercent}% through the list`}
+                />
+                <span aria-hidden="true">{String(publicationGroups.reduce((total, group) => total + group.items.length, 0)).padStart(2, "0")}</span>
+              </div>
             </div>
           </div>
         </section>
