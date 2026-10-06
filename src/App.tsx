@@ -292,9 +292,9 @@ const researchStories: ResearchStory[] = [
 const team = [
   {
     name: { zh: "郑力杰", en: "Lijie Zheng" },
-    role: { zh: "创始人兼首席执行官", en: "Founder & Chief Executive Officer" },
     image: "/images/team/lijie-zheng.jpg",
     imagePosition: "50% 42%",
+    personalWebsite: "https://zhenglijie.com/",
     profileUrl: "https://www.nottingham.edu.cn/en/science-engineering/departments-schools/cs/research/aiop/aiop-people.aspx",
     tags: ["XR", "Smart Healthcare", "EdTech"],
     bio: {
@@ -304,9 +304,9 @@ const team = [
   },
   {
     name: { zh: "姚淏楠", en: "Haonan Yao" },
-    role: { zh: "首席技术官", en: "Chief Technology Officer" },
     image: "/images/team/haonan-yao.jpg",
     imagePosition: "50% 42%",
+    personalWebsite: "https://haonanyao.pages.dev/",
     profileUrl: "https://www.nottingham.edu.cn/en/science-engineering/departments-schools/cs/research/aiop/aiop-people.aspx",
     tags: ["Tangible Interaction", "AI for Accessibility", "Digital Art"],
     bio: {
@@ -316,9 +316,9 @@ const team = [
   },
   {
     name: { zh: "张小蕾", en: "Xiaolei Zhang" },
-    role: { zh: "首席运营官", en: "Chief Operating Officer" },
     image: "/images/team/xiaolei-zhang.png",
     imagePosition: "50% 38%",
+    personalWebsite: "https://xiaolei1998.github.io/people/",
     profileUrl: "https://www.nottingham.edu.cn/en/science-engineering/departments-schools/cs/research/aiop/aiop-people.aspx",
     tags: ["AIoT", "Biomedical Systems", "Systems Design"],
     bio: {
@@ -328,8 +328,8 @@ const team = [
   },
   {
     name: { zh: "韩仁智", en: "Renzhi Han" },
-    image: "/images/team/renzhi-han.jpg",
-    imagePosition: "50% 25%",
+    image: "/images/team/renzhi-han-2026.png",
+    imagePosition: "50% 50%",
     profileUrl: "https://www.nottingham.edu.cn/en/science-engineering/departments-schools/cs/research/aiop/aiop-people.aspx",
     tags: ["XR Rehabilitation", "Gamification", "Unity"],
     bio: {
@@ -1515,11 +1515,15 @@ function App() {
                         <h3>{t(member.name, lang)}</h3>
                         <small>{lang === "zh" ? member.name.en : member.name.zh}</small>
                       </div>
-                      {member.role && <p>{t(member.role, lang)}</p>}
                     </div>
                     <p className="team-bio">{t(member.bio, lang)}</p>
                     <div className="tag-list">{member.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
-                    <ArrowLink href={member.profileUrl}>{lang === "zh" ? "诺丁汉官方研究目录" : "Official Nottingham research directory"}</ArrowLink>
+                    <div className="team-links">
+                      {"personalWebsite" in member && member.personalWebsite && (
+                        <ArrowLink href={member.personalWebsite}>{lang === "zh" ? "个人网站" : "Personal website"}</ArrowLink>
+                      )}
+                      <ArrowLink href={member.profileUrl}>{lang === "zh" ? "诺丁汉官方研究目录" : "Official Nottingham research directory"}</ArrowLink>
+                    </div>
                   </div>
                 </article>
               ))}

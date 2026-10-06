@@ -2445,14 +2445,6 @@ button:focus-visible {
   letter-spacing: 0.04em;
 }
 
-.team-name-row > p {
-  margin: 18px 0 0;
-  color: var(--red-deep);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-
 .team-bio {
   margin: 26px 0;
   color: #555956;
@@ -2475,6 +2467,13 @@ button:focus-visible {
   font-size: 8px;
   font-weight: 600;
   letter-spacing: 0.03em;
+}
+
+.team-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 20px;
 }
 
 .advisory-header {
