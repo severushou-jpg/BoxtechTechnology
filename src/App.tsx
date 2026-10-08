@@ -18,6 +18,7 @@ import {
 import { alumni } from "./alumni";
 import { AlumniDetailPage, AlumniSection } from "./AlumniViews";
 import { mainProjects, type MainProject } from "./mainProjects";
+import ParticleHome from "./ParticleHome";
 
 type Lang = "zh" | "en";
 type Localized = { zh: string; en: string };
@@ -276,18 +277,18 @@ const team = [
   },
   {
     name: { zh: "姚淏楠", en: "Haonan Yao" },
-    image: "/images/team/haonan-yao.jpg",
+    image: "/images/team/haonan-yao-20261008.jpg",
     imagePosition: "50% 42%",
     personalWebsite: "https://haonanyao.pages.dev/",
     profileUrl: "https://www.nottingham.edu.cn/en/science-engineering/departments-schools/cs/research/aiop/aiop-people.aspx",
     tags: [
-      { zh: "实物交互", en: "Tangible Interaction" },
-      { zh: "无障碍人工智能", en: "AI for Accessibility" },
+      { zh: "XR+AI", en: "XR+AI" },
+      { zh: "有形交互", en: "Tangible Interaction" },
       { zh: "数字艺术", en: "Digital Art" },
     ],
     bio: {
-      zh: "宁波诺丁汉大学计算机科学博士在读、XR 独立开发者与数字艺术家。具备从概念设计、科研原型到迭代落地的完整能力，长期研究扩展现实、实物交互与面向无障碍的人工智能。",
-      en: "A Computer Science PhD candidate at the University of Nottingham Ningbo China, independent XR developer, and digital artist. His end-to-end practice spans concept design, research prototypes, and iterative delivery, with a long-term focus on XR, tangible interaction, and AI for accessibility.",
+      zh: "宁波诺丁汉大学计算机科学博士研究生，独立 XR 开发者与数字艺术家。研究聚焦扩展现实、有形交互及 AI 驱动的交互技术，相关成果发表于 CHI、IEEE VIS 等国际学术会议及期刊。",
+      en: "A PhD researcher in Computer Science at the University of Nottingham Ningbo China, independent XR developer, and digital artist. His research focuses on extended reality, tangible interaction, and AI-driven interaction technologies, with work published in international academic conferences and journals including CHI and IEEE VIS.",
     },
   },
   {
@@ -652,24 +653,29 @@ function usePageObservers(setActiveSection: (id: string) => void, refreshKey: st
 
     document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
 
-    const sectionObserver = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible?.target.id) {
-          const section = visible.target as HTMLElement;
-          setActiveSection(section.dataset.navSection ?? section.id);
-        }
-      },
-      { rootMargin: "-20% 0px -65% 0px", threshold: [0, 0.15, 0.5] },
-    );
-
-    document.querySelectorAll("main section[id]").forEach((section) => sectionObserver.observe(section));
+    const sections = Array.from(document.querySelectorAll<HTMLElement>("main section[id]"));
+    let sectionFrame = 0;
+    const syncActiveSection = () => {
+      sectionFrame = 0;
+      const marker = window.innerHeight * 0.28;
+      const section = sections.find((element) => {
+        const bounds = element.getBoundingClientRect();
+        return bounds.top <= marker && bounds.bottom > marker;
+      });
+      if (section) setActiveSection(section.dataset.navSection ?? section.id);
+    };
+    const scheduleSection = () => {
+      if (!sectionFrame) sectionFrame = window.requestAnimationFrame(syncActiveSection);
+    };
+    scheduleSection();
+    window.addEventListener("scroll", scheduleSection, { passive: true });
+    window.addEventListener("resize", scheduleSection);
 
     return () => {
       revealObserver.disconnect();
-      sectionObserver.disconnect();
+      window.cancelAnimationFrame(sectionFrame);
+      window.removeEventListener("scroll", scheduleSection);
+      window.removeEventListener("resize", scheduleSection);
     };
   }, [refreshKey, setActiveSection]);
 }
@@ -1255,131 +1261,6 @@ function ResearchCarousel({ stories, lang }: { stories: ResearchStory[]; lang: L
   );
 }
 
-function IntroSequence({ onComplete, lang }: { onComplete: () => void; lang: Lang }) {
-  const [leaving, setLeaving] = useState(false);
-  const [scene, setScene] = useState(0);
-  const [mediaReady, setMediaReady] = useState(false);
-  const [mediaFailed, setMediaFailed] = useState(false);
-  const [reducedMotion] = useState(() => {
-    try { return window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch { return false; }
-  });
-  const finishedRef = useRef(false);
-  const exitTimerRef = useRef<number | null>(null);
-  const dialogRef = useRef<HTMLDivElement>(null);
-  const skipButtonRef = useRef<HTMLButtonElement>(null);
-
-  const finish = useCallback(() => {
-    if (finishedRef.current) return;
-    finishedRef.current = true;
-    setLeaving(true);
-    exitTimerRef.current = window.setTimeout(onComplete, reducedMotion ? 280 : 720);
-  }, [onComplete, reducedMotion]);
-
-  useEffect(() => {
-    const timers: number[] = [];
-    if (reducedMotion) {
-      setScene(3);
-      timers.push(window.setTimeout(finish, 1250));
-    } else {
-      timers.push(window.setTimeout(() => setScene(1), 1880));
-      timers.push(window.setTimeout(() => setScene(2), 4050));
-      timers.push(window.setTimeout(() => setScene(3), 6050));
-      timers.push(window.setTimeout(finish, 7750));
-    }
-    return () => {
-      timers.forEach((timer) => window.clearTimeout(timer));
-      if (exitTimerRef.current !== null) window.clearTimeout(exitTimerRef.current);
-    };
-  }, [finish, reducedMotion]);
-
-  useEffect(() => {
-    dialogRef.current?.focus({ preventScroll: true });
-
-    const handleDialogKeydown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        finish();
-      } else if (event.key === "Tab") {
-        event.preventDefault();
-        skipButtonRef.current?.focus({ preventScroll: true });
-      }
-    };
-
-    document.addEventListener("keydown", handleDialogKeydown);
-    return () => {
-      document.removeEventListener("keydown", handleDialogKeydown);
-    };
-  }, [finish]);
-
-  return (
-    <div
-      ref={dialogRef}
-      className={`intro-sequence scene-${scene} ${mediaReady ? "media-ready" : ""} ${mediaFailed ? "media-failed" : ""} ${reducedMotion ? "reduced" : ""} ${leaving ? "is-leaving" : ""}`}
-      role="dialog"
-      aria-modal="true"
-      aria-label={lang === "zh" ? "I²Lab 智能交互技术研究实验室开场影片" : "I²Lab Intelligent Interaction Laboratory opening film"}
-      tabIndex={-1}
-    >
-      <div className="intro-media" aria-hidden="true">
-        {!reducedMotion && (
-          <video
-            className="intro-film"
-            autoPlay
-            muted
-            playsInline
-            preload="auto"
-            poster="/media/intro-spatial.jpg"
-            onLoadedData={() => setMediaReady(true)}
-            onEnded={finish}
-            onError={() => setMediaFailed(true)}
-          >
-            <source src="/media/boxtech-intro.mp4" type="video/mp4" />
-          </video>
-        )}
-        <div className="intro-fallback">
-          <i style={{ backgroundImage: "url('/media/intro-spatial.jpg')" }} />
-          <i style={{ backgroundImage: "url('/media/intro-radar.jpg')" }} />
-          <i style={{ backgroundImage: "url('/media/intro-xr.jpg')" }} />
-        </div>
-        <div className="intro-grade" />
-        <div className="intro-grain" />
-        <div className="intro-grid" />
-        <div className="intro-scanline" />
-      </div>
-
-      <div className="intro-topline">
-        <div className="intro-mini-brand">
-          <span className="brand-mark" aria-hidden="true"><i /><b /></span>
-          <span><strong>I²Lab</strong><small>{lang === "zh" ? "中国 / 宁波" : "NINGBO / CHINA"}</small></span>
-        </div>
-        <p>{lang === "zh" ? "研究影像" : "RESEARCH FILM"} <span>·</span> 00:07 <span>·</span> I² / 2026</p>
-      </div>
-
-      <div className="intro-chapters" aria-hidden="true">
-        <span><b>01</b><i />{lang === "zh" ? "空间" : "SPATIAL"}</span>
-        <span><b>02</b><i />{lang === "zh" ? "感知" : "SENSING"}</span>
-        <span><b>03</b><i />{lang === "zh" ? "交互" : "INTERACTION"}</span>
-      </div>
-
-      <div className="intro-narrative" aria-hidden="true">
-        <div className="intro-copy-frame intro-copy-0"><span>{lang === "zh" ? "扩展现实" : "EXTENDED REALITY"}</span><strong>{lang === "zh" ? <>感知<br />不可见之物。</> : <>Sense the<br />invisible.</>}</strong></div>
-        <div className="intro-copy-frame intro-copy-1"><span>{lang === "zh" ? "毫米波雷达" : "mmWAVE RADAR"}</span><strong>{lang === "zh" ? <>无需接触，<br />洞察动作。</> : <>Read motion<br />without contact.</>}</strong></div>
-        <div className="intro-copy-frame intro-copy-2"><span>{lang === "zh" ? "人机交互闭环" : "HUMAN–SYSTEM LOOP"}</span><strong>{lang === "zh" ? <>让交互成为<br />可验证的证据。</> : <>Turn interaction<br />into evidence.</>}</strong></div>
-      </div>
-
-      <div className="intro-sensor-lock" aria-hidden="true"><i /><i /><span>{lang === "zh" ? "人机交互" : "HCI"}</span></div>
-
-      <div className="intro-final-brand" aria-hidden="true">
-        <span className="brand-mark intro-brand-mark"><i /><b /></span>
-        <div><strong>I²Lab</strong><small>{lang === "zh" ? "智能交互技术研究实验室" : "Intelligent Interaction Laboratory"}</small></div>
-      </div>
-
-      <div className="intro-progress"><i /><span>{lang === "zh" ? "扩展现实 / 毫米波雷达 / 智能感知" : "XR  /  mmWAVE  /  SMART SENSING"}</span></div>
-      <button ref={skipButtonRef} type="button" className="intro-skip" onClick={finish}>{lang === "zh" ? "跳过影片" : "SKIP FILM"}<span aria-hidden="true">↗</span></button>
-    </div>
-  );
-}
-
 function App() {
   const projectSlug = window.location.pathname.match(/^\/opportunities\/([^/]+)\/?$/)?.[1];
   const activeProject = projectSlug
@@ -1397,27 +1278,15 @@ function App() {
       return "zh";
     }
   });
-  const [activeSection, setActiveSection] = useState(activeMainProject ? "projects" : activeProject || activeAlumnus ? "opportunities" : "about");
+  const [activeSection, setActiveSection] = useState(activeMainProject ? "projects" : activeProject ? "opportunities" : activeAlumnus ? "team" : "top");
   const [menuOpen, setMenuOpen] = useState(false);
   const [isCompactNav, setIsCompactNav] = useState(() => window.matchMedia("(max-width: 1180px)").matches);
   const [publicationFilter, setPublicationFilter] = useState<"all" | PublicationOwner>("all");
   const publicationViewportRef = useRef<HTMLDivElement>(null);
   const [publicationScrollPercent, setPublicationScrollPercent] = useState(0);
   const [publicationCanScroll, setPublicationCanScroll] = useState(false);
-  const [introVisible, setIntroVisible] = useState(() => {
-    try {
-      if (isDetailPage) return false;
-      // A section URL is an intentional deep link: show its target directly,
-      // instead of playing the opening film and jumping away when it ends.
-      if (window.location.hash) return false;
-      return !window.matchMedia("(prefers-reduced-motion: reduce)").matches && sessionStorage.getItem("boxtech-intro-seen") !== "true";
-    } catch {
-      return true;
-    }
-  });
   const menuToggleRef = useRef<HTMLButtonElement>(null);
   const firstNavLinkRef = useRef<HTMLAnchorElement>(null);
-  const introReplayTriggerRef = useRef<HTMLButtonElement | null>(null);
 
   usePageObservers(setActiveSection, `${publicationFilter}:${activeProject?.slug ?? activeAlumnus?.slug ?? activeMainProject?.slug ?? "home"}`);
   useScrollFocus(`${lang}:${activeProject?.slug ?? activeAlumnus?.slug ?? activeMainProject?.slug ?? "home"}`);
@@ -1429,7 +1298,6 @@ function App() {
 
   useEffect(() => {
     if (isDetailPage) {
-      try { sessionStorage.setItem("boxtech-intro-seen", "true"); } catch { /* session storage may be unavailable */ }
       document.title = activeProject
         ? `${t(activeProject.title, lang)} · I² Lab`
         : activeAlumnus
@@ -1463,44 +1331,14 @@ function App() {
     return () => media.removeEventListener("change", syncNavigationMode);
   }, []);
 
+  // The browser can resolve a returning #anchor before React mounts the homepage.
   useEffect(() => {
-    document.body.style.overflow = introVisible ? "hidden" : "";
-    const backgroundElements = document.querySelectorAll<HTMLElement>(".site-shell > :not(.intro-sequence)");
-    backgroundElements.forEach((element) => element.toggleAttribute("inert", introVisible));
-    return () => {
-      document.body.style.overflow = "";
-      backgroundElements.forEach((element) => element.removeAttribute("inert"));
-    };
-  }, [introVisible]);
-
-  // Resolve a deep link on initial mount only. Replaying the film must never
-  // make an old section hash scroll the page again when the film unmounts.
-  useEffect(() => {
-    if (isDetailPage || introVisible || !window.location.hash) return;
+    if (isDetailPage || !window.location.hash) return;
     const target = document.getElementById(window.location.hash.slice(1));
     if (!target) return;
     const frame = window.requestAnimationFrame(() => target.scrollIntoView({ behavior: "instant", block: "start" }));
     return () => window.cancelAnimationFrame(frame);
   }, [isDetailPage]);
-
-  useEffect(() => {
-    if (introVisible || !introReplayTriggerRef.current) return;
-    const replayTrigger = introReplayTriggerRef.current;
-    introReplayTriggerRef.current = null;
-    const focusTimer = window.setTimeout(() => replayTrigger.focus({ preventScroll: true }), 0);
-    return () => window.clearTimeout(focusTimer);
-  }, [introVisible]);
-
-  const completeIntro = useCallback(() => {
-    try { sessionStorage.setItem("boxtech-intro-seen", "true"); } catch { /* session storage may be unavailable */ }
-    // The overlay is still mounted here, so reset the underlying page before
-    // revealing it. This applies equally to the first play and any replay.
-    if (window.location.hash) {
-      window.history.replaceState(window.history.state, "", window.location.pathname + window.location.search);
-    }
-    window.scrollTo({ top: 0, behavior: "instant" });
-    setIntroVisible(false);
-  }, []);
 
   const publicationGroups = useMemo(() => {
     const order: PublicationOwner[] = publicationFilter === "all" ? ["bryan", "lijie", "haonan", "renzhi"] : [publicationFilter];
@@ -1545,8 +1383,7 @@ function App() {
   };
 
   return (
-    <div className="site-shell">
-      {introVisible && <IntroSequence onComplete={completeIntro} lang={lang} />}
+    <div className={`site-shell ${isDetailPage ? "" : "has-particle-home"}`}>
       <a
         className="skip-link"
         href="#main"
@@ -1554,11 +1391,11 @@ function App() {
       >
         {lang === "zh" ? "跳到主要内容" : "Skip to content"}
       </a>
-      <header className="topbar">
+      <header className={`topbar ${!isDetailPage && activeSection === "top" ? "is-particle-top" : ""}`}>
         <a className="brand lab-brand" href={isDetailPage ? "/" : "#top"} aria-label={lang === "zh" ? "智能交互技术研究实验室首页" : "Intelligent Interaction Laboratory home"}>
           <span className="brand-mark" aria-hidden="true"><i /><b /></span>
           <span className="brand-name">
-            <strong>{lang === "zh" ? "智能交互技术研究实验室" : "Intelligent Interaction Laboratory"}</strong>
+            <strong>{!isDetailPage && activeSection === "top" ? "I²Lab" : (lang === "zh" ? "智能交互技术研究实验室" : "Intelligent Interaction Laboratory")}</strong>
             <small>{lang === "zh" ? "Intelligent Interaction Laboratory" : "智能交互技术研究实验室"}</small>
           </span>
         </a>
@@ -1588,17 +1425,6 @@ function App() {
         </nav>
 
         <div className="nav-actions">
-          <button
-            className="intro-replay"
-            type="button"
-            onClick={(event) => {
-              introReplayTriggerRef.current = event.currentTarget;
-              setIntroVisible(true);
-            }}
-            aria-label={lang === "zh" ? "重播开场影片" : "Replay opening film"}
-          >
-            <span aria-hidden="true">◎</span>{lang === "zh" ? "重播" : "REPLAY"}
-          </button>
           <button className="language-toggle" type="button" onClick={toggleLanguage} aria-label={lang === "zh" ? "Switch to English" : "切换至中文"}>
             <span className={lang === "zh" ? "selected" : ""}>中</span>
             <i />
@@ -1628,57 +1454,7 @@ function App() {
         <MainProjectDetailPage project={activeMainProject} lang={lang} />
       ) : (
       <main id="main" tabIndex={-1}>
-        <section className="hero" id="top">
-          <div className="hero-grid" aria-hidden="true" />
-          <div className="hero-glow hero-glow-one" aria-hidden="true" />
-          <div className="hero-glow hero-glow-two" aria-hidden="true" />
-          <div className="hero-copy">
-            <div className="hero-kicker reveal is-visible">
-              <span className="status-dot" />
-              {lang === "zh" ? "智能交互技术研究实验室 · 宁波" : "INTELLIGENT INTERACTION LABORATORY"}
-            </div>
-            <h1 className="reveal is-visible">
-              {lang === "zh" ? (
-                <>让交互技术，<br /><em>从可用走向可信</em></>
-              ) : (
-                <>Interaction,<br /><em>made trustworthy.</em></>
-              )}
-            </h1>
-            <p className="hero-lead reveal is-visible">
-              {lang === "zh"
-                ? "智能交互技术研究实验室融合扩展现实、毫米波雷达与智能传感，研究可感知、可验证、可持续演进的人机交互系统，并在医疗与教育场景中验证其价值。"
-                : "The Intelligent Interaction Laboratory combines Extended Reality, millimetre-wave radar, and intelligent sensing to build perceptive, verifiable, and adaptive human–computer systems for healthcare and education."}
-            </p>
-            <div className="hero-cta reveal is-visible">
-              <a className="primary-button" href="#projects">
-                <span>{lang === "zh" ? "探索研究方向" : "Explore our research"}</span><span aria-hidden="true">↓</span>
-              </a>
-              <a className="text-button" href="#publications">
-                {lang === "zh" ? "阅读精选论文" : "Read selected research"}<span aria-hidden="true">↗</span>
-              </a>
-            </div>
-          </div>
-
-          <div className="signal-stage reveal is-visible" aria-label={lang === "zh" ? "核心技术示意" : "Core technology diagram"}>
-            <div className="stage-index">I² / 03</div>
-            <div className="orbit orbit-outer"><span className="node node-xr">XR</span></div>
-            <div className="orbit orbit-middle"><span className="node node-wave">mmW</span></div>
-            <div className="orbit orbit-inner"><span className="node node-sense">S²</span></div>
-            <div className="stage-core"><span>{lang === "zh" ? "人机交互" : "HCI"}</span><small>{lang === "zh" ? "人与系统" : "human / system"}</small></div>
-            <div className="stage-scan" />
-            <div className="stage-caption">
-              <span>{lang === "zh" ? "智能交互技术研究实验室" : "INTELLIGENT INTERACTION LABORATORY"}</span>
-              <span>{lang === "zh" ? "空间 · 感知 · 适应" : "Spatial · Sensing · Adaptive"}</span>
-            </div>
-          </div>
-
-          <div className="hero-metrics reveal is-visible">
-            <div><strong>I²</strong><span>{lang === "zh" ? "智能交互实验室" : "Intelligent Interaction Lab"}</span></div>
-            <div><strong>03</strong><span>{lang === "zh" ? "核心研究方向" : "Research directions"}</span></div>
-            <div><strong>02</strong><span>{lang === "zh" ? "重点验证场景" : "Validation domains"}</span></div>
-            <p>{lang === "zh" ? "研究 · 原型 · 转化。" : "Research · Prototype · Translation."}</p>
-          </div>
-        </section>
+        <ParticleHome lang={lang} />
 
         <section className="about-section light-section" id="about">
           <div className="section-frame about-grid">

@@ -1,0 +1,7 @@
+docs/
+scripts/
+**/__pycache__/
+**/*.pyc
+**/*.bundle
+**/*.map
+public/point-cloud/manifest.json

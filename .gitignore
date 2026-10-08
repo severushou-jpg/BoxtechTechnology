@@ -5,3 +5,13 @@ dist
 *.local
 npm-debug.log*
 .env*
+__pycache__/
+*.pyc
+*.bundle
+/docs/particle-home.md
+/public/point-cloud/manifest.json
+/scripts/build_icon_particles.py
+/scripts/build_point_clouds.py
+/scripts/build_particle_loading.mjs
+/scripts/check_particle_camera.mjs
+/scripts/check_particle_loading.mjs

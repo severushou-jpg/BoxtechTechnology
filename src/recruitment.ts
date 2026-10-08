@@ -332,9 +332,9 @@ export const researchOpportunities: ResearchOpportunity[] = [
     leader: { zh: "姚淏楠", en: "Haonan Yao" },
     email: "Haonan.YAO@nottingham.edu.cn",
     tags: [
-      { zh: "混合现实", en: "MIXED REALITY" },
-      { zh: "人工智能辅助创作", en: "AI-ASSISTED CREATION" },
-      { zh: "实物交互", en: "TANGIBLE INTERACTION" },
+      { zh: "XR+AI", en: "XR+AI" },
+      { zh: "有形交互", en: "Tangible Interaction" },
+      { zh: "数字艺术", en: "Digital Art" },
     ],
     sections: [
       {
