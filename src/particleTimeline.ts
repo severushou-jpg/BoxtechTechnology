@@ -27,29 +27,24 @@ export function advanceParticleClocks(clocks: ParticleClocks, delta: number, spe
     flow: clocks.flow+flowDt*flow,
     figureFloat: clocks.figureFloat+dt*figure*shared,
     flowFloat: clocks.flowFloat+flowDt*flow*shared,
-    // Real released time is independent of the two transport speed controls.
+    // Real released time is independent of the two transport speeds.
     // It freezes with the field, so a resumed intro finishes its initial fill.
     flowElapsed: clocks.flowElapsed+((figure>0 || flow>0) ? flowDt : 0),
   };
 }
 
-/** Only the part of a frame after formation is almost settled can emit flow.
- * Preview follows its displayed phase; hiding a formed flow does not reset it. */
-export function getParticleFlowDelta(figureTime:number,delta:number,figureSpeed:number,paused:boolean,previewProgress:number|null) {
+/** Only the part of a frame after formation is almost settled can emit flow. */
+export function getParticleFlowDelta(figureTime:number,delta:number,figureSpeed:number,paused:boolean) {
   if(paused) return 0;
   const dt=Number.isFinite(delta) ? Math.max(0,Math.min(.1,delta)) : 0;
   const threshold=ICON_HOLD_DURATION+TRANSITION_DURATION*FLOW_RELEASE_PROGRESS;
-  if(previewProgress!==null && Number.isFinite(previewProgress)) return previewProgress*INTRO_DURATION>=threshold ? dt : 0;
   if(figureTime>=threshold) return dt;
   const speed=Number.isFinite(figureSpeed) ? Math.max(0,Math.min(2,figureSpeed)) : 0;
   return speed>0 ? Math.max(0,dt-(threshold-figureTime)/speed) : 0;
 }
 
-/** Preview freezes only this clock, leaving live particle drift and camera usable. */
-export function getParticleTimeline(elapsed: number, previewProgress: number | null) {
-  const preview = previewProgress !== null && Number.isFinite(previewProgress)
-    ? Math.min(1, Math.max(0, previewProgress)) : null;
-  const time = preview !== null ? preview * INTRO_DURATION : Math.min(INTRO_DURATION,Math.max(0, Number.isFinite(elapsed) ? elapsed : 0));
+export function getParticleTimeline(elapsed: number) {
+  const time = Math.min(INTRO_DURATION,Math.max(0, Number.isFinite(elapsed) ? elapsed : 0));
   const morph = Math.min(1,Math.max(0,(time-ICON_HOLD_DURATION)/TRANSITION_DURATION));
   const iconFade=Math.min(1,morph/.12);
   return {

@@ -1,8 +1,6 @@
-import type { ParticleSettings } from "./particleSettings";
-
 export type ParticleLoadingClocks = { shared: number; figureFloat: number; elapsed: number };
 type ParticleLoadingController = {
-  phase: (settings?: Partial<ParticleSettings>, paused?: boolean) => ParticleLoadingClocks;
+  phase: (paused?: boolean) => ParticleLoadingClocks;
   finish: (duration?: number) => void;
   hide: () => void;
 };
@@ -13,8 +11,8 @@ declare global {
 
 /** Carry the already-visible loader's floating phase into the first GPU frame.
  * The icon/figure formation clock deliberately remains at the start. */
-export function readParticleLoadingClocks(settings?: Partial<ParticleSettings>, paused?: boolean): ParticleLoadingClocks | null {
-  return window.__i2ParticleLoading?.phase(settings, paused) ?? null;
+export function readParticleLoadingClocks(paused?: boolean): ParticleLoadingClocks | null {
+  return window.__i2ParticleLoading?.phase(paused) ?? null;
 }
 
 /** Call after the matching first WebGL frame has been drawn. Keep the opening

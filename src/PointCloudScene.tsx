@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { DEFAULT_PARTICLE_SETTINGS, normalizeParticleSettings, type ParticleSettings } from "./particleSettings";
+import { DEFAULT_PARTICLE_SETTINGS, type ParticleSettings } from "./particleSettings";
 import { CAMERA_FOV, REFERENCE_CAMERA_DISTANCE, getParticleCamera } from "./particleCamera";
 import { buildGalaxyGeometry, GALAXY_GLSL, NEBULA_EXTENTS_XYZ } from "./galaxyGeometry";
 import { getParticleTimeline, initialParticleClocks, advanceParticleClocks, getParticleFlowDelta } from "./particleTimeline";
@@ -17,7 +17,7 @@ import { PARTICLE_EXCITATION_GLSL } from "./particleExcitation";
 import { readParticleLoadingClocks, finishParticleLoading, hideParticleLoading } from "./particleLoading";
 import { OPENING_FIGURE_SPEED, SETTLED_FIGURE_SPEED, OPENING_FLOW_TRAIL, SETTLED_FLOW_TRAIL, createFigureSpeedSchedule, advanceFigureSpeedSchedule } from "./particleFigureSpeed";
 
-type Props = { settings: ParticleSettings; replaySettings?:ParticleSettings; paused: boolean; cameraResetKey?: number; replayKey?: number; previewProgress?: number | null; onFigureSpeedChange?: (speed:number)=>void; onFlowTrailChange?:(strength:number)=>void; className?: string; lang?: "zh" | "en" };
+type Props = { paused: boolean; className?: string; lang?: "zh" | "en" };
 type Cloud = { bytes: ArrayBuffer; count: number; aspect: number; subjectMask: Uint8Array;iconSamples:Float32Array };
 type Geometry = Cloud & { vao: WebGLVertexArrayObject; buffer: WebGLBuffer; galaxyBuffer: WebGLBuffer; galaxy:Float32Array; surfaceBuffer: WebGLBuffer; iconBuffer:WebGLBuffer;indexBuffer:WebGLBuffer;allocation?:ReturnType<typeof buildParticleAllocation>;allocationKey?:string;maskTexture: WebGLTexture;interactionTexture:WebGLTexture; subjectPrefix: Uint32Array; contactPrefix: Uint32Array; flowAges: Float32Array; flowBuffers: WebGLBuffer[]; flowVaos: WebGLVertexArrayObject[]; flowRead: number; motion:MotionState; flowBoost?:number;flowStartup?:ReturnType<typeof createParticleFlowStartup> };
 type MotionState={ offsets:WebGLBuffer[]; velocities:WebGLBuffer[]; color:WebGLBuffer;trailVao:WebGLVertexArrayObject; read:number; roles:WebGLBuffer; empty:WebGLBuffer; scratch:WebGLBuffer; history:{buffer:WebGLBuffer;color:WebGLBuffer;time:number}[]; write:number; lastCapture:number };
@@ -468,29 +468,16 @@ void main() {
   outColor=vec4(min(c,vec3(1.0,0.985,0.97)),1.0);
 }`;
 
-export default function PointCloudScene({ settings, replaySettings, paused, cameraResetKey = 0, replayKey = 0, previewProgress = null, onFigureSpeedChange, onFlowTrailChange, className, lang = "zh" }: Props) {
+export default function PointCloudScene({ paused, className, lang = "zh" }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const controller = useRef<{ update: () => void; pause: (value: boolean) => void; resetCamera: () => void; replay: () => void } | null>(null);
+  const controller = useRef<{ pause: (value: boolean) => void } | null>(null);
   const pausedRef = useRef(paused);
-  const settingsRef = useRef(DEFAULT_PARTICLE_SETTINGS);
-  const replaySettingsRef=useRef<ParticleSettings|undefined>(replaySettings);
-  const onFigureSpeedChangeRef=useRef(onFigureSpeedChange);
-  const onFlowTrailChangeRef=useRef(onFlowTrailChange);
-  const previewRef = useRef<number | null>(previewProgress);
+  const settingsRef = useRef<ParticleSettings>({ ...DEFAULT_PARTICLE_SETTINGS });
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const [contextVersion, setContextVersion] = useState(0);
   pausedRef.current = paused;
-  settingsRef.current = normalizeParticleSettings(settings);
-  replaySettingsRef.current=replaySettings;
-  onFigureSpeedChangeRef.current=onFigureSpeedChange;
-  onFlowTrailChangeRef.current=onFlowTrailChange;
-  previewRef.current = previewProgress !== null && Number.isFinite(previewProgress) ? Math.min(1,Math.max(0,previewProgress)) : null;
 
-  useEffect(() => { controller.current?.update(); }, [settings]);
   useEffect(() => { controller.current?.pause(paused); }, [paused]);
-  useEffect(() => { controller.current?.resetCamera(); }, [cameraResetKey]);
-  useEffect(() => { controller.current?.replay(); }, [replayKey]);
-  useEffect(() => { controller.current?.update(); }, [previewProgress]);
 
   useEffect(() => {
     window.clearTimeout(loadingCleanupTimer);
@@ -499,7 +486,7 @@ export default function PointCloudScene({ settings, replaySettings, paused, came
     const gl = canvas.getContext("webgl2", { alpha: false, antialias: false, depth: false, powerPreference: "high-performance" });
     if (!gl) { hideParticleLoading();setStatus("error"); return; }
     let disposed = false, frame = 0, lastTime = 0;
-    let startPopulated=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const startPopulated=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let figureSpeedSchedule=createFigureSpeedSchedule(startPopulated);
     let clocks = initialParticleClocks(startPopulated);
     let isPaused = pausedRef.current, isVisible = true, isPageVisible = !document.hidden;
@@ -510,7 +497,7 @@ export default function PointCloudScene({ settings, replaySettings, paused, came
     let excitationHistory:Target|undefined;
     const pointer = [0, 0], destination = [0, 0], mouseNdc=[0,0];
     let mouseMotion=createParticlePointerMotion(),mouseDirection=[0,0,0];
-    let mouseActive=false,mouseSettlingUntil=0,motionTime=0,loadingAligned=false,loadingHoldUntil=0,previousPreview=previewRef.current;
+    let mouseActive=false,mouseSettlingUntil=0,motionTime=0,loadingAligned=false,loadingHoldUntil=0;
     const programs: WebGLProgram[] = [];
 
     function program(vertex: string, fragment: string, feedback?: string[], separate=false) {
@@ -705,19 +692,6 @@ export default function PointCloudScene({ settings, replaySettings, paused, came
       gl!.bindVertexArray(null);
       return { ...cloud, vao, buffer, galaxyBuffer, galaxy, surfaceBuffer,iconBuffer,indexBuffer, maskTexture,interactionTexture, subjectPrefix, contactPrefix,flowAges,flowBuffers,flowVaos,flowRead:0,motion };
     }
-    function resetFlow(geometry:Geometry,parameters=settingsRef.current) {
-      // Reset uses emitter-only startup even when the user explicitly replays
-      // from a reduced-motion final snapshot.
-      geometry.flowAges=buildParticleFlowAges(geometry.galaxy,false,parameters);
-      geometry.flowBuffers.forEach((buffer)=>{
-        gl!.bindBuffer(gl!.ARRAY_BUFFER,buffer);
-        gl!.bufferSubData(gl!.ARRAY_BUFFER,0,geometry.flowAges);
-      });
-      geometry.flowRead=0;clearMotion(geometry);motionTime=0;
-      geometry.flowBoost=1;
-      geometry.flowStartup=undefined;
-      for(const item of [excitationTarget,excitationHistory])if(item) {bindTarget(item);gl!.clearColor(0,0,0,0);gl!.clear(gl!.COLOR_BUFFER_BIT);}
-    }
     function advanceFlow(geometry:Geometry,delta:number,parameters:ParticleSettings,releasedElapsed:number) {
       if(delta<=0 || (parameters.figureSpeed===0 && parameters.flowSpeed===0)) return;
       const allocation=allocateParticles(geometry,parameters);
@@ -747,15 +721,13 @@ export default function PointCloudScene({ settings, replaySettings, paused, came
     }
     function applyFigureSpeed(value:number) {
       if(settingsRef.current.figureSpeed!==value) {
-        settingsRef.current=normalizeParticleSettings({...settingsRef.current,figureSpeed:value});
-        onFigureSpeedChangeRef.current?.(value);
+        settingsRef.current={...settingsRef.current,figureSpeed:value};
       }
       return settingsRef.current;
     }
     function applyFlowTrail(value:number) {
       if(settingsRef.current.flowTrail!==value) {
-        settingsRef.current=normalizeParticleSettings({...settingsRef.current,introTrail:0,flowTrail:value});
-        onFlowTrailChangeRef.current?.(value);
+        settingsRef.current={...settingsRef.current,introTrail:0,flowTrail:value};
       }
       return settingsRef.current;
     }
@@ -928,13 +900,12 @@ export default function PointCloudScene({ settings, replaySettings, paused, came
       lastTime = now;
       let parameters = settingsRef.current;
       if(!loadingAligned) {
-        const loading=readParticleLoadingClocks(parameters,isPaused);
+        const loading=readParticleLoadingClocks(isPaused);
         if(loading){clocks.shared=loading.shared;clocks.figureFloat=loading.figureFloat;loadingHoldUntil=now+180;}
         loadingAligned=true;
       }
-      if(previousPreview!==previewRef.current){clearMotion(current);previousPreview=previewRef.current;}
       const simulationDelta=isPaused?0:delta;motionTime+=simulationDelta;
-      const flowDelta=getParticleFlowDelta(clocks.figure,delta,parameters.figureSpeed,isPaused,previewRef.current);
+      const flowDelta=getParticleFlowDelta(clocks.figure,delta,parameters.figureSpeed,isPaused);
       const releasedElapsed=clocks.flowElapsed;
       const previousFigure=clocks.figure;
       clocks=advanceParticleClocks(clocks,delta,parameters,isPaused,flowDelta);
@@ -946,7 +917,7 @@ export default function PointCloudScene({ settings, replaySettings, paused, came
         if(change.figureSpeed!==null)parameters=applyFigureSpeed(change.figureSpeed);
         if(change.flowTrail!==null)parameters=applyFlowTrail(change.flowTrail);
       }
-      const timeline=getParticleTimeline(clocks.figure,previewRef.current);
+      const timeline=getParticleTimeline(clocks.figure);
       const response = 1-Math.exp(-delta/parameters.cameraSmoothing);
       pointer[0] += (destination[0] - pointer[0]) * response;
       pointer[1] += (destination[1] - pointer[1]) * response;
@@ -983,7 +954,7 @@ export default function PointCloudScene({ settings, replaySettings, paused, came
     const onPointer = (event: PointerEvent) => {
       if (event.pointerType === "touch" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       mouseSettlingUntil=performance.now()+5000;
-      if (event.target instanceof Element && event.target.closest(".particle-tuning, [data-particle-ui]")){mouseActive=false;mouseMotion=createParticlePointerMotion();mouseDirection=[0,0,0];schedule();return;}
+      if (event.target instanceof Element && event.target.closest("[data-particle-ui]")){mouseActive=false;mouseMotion=createParticlePointerMotion();mouseDirection=[0,0,0];schedule();return;}
       const bounds=canvas!.getBoundingClientRect();mouseNdc[0]=(event.clientX-bounds.left)/Math.max(1,bounds.width)*2-1;mouseNdc[1]=1-(event.clientY-bounds.top)/Math.max(1,bounds.height)*2;
       mouseActive=Math.abs(mouseNdc[0])<=1&&Math.abs(mouseNdc[1])<=1;
       mouseMotion=mouseActive?sampleParticlePointerMotion(mouseMotion,mouseNdc[0],mouseNdc[1],performance.now()):createParticlePointerMotion();
@@ -1007,19 +978,7 @@ export default function PointCloudScene({ settings, replaySettings, paused, came
     document.addEventListener("visibilitychange", visibility);
     canvas.addEventListener("webglcontextlost", lost);
     canvas.addEventListener("webglcontextrestored", restored);
-    controller.current = { update: schedule, pause: (value) => { isPaused = value; lastTime = 0; schedule(); }, resetCamera: () => {
-      pointer[0]=0; pointer[1]=0; destination[0]=0; destination[1]=0; schedule();
-    }, replay: () => {
-      const snapshot=normalizeParticleSettings({...replaySettingsRef.current??settingsRef.current,figureSpeed:OPENING_FIGURE_SPEED,introTrail:0,flowTrail:OPENING_FLOW_TRAIL});
-      settingsRef.current=snapshot;
-      onFigureSpeedChangeRef.current?.(OPENING_FIGURE_SPEED);
-      onFlowTrailChangeRef.current?.(OPENING_FLOW_TRAIL);
-      figureSpeedSchedule=createFigureSpeedSchedule();
-      startPopulated=false;clocks=initialParticleClocks();if(current)resetFlow(current,snapshot);mouseActive=false;loadingHoldUntil=0;
-      mouseMotion=createParticlePointerMotion();mouseDirection=[0,0,0];
-
-      lastTime=0;schedule();
-    } };
+    controller.current = { pause: (value) => { isPaused = value; lastTime = 0; schedule(); } };
     resize();
     void initializeCloud();
 

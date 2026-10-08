@@ -10,7 +10,7 @@ export function createFigureSpeedSchedule(populated = false): FigureSpeedSchedul
 }
 
 /** Change speed and enable diffusion trails once spatial filling and its gain settle.
- * Pause keeps this state unchanged; replay starts a fresh schedule. */
+ * Pause keeps this state unchanged. */
 export function advanceFigureSpeedSchedule(
   state: FigureSpeedScheduleState,
   startupFinished: boolean,
