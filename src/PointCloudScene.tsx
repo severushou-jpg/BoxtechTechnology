@@ -17,7 +17,7 @@ import { PARTICLE_EXCITATION_GLSL } from "./particleExcitation";
 import { readParticleLoadingClocks, finishParticleLoading, hideParticleLoading } from "./particleLoading";
 import { OPENING_FIGURE_SPEED, SETTLED_FIGURE_SPEED, OPENING_FLOW_TRAIL, SETTLED_FLOW_TRAIL, createFigureSpeedSchedule, advanceFigureSpeedSchedule } from "./particleFigureSpeed";
 
-type Props = { paused: boolean; className?: string; lang?: "zh" | "en" };
+type Props = { paused: boolean; className?: string; lang?: "zh" | "en"; startSettled?: boolean };
 type Cloud = { bytes: ArrayBuffer; count: number; aspect: number; subjectMask: Uint8Array;iconSamples:Float32Array };
 type Geometry = Cloud & { vao: WebGLVertexArrayObject; buffer: WebGLBuffer; galaxyBuffer: WebGLBuffer; galaxy:Float32Array; surfaceBuffer: WebGLBuffer; iconBuffer:WebGLBuffer;indexBuffer:WebGLBuffer;allocation?:ReturnType<typeof buildParticleAllocation>;allocationKey?:string;maskTexture: WebGLTexture;interactionTexture:WebGLTexture; subjectPrefix: Uint32Array; contactPrefix: Uint32Array; flowAges: Float32Array; flowBuffers: WebGLBuffer[]; flowVaos: WebGLVertexArrayObject[]; flowRead: number; motion:MotionState; flowBoost?:number;flowStartup?:ReturnType<typeof createParticleFlowStartup> };
 type MotionState={ offsets:WebGLBuffer[]; velocities:WebGLBuffer[]; color:WebGLBuffer;trailVao:WebGLVertexArrayObject; read:number; roles:WebGLBuffer; empty:WebGLBuffer; scratch:WebGLBuffer; history:{buffer:WebGLBuffer;color:WebGLBuffer;time:number}[]; write:number; lastCapture:number };
@@ -468,7 +468,7 @@ void main() {
   outColor=vec4(min(c,vec3(1.0,0.985,0.97)),1.0);
 }`;
 
-export default function PointCloudScene({ paused, className, lang = "zh" }: Props) {
+export default function PointCloudScene({ paused, className, lang = "zh", startSettled = false }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const controller = useRef<{ pause: (value: boolean) => void } | null>(null);
   const pausedRef = useRef(paused);
@@ -486,7 +486,7 @@ export default function PointCloudScene({ paused, className, lang = "zh" }: Prop
     const gl = canvas.getContext("webgl2", { alpha: false, antialias: false, depth: false, powerPreference: "high-performance" });
     if (!gl) { hideParticleLoading();setStatus("error"); return; }
     let disposed = false, frame = 0, lastTime = 0;
-    const startPopulated=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const startPopulated=startSettled || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let figureSpeedSchedule=createFigureSpeedSchedule(startPopulated);
     let clocks = initialParticleClocks(startPopulated);
     let isPaused = pausedRef.current, isVisible = true, isPageVisible = !document.hidden;
@@ -996,7 +996,7 @@ export default function PointCloudScene({ paused, className, lang = "zh" }: Prop
       gl.deleteTransformFeedback(feedback);
       gl.deleteVertexArray(screenVao); deleteTargets(); programs.forEach((item) => gl.deleteProgram(item));
     };
-  }, [contextVersion]);
+  }, [contextVersion,startSettled]);
 
   return <div className={`point-cloud-scene ${className ?? ""}`} data-state={status}>
     <canvas ref={canvasRef} role="img" aria-label={lang === "zh" ? "红橙色三维体积星云舒展并与 XR 使用者和机器人指尖相遇的点云融为一体" : "A red-orange volumetric nebula expands and merges with an XR user and a robot touching fingertips"} style={{ width: "100%", height: "100%", display: "block" }} />

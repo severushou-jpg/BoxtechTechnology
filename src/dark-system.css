@@ -14,6 +14,7 @@
 
 html, body, .site-shell { background: #080a0d; }
 body, .site-shell { color: #f3f4f5; }
+.site-shell .particle-home { background: transparent; }
 
 /* Semi-transparent reading planes allow the persistent field to remain visible.
    The stronger left scrim keeps long-form text legible over moving points. */

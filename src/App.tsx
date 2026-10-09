@@ -19,7 +19,7 @@ import { alumni } from "./alumni";
 import { AlumniDetailPage, AlumniSection } from "./AlumniViews";
 import { mainProjects, type MainProject } from "./mainProjects";
 import ParticleHome from "./ParticleHome";
-import SiteParticleField from "./SiteParticleField";
+import UnifiedParticleBackdrop from "./UnifiedParticleBackdrop";
 
 type Lang = "zh" | "en";
 type Localized = { zh: string; en: string };
@@ -1281,6 +1281,7 @@ function App() {
   });
   const [activeSection, setActiveSection] = useState(activeMainProject ? "projects" : activeProject ? "opportunities" : activeAlumnus ? "team" : "top");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [particlePaused, setParticlePaused] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   const [isCompactNav, setIsCompactNav] = useState(() => window.matchMedia("(max-width: 1180px)").matches);
   const [publicationFilter, setPublicationFilter] = useState<"all" | PublicationOwner>("all");
   const publicationViewportRef = useRef<HTMLDivElement>(null);
@@ -1296,6 +1297,13 @@ function App() {
     document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
     try { localStorage.setItem("boxtech-lang", lang); } catch { /* storage may be unavailable */ }
   }, [lang]);
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const respectReducedMotion = () => { if (media.matches) setParticlePaused(true); };
+    media.addEventListener("change", respectReducedMotion);
+    return () => media.removeEventListener("change", respectReducedMotion);
+  }, []);
 
   useEffect(() => {
     if (isDetailPage) {
@@ -1385,7 +1393,7 @@ function App() {
 
   return (
     <div className={`site-shell ${isDetailPage ? "" : "has-particle-home"}`}>
-      <SiteParticleField />
+      <UnifiedParticleBackdrop lang={lang} paused={particlePaused} detail={isDetailPage} />
       <a
         className="skip-link"
         href="#main"
@@ -1456,7 +1464,7 @@ function App() {
         <MainProjectDetailPage project={activeMainProject} lang={lang} />
       ) : (
       <main id="main" tabIndex={-1}>
-        <ParticleHome lang={lang} />
+        <ParticleHome lang={lang} paused={particlePaused} onTogglePause={() => setParticlePaused((current) => !current)} />
 
         <section className="about-section light-section" id="about">
           <div className="section-frame about-grid">
