@@ -19,6 +19,7 @@ import { alumni } from "./alumni";
 import { AlumniDetailPage, AlumniSection } from "./AlumniViews";
 import { mainProjects, type MainProject } from "./mainProjects";
 import ParticleHome from "./ParticleHome";
+import SiteParticleField from "./SiteParticleField";
 
 type Lang = "zh" | "en";
 type Localized = { zh: string; en: string };
@@ -1384,6 +1385,7 @@ function App() {
 
   return (
     <div className={`site-shell ${isDetailPage ? "" : "has-particle-home"}`}>
+      <SiteParticleField />
       <a
         className="skip-link"
         href="#main"
