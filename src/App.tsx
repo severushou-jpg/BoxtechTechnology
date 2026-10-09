@@ -1222,6 +1222,7 @@ function App() {
   const [activeSection, setActiveSection] = useState(activeMainProject ? "projects" : activeProject ? "opportunities" : activeAlumnus ? "team" : "top");
   const [menuOpen, setMenuOpen] = useState(false);
   const [particlePaused, setParticlePaused] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const [heroOpeningComplete, setHeroOpeningComplete] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   const [isCompactNav, setIsCompactNav] = useState(() => window.matchMedia("(max-width: 1180px)").matches);
   const [publicationFilter, setPublicationFilter] = useState<"all" | PublicationOwner>("all");
   const publicationViewportRef = useRef<HTMLDivElement>(null);
@@ -1332,7 +1333,7 @@ function App() {
 
   return (
     <div className={`site-shell ${isDetailPage ? "" : "has-particle-home"}`}>
-      <UnifiedParticleBackdrop lang={lang} paused={particlePaused} detail={isDetailPage} />
+      <UnifiedParticleBackdrop lang={lang} paused={particlePaused} detail={isDetailPage} onOpeningComplete={() => setHeroOpeningComplete(true)} />
       <a
         className="skip-link"
         href="#main"
@@ -1403,7 +1404,7 @@ function App() {
         <MainProjectDetailPage project={activeMainProject} lang={lang} />
       ) : (
       <main id="main" tabIndex={-1}>
-        <ParticleHome lang={lang} paused={particlePaused} onTogglePause={() => setParticlePaused((current) => !current)} />
+        <ParticleHome lang={lang} paused={particlePaused} openingComplete={heroOpeningComplete} onTogglePause={() => setParticlePaused((current) => !current)} />
 
         <section className="about-section light-section" id="about">
           <div className="section-frame about-grid">

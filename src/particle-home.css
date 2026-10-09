@@ -40,6 +40,81 @@
   text-align: center;
 }
 
+/* An editorial cover appears only when the point-cloud opening has finished.
+   It is ordinary DOM text: no scroll reveal, blur, or extra animation pass. */
+.particle-home-identity {
+  position: absolute;
+  z-index: 2;
+  right: auto;
+  bottom: max(110px, calc(env(safe-area-inset-bottom) + 104px));
+  left: clamp(24px, 4vw, 64px);
+  width: min(650px, 64vw);
+  pointer-events: none;
+  text-shadow: 0 3px 25px rgba(0, 0, 0, .9), 0 1px 7px rgba(0, 0, 0, .96);
+}
+
+.particle-home-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 17px;
+  color: rgba(239, 244, 249, .7);
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .19em;
+}
+
+.particle-home-eyebrow span { color: #ef405e; }
+
+.particle-home-title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  margin: 0;
+}
+
+.particle-home-mark {
+  color: #fff;
+  font-size: clamp(78px, 8.5vw, 132px);
+  font-weight: 750;
+  letter-spacing: -.092em;
+  line-height: .82;
+  white-space: nowrap;
+}
+
+.particle-home-mark sup {
+  position: relative;
+  top: -.26em;
+  margin: 0 .015em 0 .02em;
+  font-size: .36em;
+  letter-spacing: -.07em;
+}
+
+.particle-home-mark-dot { color: #f03e5f; }
+
+.particle-home-name {
+  max-width: 100%;
+  color: #fff;
+  font-size: clamp(27px, 3vw, 40px);
+  font-weight: 650;
+  letter-spacing: -.05em;
+  line-height: 1.18;
+}
+
+.particle-home-thesis {
+  max-width: 635px;
+  margin: 26px 0 0;
+  padding-left: 17px;
+  border-left: 2px solid #f03e5f;
+  color: rgba(244, 247, 250, .94);
+  font-size: clamp(21px, 2.2vw, 29px);
+  font-weight: 550;
+  letter-spacing: -.035em;
+  line-height: 1.36;
+}
+
 .particle-home-bottom {
   position: absolute;
   right: clamp(24px, 4vw, 64px);
@@ -51,6 +126,15 @@
   align-items: center;
   gap: 20px;
   pointer-events: none;
+}
+
+.particle-home-bottom::before {
+  position: absolute;
+  top: -17px;
+  right: 0;
+  left: 0;
+  border-top: 1px solid rgba(227, 234, 242, .18);
+  content: "";
 }
 
 .particle-home-caption {
@@ -116,6 +200,11 @@
   color: #eaf3fa;
 }
 
+.particle-home-next-number {
+  color: #f35b72;
+  font-weight: 700;
+}
+
 .has-particle-home .topbar.is-particle-top {
   height: 86px;
   border-bottom-color: transparent;
@@ -170,6 +259,29 @@
 @media (max-width: 600px) {
   .particle-home {
     min-height: 480px;
+  }
+
+  .particle-home-identity {
+    right: 20px;
+    bottom: max(120px, calc(env(safe-area-inset-bottom) + 112px));
+    left: 20px;
+    width: auto;
+  }
+
+  .particle-home-eyebrow {
+    margin-bottom: 15px;
+    font-size: 8px;
+    letter-spacing: .12em;
+  }
+
+  .particle-home-title { gap: 15px; }
+  .particle-home-mark { font-size: clamp(66px, 16vw, 82px); }
+  .particle-home-name { font-size: clamp(22px, 6vw, 27px); }
+  .particle-home-thesis {
+    margin-top: 23px;
+    padding-left: 13px;
+    font-size: clamp(19px, 5.2vw, 23px);
+    line-height: 1.4;
   }
 
   .particle-home-bottom {

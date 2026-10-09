@@ -17,7 +17,7 @@ import { PARTICLE_EXCITATION_GLSL } from "./particleExcitation";
 import { readParticleLoadingClocks, finishParticleLoading, hideParticleLoading } from "./particleLoading";
 import { OPENING_FIGURE_SPEED, SETTLED_FIGURE_SPEED, OPENING_FLOW_TRAIL, SETTLED_FLOW_TRAIL, createFigureSpeedSchedule, advanceFigureSpeedSchedule } from "./particleFigureSpeed";
 
-type Props = { paused: boolean; className?: string; lang?: "zh" | "en"; startSettled?: boolean; interior?: boolean };
+type Props = { paused: boolean; className?: string; lang?: "zh" | "en"; startSettled?: boolean; interior?: boolean; onOpeningComplete?: () => void };
 type Cloud = { bytes: ArrayBuffer; count: number; aspect: number; subjectMask: Uint8Array;iconSamples:Float32Array };
 type Geometry = Cloud & { vao: WebGLVertexArrayObject; buffer: WebGLBuffer; galaxyBuffer: WebGLBuffer; galaxy:Float32Array; surfaceBuffer: WebGLBuffer; iconBuffer:WebGLBuffer;indexBuffer:WebGLBuffer;allocation?:ReturnType<typeof buildParticleAllocation>;allocationKey?:string;maskTexture: WebGLTexture;interactionTexture:WebGLTexture; subjectPrefix: Uint32Array; contactPrefix: Uint32Array; flowAges: Float32Array; flowBuffers: WebGLBuffer[]; flowVaos: WebGLVertexArrayObject[]; flowRead: number; motion:MotionState; flowBoost?:number;flowStartup?:ReturnType<typeof createParticleFlowStartup> };
 type MotionState={ offsets:WebGLBuffer[]; velocities:WebGLBuffer[]; color:WebGLBuffer;trailVao:WebGLVertexArrayObject; read:number; roles:WebGLBuffer; empty:WebGLBuffer; scratch:WebGLBuffer; history:{buffer:WebGLBuffer;color:WebGLBuffer;time:number}[]; write:number; lastCapture:number };
@@ -471,16 +471,18 @@ void main() {
   outColor=vec4(min(c,vec3(1.0,0.985,0.97)),1.0);
 }`;
 
-export default function PointCloudScene({ paused, className, lang = "zh", startSettled = false, interior = false }: Props) {
+export default function PointCloudScene({ paused, className, lang = "zh", startSettled = false, interior = false, onOpeningComplete }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const controller = useRef<{ pause: (value: boolean) => void } | null>(null);
   const pausedRef = useRef(paused);
   const interiorRef = useRef(interior);
+  const onOpeningCompleteRef = useRef(onOpeningComplete);
   const settingsRef = useRef<ParticleSettings>({ ...DEFAULT_PARTICLE_SETTINGS });
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const [contextVersion, setContextVersion] = useState(0);
   pausedRef.current = paused;
   interiorRef.current = interior;
+  onOpeningCompleteRef.current = onOpeningComplete;
 
   useEffect(() => { controller.current?.pause(paused); }, [paused]);
 
@@ -489,12 +491,13 @@ export default function PointCloudScene({ paused, className, lang = "zh", startS
     const canvas = canvasRef.current;
     if (!canvas) return;
     const gl = canvas.getContext("webgl2", { alpha: false, antialias: false, depth: false, powerPreference: "high-performance" });
-    if (!gl) { hideParticleLoading();setStatus("error"); return; }
+    if (!gl) { hideParticleLoading();setStatus("error");onOpeningCompleteRef.current?.(); return; }
     let disposed = false, frame = 0, lastTime = 0;
     const startPopulated=startSettled || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let figureSpeedSchedule=createFigureSpeedSchedule(startPopulated);
     let clocks = initialParticleClocks(startPopulated);
     let isPaused = pausedRef.current, isVisible = true, isPageVisible = !document.hidden;
+    let openingReported = false;
     let current: Geometry | undefined;
     let dpr = 1, width = 1, height = 1, renderTargetFailed = false;
     let compactViewport = window.matchMedia("(max-width: 700px)").matches;
@@ -542,7 +545,7 @@ export default function PointCloudScene({ paused, className, lang = "zh", startS
       flowProgram = program(flowVertex,flowFragment,["vNextFlowAge"]);
       excitationProgram=program(excitationVertex,excitationFragment);
       excitationDecayProgram=program(screenVertex,excitationDecayFragment);
-    } catch (error) { console.error(error); programs.forEach((item) => gl.deleteProgram(item));hideParticleLoading();setStatus("error"); return; }
+    } catch (error) { console.error(error); programs.forEach((item) => gl.deleteProgram(item));hideParticleLoading();setStatus("error");onOpeningCompleteRef.current?.(); return; }
     const uniforms = (item: WebGLProgram, names: string[]) => Object.fromEntries(names.map((name) => [name, gl.getUniformLocation(item, name)]));
     const pointUniformNames=["uCameraRight", "uCameraUp", "uCameraBack", "uTime", "uFigureFloatTime", "uFlowFloatTime", "uFlowRange", "uIconVisibility", "uFlowReleased", "uGalaxyTime", "uSceneMorph", "uLayer", "uGalaxyStrength", "uSceneStrength", "uDpr", "uAspect", "uScreenAspect", "uCssHeight", "uGain", "uDepth", "uCameraDistance", "uReferenceDistance", "uFocal", "uZoom", "uParticleSize", "uFloatAmplitude", "uFocus", "uDof", "uHue", "uSaturation", "uSubjectClarity", "uContourProtection", "uNebulaDensity", "uSubjectDensity", "uEdgeDispersion", "uSubjectMask","uSurfaceField","uExcitationField","uHistoryKind","uHistoryWeight","uHasPreviousHistory","uCenterWhiteness","uMouseCenter","uMouseDirection","uMouseRadius","uMouseStrength","uMouseActive","uMotionDelta"];
     const pu=uniforms(points,pointUniformNames),mu=uniforms(motionProgram,pointUniformNames);
@@ -627,7 +630,7 @@ export default function PointCloudScene({ paused, className, lang = "zh", startS
 
         renderTargetFailed = false;
         if (current) setStatus("ready");
-      } catch (error) { deleteTargets(); renderTargetFailed = true; console.error(error);hideParticleLoading();setStatus("error"); return; }
+      } catch (error) { deleteTargets(); renderTargetFailed = true; console.error(error);hideParticleLoading();setStatus("error");onOpeningCompleteRef.current?.(); return; }
       schedule();
     }
     function makeBuffer(bytes:number) {const buffer=gl!.createBuffer()!;gl!.bindBuffer(gl!.ARRAY_BUFFER,buffer);gl!.bufferData(gl!.ARRAY_BUFFER,bytes,gl!.DYNAMIC_COPY);return buffer;}
@@ -760,6 +763,7 @@ export default function PointCloudScene({ paused, className, lang = "zh", startS
         console.error(error);
         hideParticleLoading();
         setStatus("error");
+        onOpeningCompleteRef.current?.();
       }
     }
     function allocateParticles(geometry: Geometry, parameters: ParticleSettings) {
@@ -943,6 +947,10 @@ export default function PointCloudScene({ paused, className, lang = "zh", startS
         };
       }
       const timeline=getParticleTimeline(clocks.figure);
+      if (!openingReported && timeline.morph >= 1) {
+        openingReported = true;
+        onOpeningCompleteRef.current?.();
+      }
       const response = 1-Math.exp(-delta/parameters.cameraSmoothing);
       pointer[0] += (destination[0] - pointer[0]) * response;
       pointer[1] += (destination[1] - pointer[1]) * response;

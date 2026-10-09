@@ -3,10 +3,10 @@ import PointCloudScene from "./PointCloudScene";
 import { hideParticleLoading } from "./particleLoading";
 import "./unified-particle-backdrop.css";
 
-type Props = { lang: "zh" | "en"; paused: boolean; detail: boolean };
+type Props = { lang: "zh" | "en"; paused: boolean; detail: boolean; onOpeningComplete: () => void };
 
 /** A single WebGL point cloud remains mounted while the homepage scrolls. */
-export default function UnifiedParticleBackdrop({ lang, paused, detail }: Props) {
+export default function UnifiedParticleBackdrop({ lang, paused, detail, onOpeningComplete }: Props) {
   const [interior, setInterior] = useState(detail);
   const [startSettled] = useState(() => detail || (Boolean(window.location.hash) && window.location.hash !== "#top"));
 
@@ -42,7 +42,7 @@ export default function UnifiedParticleBackdrop({ lang, paused, detail }: Props)
 
   return (
     <div className={`unified-particle-backdrop ${interior ? "is-interior" : ""}`} aria-hidden="true">
-      <PointCloudScene paused={paused} lang={lang} startSettled={startSettled} interior={interior} />
+      <PointCloudScene paused={paused} lang={lang} startSettled={startSettled} interior={interior} onOpeningComplete={onOpeningComplete} />
     </div>
   );
 }
