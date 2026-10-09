@@ -19,8 +19,8 @@
 
 .unified-particle-backdrop.is-interior .point-cloud-scene {
   transform: scale(1.19);
-  filter: saturate(1.32);
-  opacity: .68;
+  filter: saturate(1.24);
+  opacity: .82;
 }
 
 .unified-particle-backdrop::after {
@@ -39,4 +39,11 @@
 
 @media (prefers-reduced-motion: reduce) {
   .unified-particle-backdrop .point-cloud-scene { transition: none; }
+}
+
+@media (max-width: 700px) {
+  .unified-particle-backdrop.is-interior .point-cloud-scene {
+    transform: scale(1.12);
+    opacity: .76;
+  }
 }

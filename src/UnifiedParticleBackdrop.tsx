@@ -42,7 +42,7 @@ export default function UnifiedParticleBackdrop({ lang, paused, detail }: Props)
 
   return (
     <div className={`unified-particle-backdrop ${interior ? "is-interior" : ""}`} aria-hidden="true">
-      <PointCloudScene paused={paused} lang={lang} startSettled={startSettled} />
+      <PointCloudScene paused={paused} lang={lang} startSettled={startSettled} interior={interior} />
     </div>
   );
 }

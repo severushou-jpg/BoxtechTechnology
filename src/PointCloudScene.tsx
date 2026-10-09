@@ -17,7 +17,7 @@ import { PARTICLE_EXCITATION_GLSL } from "./particleExcitation";
 import { readParticleLoadingClocks, finishParticleLoading, hideParticleLoading } from "./particleLoading";
 import { OPENING_FIGURE_SPEED, SETTLED_FIGURE_SPEED, OPENING_FLOW_TRAIL, SETTLED_FLOW_TRAIL, createFigureSpeedSchedule, advanceFigureSpeedSchedule } from "./particleFigureSpeed";
 
-type Props = { paused: boolean; className?: string; lang?: "zh" | "en"; startSettled?: boolean };
+type Props = { paused: boolean; className?: string; lang?: "zh" | "en"; startSettled?: boolean; interior?: boolean };
 type Cloud = { bytes: ArrayBuffer; count: number; aspect: number; subjectMask: Uint8Array;iconSamples:Float32Array };
 type Geometry = Cloud & { vao: WebGLVertexArrayObject; buffer: WebGLBuffer; galaxyBuffer: WebGLBuffer; galaxy:Float32Array; surfaceBuffer: WebGLBuffer; iconBuffer:WebGLBuffer;indexBuffer:WebGLBuffer;allocation?:ReturnType<typeof buildParticleAllocation>;allocationKey?:string;maskTexture: WebGLTexture;interactionTexture:WebGLTexture; subjectPrefix: Uint32Array; contactPrefix: Uint32Array; flowAges: Float32Array; flowBuffers: WebGLBuffer[]; flowVaos: WebGLVertexArrayObject[]; flowRead: number; motion:MotionState; flowBoost?:number;flowStartup?:ReturnType<typeof createParticleFlowStartup> };
 type MotionState={ offsets:WebGLBuffer[]; velocities:WebGLBuffer[]; color:WebGLBuffer;trailVao:WebGLVertexArrayObject; read:number; roles:WebGLBuffer; empty:WebGLBuffer; scratch:WebGLBuffer; history:{buffer:WebGLBuffer;color:WebGLBuffer;time:number}[]; write:number; lastCapture:number };
@@ -456,10 +456,13 @@ uniform vec2 uResolution;
 uniform float uBloomStrength, uExposure;
 out vec4 outColor;
 void main() {
-  vec3 sharp=texture(uImage,vUv).rgb, bloom=texture(uBloom,vUv).rgb;
-  vec2 stepUv=vec2(23.0)/uResolution;
-  vec3 wide=(texture(uBloom,vUv+vec2(stepUv.x,0.0)).rgb+texture(uBloom,vUv-vec2(stepUv.x,0.0)).rgb+texture(uBloom,vUv+vec2(0.0,stepUv.y)).rgb+texture(uBloom,vUv-vec2(0.0,stepUv.y)).rgb)*0.25;
-  vec3 light=sharp+(bloom*0.73+wide*0.35)*uBloomStrength;
+  vec3 light=texture(uImage,vUv).rgb;
+  if(uBloomStrength>0.0001) {
+    vec3 bloom=texture(uBloom,vUv).rgb;
+    vec2 stepUv=vec2(23.0)/uResolution;
+    vec3 wide=(texture(uBloom,vUv+vec2(stepUv.x,0.0)).rgb+texture(uBloom,vUv-vec2(stepUv.x,0.0)).rgb+texture(uBloom,vUv+vec2(0.0,stepUv.y)).rgb+texture(uBloom,vUv-vec2(0.0,stepUv.y)).rgb)*0.25;
+    light+=(bloom*0.73+wide*0.35)*uBloomStrength;
+  }
   float peak=max(max(light.r,light.g),light.b);
   float energy=1.0-exp(-peak*uExposure);
   vec3 chroma=light/max(peak,0.0001);
@@ -468,14 +471,16 @@ void main() {
   outColor=vec4(min(c,vec3(1.0,0.985,0.97)),1.0);
 }`;
 
-export default function PointCloudScene({ paused, className, lang = "zh", startSettled = false }: Props) {
+export default function PointCloudScene({ paused, className, lang = "zh", startSettled = false, interior = false }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const controller = useRef<{ pause: (value: boolean) => void } | null>(null);
   const pausedRef = useRef(paused);
+  const interiorRef = useRef(interior);
   const settingsRef = useRef<ParticleSettings>({ ...DEFAULT_PARTICLE_SETTINGS });
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const [contextVersion, setContextVersion] = useState(0);
   pausedRef.current = paused;
+  interiorRef.current = interior;
 
   useEffect(() => { controller.current?.pause(paused); }, [paused]);
 
@@ -492,6 +497,9 @@ export default function PointCloudScene({ paused, className, lang = "zh", startS
     let isPaused = pausedRef.current, isVisible = true, isPageVisible = !document.hidden;
     let current: Geometry | undefined;
     let dpr = 1, width = 1, height = 1, renderTargetFailed = false;
+    let compactViewport = window.matchMedia("(max-width: 700px)").matches;
+    const qualityLevels = [1, 0.82, 0.68];
+    let qualityLevel = 0, qualityElapsed = 0, qualityFrames = 0, fastWindows = 0;
     let targets: Target[] = [];
     let excitationTarget:Target|undefined;
     let excitationHistory:Target|undefined;
@@ -584,23 +592,29 @@ export default function PointCloudScene({ paused, className, lang = "zh", startS
     };
     function resize() {
       if (disposed || gl!.isContextLost()) return;
-      const bounds = canvas!.getBoundingClientRect();
-      const requestedDpr = Math.min(window.devicePixelRatio || 1, 1.65);
+      compactViewport = window.matchMedia("(max-width: 700px)").matches;
+      settingsRef.current.particleCount = compactViewport ? 65000 : DEFAULT_PARTICLE_SETTINGS.particleCount;
+      // Layout dimensions exclude the content-page CSS scale, keeping the
+      // backing buffer independent of the visual enlargement.
+      const cssWidth = canvas!.clientWidth;
+      const cssHeight = canvas!.clientHeight;
+      const requestedDpr = Math.min(window.devicePixelRatio || 1, compactViewport ? 1.15 : 1.35) * qualityLevels[qualityLevel];
       const maxDimension = Math.min(2200, gl!.getParameter(gl!.MAX_TEXTURE_SIZE) as number);
-      dpr = requestedDpr * Math.min(1, maxDimension / (Math.max(bounds.width, bounds.height) * requestedDpr));
-      const nextWidth = Math.max(1, Math.round(bounds.width * dpr));
-      const nextHeight = Math.max(1, Math.round(bounds.height * dpr));
+      dpr = requestedDpr * Math.min(1, maxDimension / (Math.max(cssWidth, cssHeight) * requestedDpr));
+      const nextWidth = Math.max(1, Math.round(cssWidth * dpr));
+      const nextHeight = Math.max(1, Math.round(cssHeight * dpr));
       if (nextWidth === width && nextHeight === height && targets.length) return;
       width = nextWidth; height = nextHeight;
       canvas!.width = width; canvas!.height = height;
       deleteTargets();
       const createTargets = () => {
-        targets.push(target(width, height, true));
-        targets.push(target(Math.ceil(width / 2), Math.ceil(height / 2)));
+        const bloomEnabled = settingsRef.current.bloom > 0.0001;
+        targets.push(target(width, height, bloomEnabled));
+        if (bloomEnabled) targets.push(target(Math.ceil(width / 2), Math.ceil(height / 2)));
         excitationTarget=target(256,144);
         excitationHistory=target(256,144);
         for(const item of [excitationTarget,excitationHistory]) {bindTarget(item);gl!.clearColor(0,0,0,0);gl!.clear(gl!.COLOR_BUFFER_BIT);}
-        targets.push(target(Math.ceil(width / 2), Math.ceil(height / 2)));
+        if (bloomEnabled) targets.push(target(Math.ceil(width / 2), Math.ceil(height / 2)));
       };
       try {
         try { createTargets(); }
@@ -726,8 +740,9 @@ export default function PointCloudScene({ paused, className, lang = "zh", startS
       return settingsRef.current;
     }
     function applyFlowTrail(value:number) {
-      if(settingsRef.current.flowTrail!==value) {
-        settingsRef.current={...settingsRef.current,introTrail:0,flowTrail:value};
+      const adapted = compactViewport ? value * 0.45 : value;
+      if(settingsRef.current.flowTrail!==adapted) {
+        settingsRef.current={...settingsRef.current,introTrail:0,flowTrail:adapted};
       }
       return settingsRef.current;
     }
@@ -825,7 +840,8 @@ export default function PointCloudScene({ paused, className, lang = "zh", startS
       gl!.uniform1f(tu.uScreenAspect,width/height);gl!.uniform1f(tu.uCssHeight,height/dpr);
       gl!.uniform1f(tu.uIntroTrail,parameters.introTrail);gl!.uniform1f(tu.uFlowTrail,parameters.flowTrail);
       let pairs=0;
-      for(let newerIndex=snapshots.length-1;newerIndex>0 && pairs<PARTICLE_TRAIL_MAX_PAIRS;) {
+      const pairLimit = compactViewport ? 3 : interiorRef.current ? 5 : PARTICLE_TRAIL_MAX_PAIRS;
+      for(let newerIndex=snapshots.length-1;newerIndex>0 && pairs<pairLimit;) {
         const olderIndex=Math.max(0,newerIndex-2),older=snapshots[olderIndex],newer=snapshots[newerIndex];
         const olderAge=motionTime-older.time,newerAge=Math.max(0,motionTime-newer.time);
         const weight=getParticleHistoryWeight(Math.max(parameters.introTrail,parameters.flowTrail),Math.max(.000001,newerAge));
@@ -895,7 +911,8 @@ export default function PointCloudScene({ paused, className, lang = "zh", startS
     }
     function render(now: number) {
       frame = 0;
-      if (disposed || gl!.isContextLost() || !isVisible || !isPageVisible || targets.length !== 3 || !excitationTarget || !current) { lastTime = 0; return; }
+      const bloomEnabled = settingsRef.current.bloom > 0.0001;
+      if (disposed || gl!.isContextLost() || !isVisible || !isPageVisible || targets.length !== (bloomEnabled ? 3 : 1) || !excitationTarget || !current) { lastTime = 0; return; }
       const delta = lastTime ? Math.min((now - lastTime) / 1000, 0.1) : 0;
       lastTime = now;
       let parameters = settingsRef.current;
@@ -917,6 +934,14 @@ export default function PointCloudScene({ paused, className, lang = "zh", startS
         if(change.figureSpeed!==null)parameters=applyFigureSpeed(change.figureSpeed);
         if(change.flowTrail!==null)parameters=applyFlowTrail(change.flowTrail);
       }
+      if (interiorRef.current) {
+        parameters = {
+          ...parameters,
+          floatAmplitude: compactViewport ? 4.7 : 5.9,
+          galaxyStrength: compactViewport ? 0.87 : 0.96,
+          sceneStrength: compactViewport ? 0.48 : 0.53,
+        };
+      }
       const timeline=getParticleTimeline(clocks.figure);
       const response = 1-Math.exp(-delta/parameters.cameraSmoothing);
       pointer[0] += (destination[0] - pointer[0]) * response;
@@ -936,17 +961,44 @@ export default function PointCloudScene({ paused, className, lang = "zh", startS
       const layers=drawCloud(current,parameters,timeline.morph);
 
       gl!.disable(gl!.BLEND); gl!.bindVertexArray(screenVao);
-      gl!.useProgram(blur); gl!.uniform1i(bu.uImage, 0);
-      bindTarget(targets[1]); texture(targets[0].bloomSource!, 0);
-      gl!.uniform2f(bu.uDirection, parameters.bloomRadius / width, 0); gl!.drawArrays(gl!.TRIANGLES, 0, 3);
-      bindTarget(targets[2]); texture(targets[1].texture, 0);
-      gl!.uniform2f(bu.uDirection, 0, parameters.bloomRadius / height); gl!.drawArrays(gl!.TRIANGLES, 0, 3);
+      if (bloomEnabled) {
+        gl!.useProgram(blur); gl!.uniform1i(bu.uImage, 0);
+        bindTarget(targets[1]); texture(targets[0].bloomSource!, 0);
+        gl!.uniform2f(bu.uDirection, parameters.bloomRadius / width, 0); gl!.drawArrays(gl!.TRIANGLES, 0, 3);
+        bindTarget(targets[2]); texture(targets[1].texture, 0);
+        gl!.uniform2f(bu.uDirection, 0, parameters.bloomRadius / height); gl!.drawArrays(gl!.TRIANGLES, 0, 3);
+      }
       bindTarget(null); gl!.useProgram(composite);
-      texture(targets[0].texture, 0); texture(targets[2].texture, 1);
+      texture(targets[0].texture, 0); texture(bloomEnabled ? targets[2].texture : targets[0].texture, 1);
       gl!.uniform1i(cu.uImage, 0); gl!.uniform1i(cu.uBloom, 1); gl!.uniform2f(cu.uResolution, width, height);
       gl!.uniform1f(cu.uBloomStrength, parameters.bloom); gl!.uniform1f(cu.uExposure, parameters.exposure);
       gl!.drawArrays(gl!.TRIANGLES, 0, 3);
       finishParticleLoading({duration:180});
+      // Lower only the canvas resolution after sustained slow frames. The text
+      // remains sharp DOM content, while point sprites tolerate this scaling.
+      if (!isPaused && delta > 0) {
+        qualityElapsed += delta;
+        qualityFrames++;
+        if (qualityElapsed >= 2.2) {
+          const frameInterval = qualityElapsed / qualityFrames;
+          if (frameInterval > 0.024 && qualityLevel < qualityLevels.length - 1) {
+            qualityLevel++;
+            fastWindows = 0;
+            resize();
+          } else if (frameInterval < 0.0178 && qualityLevel > 0) {
+            fastWindows++;
+            if (fastWindows >= 3) {
+              qualityLevel--;
+              fastWindows = 0;
+              resize();
+            }
+          } else {
+            fastWindows = 0;
+          }
+          qualityElapsed = 0;
+          qualityFrames = 0;
+        }
+      }
       if ((!isPaused && (parameters.floatSpeed>0 || parameters.flowSpeed>0 || parameters.figureSpeed>0 || (mouseActive&&parameters.mouseFieldStrength>0) || now<mouseSettlingUntil)) || Math.abs(pointer[0] - destination[0]) + Math.abs(pointer[1] - destination[1]) > 0.00001) schedule();
       else lastTime = 0;
     }

@@ -3692,34 +3692,6 @@ footer {
   border-color: var(--red);
 }
 
-.reveal {
-  opacity: 0;
-  transform: translateY(22px);
-  transition: opacity 700ms cubic-bezier(0.2, 0.7, 0.2, 1), transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
-}
-
-.reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Fade only section content: the established light/dark section colours stay fixed. */
-.scroll-focus-section > :not([aria-hidden="true"]):not(.reveal),
-.scroll-focus-section > .reveal.is-visible {
-  opacity: var(--scroll-focus-opacity, 1);
-  filter: blur(var(--scroll-focus-blur, 0px));
-  transition: opacity 160ms linear, filter 160ms linear;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scroll-focus-section > :not([aria-hidden="true"]):not(.reveal),
-  .scroll-focus-section > .reveal.is-visible {
-    opacity: 1;
-    filter: none;
-    transition: none;
-  }
-}
-
 .intro-sequence:focus {
   outline: none;
 }
@@ -5154,10 +5126,6 @@ footer {
     transition-duration: 0.01ms !important;
   }
 
-  .reveal {
-    opacity: 1;
-    transform: none;
-  }
 }
 
 /* Shared lower-level type scale. Display headings and the established grid stay unchanged. */

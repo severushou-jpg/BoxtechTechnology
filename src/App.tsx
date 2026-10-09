@@ -643,17 +643,6 @@ const ownerNames: Record<PublicationOwner, Localized> = {
 
 function usePageObservers(setActiveSection: (id: string) => void, refreshKey: string) {
   useEffect(() => {
-    const revealObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.classList.add("is-visible");
-        });
-      },
-      { threshold: 0.12 },
-    );
-
-    document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
-
     const sections = Array.from(document.querySelectorAll<HTMLElement>("main section[id]"));
     let sectionFrame = 0;
     const syncActiveSection = () => {
@@ -673,60 +662,11 @@ function usePageObservers(setActiveSection: (id: string) => void, refreshKey: st
     window.addEventListener("resize", scheduleSection);
 
     return () => {
-      revealObserver.disconnect();
       window.cancelAnimationFrame(sectionFrame);
       window.removeEventListener("scroll", scheduleSection);
       window.removeEventListener("resize", scheduleSection);
     };
   }, [refreshKey, setActiveSection]);
-}
-
-function useScrollFocus(refreshKey: string) {
-  useEffect(() => {
-    const sections = Array.from(document.querySelectorAll<HTMLElement>("main > section"));
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const compact = window.matchMedia("(max-width: 700px)");
-    let frame = 0;
-
-    const update = () => {
-      frame = 0;
-      const viewportHeight = window.innerHeight;
-      const readingLine = viewportHeight * 0.55;
-      const fadeDistance = viewportHeight * 0.7;
-      const minimumOpacity = compact.matches ? 0.78 : 0.52;
-      const maximumBlur = compact.matches ? 1.5 : 4;
-
-      sections.forEach((section) => {
-        const progress = reducedMotion.matches
-          ? 0
-          : Math.min(1, Math.max(0, (readingLine - section.getBoundingClientRect().bottom) / fadeDistance));
-        const eased = progress * progress * (3 - 2 * progress);
-        section.style.setProperty("--scroll-focus-opacity", String(1 - (1 - minimumOpacity) * eased));
-        section.style.setProperty("--scroll-focus-blur", `${maximumBlur * eased}px`);
-      });
-    };
-    const schedule = () => { if (!frame) frame = window.requestAnimationFrame(update); };
-
-    sections.forEach((section) => section.classList.add("scroll-focus-section"));
-    schedule();
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
-    reducedMotion.addEventListener("change", schedule);
-    compact.addEventListener("change", schedule);
-
-    return () => {
-      window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
-      reducedMotion.removeEventListener("change", schedule);
-      compact.removeEventListener("change", schedule);
-      if (frame) window.cancelAnimationFrame(frame);
-      sections.forEach((section) => {
-        section.classList.remove("scroll-focus-section");
-        section.style.removeProperty("--scroll-focus-opacity");
-        section.style.removeProperty("--scroll-focus-blur");
-      });
-    };
-  }, [refreshKey]);
 }
 
 function SectionHeading({
@@ -1291,7 +1231,6 @@ function App() {
   const firstNavLinkRef = useRef<HTMLAnchorElement>(null);
 
   usePageObservers(setActiveSection, `${publicationFilter}:${activeProject?.slug ?? activeAlumnus?.slug ?? activeMainProject?.slug ?? "home"}`);
-  useScrollFocus(`${lang}:${activeProject?.slug ?? activeAlumnus?.slug ?? activeMainProject?.slug ?? "home"}`);
 
   useEffect(() => {
     document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
