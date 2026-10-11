@@ -42,7 +42,7 @@ npm run build
 ## 页面与内容维护
 
 - 首页章节依次包含 About、Research Opportunities、Main Projects、Work、Team 和 Publications；另外有 `/alumni/:slug`、`/opportunities/:slug`、`/projects/:slug` 详情页。
-- 导航、团队、顾问、论文与研究影像内容主要位于 `src/App.tsx`；全站样式位于 `src/styles.css`。
+- 导航、团队、现任研究助理、顾问、论文与研究影像内容主要位于 `src/App.tsx`；全站样式位于 `src/styles.css`。现任研究助理资料维护在 `currentResearchAssistants` 数据中，头像放在 `public/images/team/`，仅发布本人确认可公开的信息。
 - 往届研究助理资料位于 `src/alumni.ts`，页面组件位于 `src/AlumniViews.tsx`；人像素材位于 `public/images/alumni/`。请区分已完成的学历、在读项目、录取机会与就业经历，仅添加核实过的日期和事实。
 - 可申请研究项目及其中英双语详情位于 `src/recruitment.ts`。新增项目时使用唯一 `slug` 和 `order`；`published: false` 可暂时隐藏，`status` 可标为 `open`、`upcoming` 或 `closed`。
 - 主要项目及其中英双语详情位于 `src/mainProjects.ts`，配图位于 `public/images/projects/`。围术期 AR 患者宣教与术后 VR 床旁康复是目标不同的两个项目，不应混写成果。

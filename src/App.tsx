@@ -325,6 +325,24 @@ const team = [
   },
 ];
 
+const currentResearchAssistants = [
+  {
+    name: { zh: "侯炳旭", en: "Bingxu HOU" },
+    image: "/images/team/bingxu-hou-2026.png",
+    start: { zh: "2026 年 3 月起", en: "Since March 2026" },
+    personalWebsite: "https://bingxuhou.com/",
+    tags: [
+      { zh: "交互设计", en: "Interaction Design" },
+      { zh: "网站开发", en: "Web Development" },
+      { zh: "科研传播", en: "Research Communication" },
+    ],
+    bio: {
+      zh: "负责 I²Lab 网站的视觉与交互设计、搭建及持续维护，让实验室的研究项目、团队信息和论文成果以清晰的双语形式呈现。",
+      en: "Bingxu designed, built, and continues to maintain the I²Lab website. His work brings the laboratory’s projects, people, and publications together in a clear bilingual experience, connecting interaction design and web development with research communication.",
+    },
+  },
+];
+
 const advisors = [
   {
     name: { zh: "李汶锦教授", en: "Dr. Boon Giin Lee" },
@@ -1531,6 +1549,29 @@ function App() {
                       )}
                       <ArrowLink href={member.profileUrl}>{lang === "zh" ? "诺丁汉官方研究目录" : "Official Nottingham research directory"}</ArrowLink>
                     </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <div className="team-current-header research-assistant-header reveal">
+              <span>{lang === "zh" ? "现任研究助理" : "CURRENT RESEARCH ASSISTANTS"}</span>
+              <p>{lang === "zh" ? "让实验室的研究在数字空间中被看见。" : "Making the laboratory’s research visible in digital space."}</p>
+            </div>
+            <div className="research-assistant-list">
+              {currentResearchAssistants.map((assistant, index) => (
+                <article className="research-assistant-card reveal" key={assistant.name.en}>
+                  <div className="research-assistant-portrait">
+                    <img src={assistant.image} alt={t(assistant.name, lang)} loading="lazy" decoding="async" />
+                    <span>{`RA / ${String(index + 1).padStart(2, "0")}`}</span>
+                  </div>
+                  <div className="research-assistant-info">
+                    <p className="research-assistant-since">{t(assistant.start, lang)}</p>
+                    <h3>{t(assistant.name, lang)}</h3>
+                    <small>{lang === "zh" ? assistant.name.en : assistant.name.zh}</small>
+                    <p className="research-assistant-bio">{t(assistant.bio, lang)}</p>
+                    <div className="tag-list">{assistant.tags.map((tag) => <span key={tag.en}>{t(tag, lang)}</span>)}</div>
+                    <ArrowLink href={assistant.personalWebsite}>{lang === "zh" ? "个人网站" : "Personal website"}</ArrowLink>
                   </div>
                 </article>
               ))}
