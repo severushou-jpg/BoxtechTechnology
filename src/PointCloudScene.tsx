@@ -1059,7 +1059,7 @@ export default function PointCloudScene({ paused, className, lang = "zh", startS
   }, [contextVersion,startSettled]);
 
   return <div className={`point-cloud-scene ${className ?? ""}`} data-state={status}>
-    <canvas ref={canvasRef} role="img" aria-label={lang === "zh" ? "红橙色三维体积星云舒展并与 XR 使用者和机器人指尖相遇的点云融为一体" : "A red-orange volumetric nebula expands and merges with an XR user and a robot touching fingertips"} style={{ width: "100%", height: "100%", display: "block" }} />
+    <canvas ref={canvasRef} role="img" aria-label={lang === "zh" ? "红橙色点云形成星云、XR 使用者与机器人指尖相遇的场景" : "A red-orange volumetric nebula expands and merges with an XR user and a robot touching fingertips"} style={{ width: "100%", height: "100%", display: "block" }} />
     {status !== "ready" && <p className="point-cloud-status" role="status">
       {status === "loading" ? (lang === "zh" ? "正在加载粒子场" : "Loading particle field") : (lang === "zh" ? "粒子场暂时无法显示，请使用导航浏览实验室。" : "The particle field is unavailable. Use the navigation to explore the laboratory.")}
     </p>}

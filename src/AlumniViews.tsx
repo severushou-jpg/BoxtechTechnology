@@ -33,7 +33,7 @@ export function AlumniSection({ lang }: { lang: Lang }) {
         <div className="section-heading reveal">
           <div className="eyebrow"><span />{lang === "zh" ? "我们的往届成员" : "OUR ALUMNI"}</div>
           <h2 id="alumni-title">{lang === "zh" ? "往届研究助理与毕业去向" : "RA Alumni & Graduate Pathways"}</h2>
-          <p>{lang === "zh" ? "从实验室里的研究问题，走向更广阔的学术与职业实践。认识曾与我们共同探索的研究助理，以及他们各自延续的方向。" : "From questions explored in the laboratory to new academic and professional settings. Meet former research assistants and discover where their interests have taken them."}</p>
+          <p>{lang === "zh" ? "他们曾在这里一起做研究，如今正走向不同的学术和职业道路。认识这些往届研究助理，看看他们把好奇心带到了哪里。" : "From questions explored in the laboratory to new academic and professional settings. Meet former research assistants and discover where their interests have taken them."}</p>
         </div>
         <div className="alumni-grid">
           {alumni.map((profile, index) => (

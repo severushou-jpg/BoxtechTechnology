@@ -41,7 +41,7 @@ const applications = [
     number: "A.01",
     title: { zh: "康复与长期健康管理", en: "Rehabilitation & Long-term Health" },
     text: {
-      zh: "在不增加用户负担的前提下捕捉动作质量与训练完成度，以直观反馈支持及时纠正和更早的风险识别。",
+      zh: "探索如何在不增加使用负担的情况下了解动作质量和训练完成情况，用直观反馈帮助调整动作，并提示潜在风险。",
       en: "Capture movement quality and training completion without adding burden, enabling timely correction and earlier risk recognition.",
     },
   },
@@ -49,7 +49,7 @@ const applications = [
     number: "A.02",
     title: { zh: "医学教育与技能训练", en: "Medical Education & Skills Training" },
     text: {
-      zh: "用空间交互构建可操作、可重复的教学环境，降低复杂知识的理解门槛并提升训练效率。",
+      zh: "把复杂的医学知识变成能看、能操作、能反复练习的体验，让学习和训练更容易上手。",
       en: "Spatial interaction creates actionable, repeatable learning environments that make complex knowledge clearer and training more efficient.",
     },
   },
@@ -57,7 +57,7 @@ const applications = [
     number: "A.03",
     title: { zh: "无障碍与包容性交互", en: "Accessible & Inclusive Interaction" },
     text: {
-      zh: "将前沿技术转化为可用、可及、可持续的真实场景方案，让更多人获得平等而有尊严的交互支持。",
+      zh: "让新技术真正好用、容易获得，也能长期发挥作用，让更多人享有平等而有尊严的交互体验。",
       en: "Translate frontier technology into usable, accessible, and sustainable systems that support more equitable, dignified experiences.",
     },
   },
@@ -86,9 +86,9 @@ const researchStories: ResearchStory[] = [
   {
     id: "rehabilitation-in-practice",
     tag: { zh: "自适应康复 / 01", en: "ADAPTIVE REHAB / 01" },
-    title: { zh: "让训练强度跟随人的状态变化。", en: "Let training intensity move with the person." },
+    title: { zh: "让训练跟上人的节奏。", en: "Let training intensity move with the person." },
     note: {
-      zh: "自适应并不是简单地变难或变容易，而是在挑战、信心与持续参与之间寻找动态平衡。",
+      zh: "训练不只是变难或变容易。我们希望它能随着人的状态调整，让挑战、信心和持续练习保持平衡。",
       en: "Adaptation is not simply making a task harder or easier. It is a moving balance between challenge, confidence, and sustained participation.",
     },
     figures: [
@@ -115,9 +115,9 @@ const researchStories: ResearchStory[] = [
   {
     id: "collaborative-immersion",
     tag: { zh: "社会临场感 / 02", en: "SOCIAL PRESENCE / 02" },
-    title: { zh: "共同进入，也共同在场。", en: "Enter together. Feel present together." },
+    title: { zh: "在虚拟世界里，也能感到彼此在场。", en: "Enter together. Feel present together." },
     note: {
-      zh: "当人们共同进入沉浸式世界，界面不再只是一块屏幕，而会成为承载合作、熟悉感与社会临场感的空间。",
+      zh: "当人们一起走进沉浸式世界，合作和彼此在场的感觉，也会成为体验的一部分。",
       en: "When people enter an immersive world together, the interface becomes a social space—carrying collaboration, familiarity, and presence beyond the screen.",
     },
     figures: [
@@ -144,9 +144,9 @@ const researchStories: ResearchStory[] = [
   {
     id: "embodied-data",
     tag: { zh: "具身数据 / 03", en: "EMBODIED DATA / 03" },
-    title: { zh: "让双手成为数据的接口。", en: "Let the hands become the interface to data." },
+    title: { zh: "用双手探索数据。", en: "Let the hands become the interface to data." },
     note: {
-      zh: "当抽象数据获得尺度、方向与触感，理解不再只发生在屏幕上，而发生在身体与空间的协同之中。",
+      zh: "当数据有了大小、方向和触感，人们就能借助双手和身体，在空间里理解它。",
       en: "When abstract data gains scale, direction, and tactility, understanding moves beyond the screen and into the coordination of body and space.",
     },
     figures: [
@@ -154,7 +154,7 @@ const researchStories: ResearchStory[] = [
         image: "/images/research/embodied-two-handed-interactions.png",
         alt: { zh: "沉浸式数据探索中的双手交互条件", en: "Two-handed interaction conditions for immersive data exploration" },
         label: { zh: "交互 / 03A", en: "INTERACTION / 03A" },
-        title: { zh: "具身双手交互设计空间", en: "Embodied two-handed interaction design space" },
+        title: { zh: "双手交互的不同设计方式", en: "Embodied two-handed interaction design space" },
         pdf: "/papers/embodied-two-handed-immersive-data-exploration.pdf",
         source: "ACM CHI 2024 EA",
         fit: "contain",
@@ -173,9 +173,9 @@ const researchStories: ResearchStory[] = [
   {
     id: "gamified-collaboration",
     tag: { zh: "游戏化协作 / 04", en: "GAMIFIED COLLABORATION / 04" },
-    title: { zh: "把关系写进游戏机制。", en: "Write relationships into the game mechanics." },
+    title: { zh: "熟人与陌生人，需要怎样的合作体验？", en: "Write relationships into the game mechanics." },
     note: {
-      zh: "参与者是否熟悉彼此，会改变他们对竞争、合作与奖励的偏好；设计需要把这种社会关系纳入证据链。",
+      zh: "熟人和陌生人对竞争、合作与奖励的感受可能不同。设计游戏时，也需要考虑他们之间的关系。",
       en: "Whether participants know one another changes how they respond to competition, cooperation, and reward. Design must bring those social relationships into the evidence loop.",
     },
     figures: [
@@ -183,7 +183,7 @@ const researchStories: ResearchStory[] = [
         image: "/images/research/gamification-preference-concept.png",
         alt: { zh: "人际关系如何影响沉浸式游戏化偏好的概念图", en: "Concept illustration of how interpersonal relationships shape immersive gamification preferences" },
         label: { zh: "协作学习 / 04A", en: "CO-LEARNING / 04A" },
-        title: { zh: "关系如何塑造游戏化偏好", en: "How relationships shape gamification preferences" },
+        title: { zh: "人与人的关系，如何影响游戏偏好", en: "How relationships shape gamification preferences" },
         pdf: "/papers/interpersonal-relationships-gamification-ivr.pdf",
         source: "IEEE VR 2025",
         fit: "contain",
@@ -191,8 +191,8 @@ const researchStories: ResearchStory[] = [
       {
         image: "/images/research/gamification-collaboration-study.png",
         alt: { zh: "协作式沉浸游戏的前测、三项任务与后测流程", en: "Pre-study, three-task, and post-study flow for collaborative immersive gaming" },
-        label: { zh: "证据闭环 / 04B", en: "EVIDENCE LOOP / 04B" },
-        title: { zh: "从设计走向可复现证据", en: "From game design to reproducible evidence" },
+        label: { zh: "实验流程 / 04B", en: "EVIDENCE LOOP / 04B" },
+        title: { zh: "用实验检验游戏设计", en: "From game design to reproducible evidence" },
         pdf: "/papers/interpersonal-relationships-gamification-ivr.pdf",
         source: "IEEE VR 2025",
         fit: "contain",
@@ -202,9 +202,9 @@ const researchStories: ResearchStory[] = [
   {
     id: "social-intelligence",
     tag: { zh: "社会智能 / 05", en: "SOCIAL INTELLIGENCE / 05" },
-    title: { zh: "以差异促成共同理解。", en: "Let differences lead to shared understanding." },
+    title: { zh: "从彼此的差异出发，找到合作的方法。", en: "Let differences lead to shared understanding." },
     note: {
-      zh: "非对称信息可以推动合作，虚拟同伴可以提供支持；社会智能来自对人与人之间差异、关系与需要的持续理解。",
+      zh: "每个人知道的、需要的都不一样。理解这些差异，才能让协作更顺畅，也让虚拟同伴提供更合适的支持。",
       en: "Asymmetric information can prompt collaboration, while virtual peers can provide support. Social intelligence begins with understanding differences, relationships, and needs.",
     },
     figures: [
@@ -212,7 +212,7 @@ const researchStories: ResearchStory[] = [
         image: "/images/research/context-dependent-collaboration-scenes.png",
         alt: { zh: "数据、位置与视角三类非对称协作谜题", en: "Data-, position-, and perspective-based asymmetric collaboration puzzles" },
         label: { zh: "非对称协作 / 05A", en: "ASYMMETRY / 05A" },
-        title: { zh: "以差异驱动协作与共同理解", en: "Using asymmetry to drive collaboration" },
+        title: { zh: "信息不同，如何一起完成任务", en: "Using asymmetry to drive collaboration" },
         pdf: "/papers/context-dependent-social-engagement-immersive-learning.pdf",
         source: "CHBR 2026",
         fit: "contain",
@@ -221,7 +221,7 @@ const researchStories: ResearchStory[] = [
         image: "/images/research/virtual-peer-mentor-framework.png",
         alt: { zh: "虚拟同伴导师提供信息、动作与情感支持的框架", en: "Virtual peer mentor framework for informational, instrumental, and emotional support" },
         label: { zh: "同伴支持 / 05B", en: "PEER SUPPORT / 05B" },
-        title: { zh: "把同伴支持嵌入康复训练", en: "Embedding peer support into rehabilitation" },
+        title: { zh: "虚拟同伴如何支持康复训练", en: "Embedding peer support into rehabilitation" },
         pdf: "/papers/virtual-peer-mentor-vr-rehabilitation.pdf",
         source: "IEEE TVCG 2026",
         fit: "contain",
@@ -231,9 +231,9 @@ const researchStories: ResearchStory[] = [
   {
     id: "spatial-visualisation",
     tag: { zh: "空间可视化 / 06", en: "SPATIAL VISUALISATION / 06" },
-    title: { zh: "让时间、人物与数据在空间相遇。", en: "Let time, people, and data meet in space." },
+    title: { zh: "把时间、人物和数据放进同一个空间。", en: "Let time, people, and data meet in space." },
     note: {
-      zh: "空间可视化把复杂信息变得可探索：一端是跨越时间的人物轨迹，另一端是从系统综述中提炼出的交互设计秩序。",
+      zh: "复杂的信息也可以直观地探索。我们尝试在空间里看清人物随时间变化的轨迹，也从已有研究中寻找更好的交互方式。",
       en: "Spatial visualisation makes complex information explorable—from character trajectories across time to interaction patterns distilled through systematic review.",
     },
     figures: [
@@ -250,7 +250,7 @@ const researchStories: ResearchStory[] = [
         image: "/images/research/visualization-widget-taxonomy.png",
         alt: { zh: "实物数据探索任务、交互与可视化组件的分类图", en: "Taxonomy of tasks, interactions, and visualization widgets for tangible data exploration" },
         label: { zh: "设计空间 / 06B", en: "DESIGN SPACE / 06B" },
-        title: { zh: "从研究证据中提炼交互秩序", en: "Distilling interaction patterns from evidence" },
+        title: { zh: "从已有研究中寻找设计线索", en: "Distilling interaction patterns from evidence" },
         pdf: "/papers/visualization-widgets-tangible-data-exploration.pdf",
         source: "IEEE VIS 2025",
         fit: "contain",
@@ -272,7 +272,7 @@ const team = [
       { zh: "教育科技", en: "EdTech" },
     ],
     bio: {
-      zh: "宁波诺丁汉大学计算机与运筹学博士在读。本科专业为计算机科学与人工智能，2025 年以一等学位毕业后直升博士项目。研究聚焦扩展现实、智慧医疗与教育科技，成果发表于 IEEE VR、UIST 与 Computers in Human Behavior Reports。",
+      zh: "目前在宁波诺丁汉大学攻读计算机与运筹学博士。本科就读计算机科学与人工智能专业，2025 年以一等学位毕业后直升博士。他关注扩展现实、智慧医疗和教育科技，研究成果发表于 IEEE VR、UIST 和 Computers in Human Behavior Reports。",
       en: "A PhD candidate in Computer Science and Operations Research at the University of Nottingham Ningbo China. After graduating with First-Class Honours in Computer Science with Artificial Intelligence in 2025, he progressed directly into doctoral study. His XR, smart healthcare, and EdTech research has appeared at IEEE VR, UIST, and Computers in Human Behavior Reports.",
     },
   },
@@ -288,7 +288,7 @@ const team = [
       { zh: "数字艺术", en: "Digital Art" },
     ],
     bio: {
-      zh: "宁波诺丁汉大学计算机科学博士研究生，独立 XR 开发者与数字艺术家。研究聚焦扩展现实、有形交互及 AI 驱动的交互技术，相关成果发表于 CHI、IEEE VIS 等国际学术会议及期刊。",
+      zh: "目前在宁波诺丁汉大学攻读计算机科学博士，也是独立 XR 开发者和数字艺术家。他关注扩展现实、有形交互和 AI 驱动的交互技术，相关成果发表于 CHI、IEEE VIS 等国际会议和期刊。",
       en: "A PhD researcher in Computer Science at the University of Nottingham Ningbo China, independent XR developer, and digital artist. His research focuses on extended reality, tangible interaction, and AI-driven interaction technologies, with work published in international academic conferences and journals including CHI and IEEE VIS.",
     },
   },
@@ -304,7 +304,7 @@ const team = [
       { zh: "系统设计", en: "Systems Design" },
     ],
     bio: {
-      zh: "宁波诺丁汉大学计算机科学博士在读，拥有新加坡国立大学计算机工程硕士学位与加拿大阿尔伯塔大学学士学位。曾任博世 ADAS 泊车系统工程师，研究聚焦 AI 赋能的物联网、智能生物医学应用与健康福祉系统设计。",
+      zh: "目前在宁波诺丁汉大学攻读计算机科学博士，拥有新加坡国立大学计算机工程硕士学位和加拿大阿尔伯塔大学学士学位。她曾任博世 ADAS 泊车系统工程师，现在关注 AI 与物联网、生物医学应用，以及面向健康生活的系统设计。",
       en: "A Computer Science PhD candidate at the University of Nottingham Ningbo China, with an M.Eng. from the National University of Singapore and a bachelor’s degree from the University of Alberta. A former BOSCH ADAS parking systems engineer, she researches AI-enabled IoT, intelligent biomedical applications, and systems for healthcare and wellbeing.",
     },
   },
@@ -319,7 +319,7 @@ const team = [
       { zh: "Unity", en: "Unity" },
     ],
     bio: {
-      zh: "宁波诺丁汉大学计算机科学博士在读、XR 康复严肃游戏研发者。研究沉浸式虚拟现实智能康复，关注以游戏化、虚拟角色与交互设计提升康复体验，并持续与宁波医疗机构合作推动临床验证与应用转化。",
+      zh: "目前在宁波诺丁汉大学攻读计算机科学博士，开发用于康复的 XR 严肃游戏。他研究如何通过游戏化、虚拟角色和交互设计改善沉浸式康复体验，并持续与宁波的医疗机构合作，探索临床验证和实际应用。",
       en: "A Computer Science PhD candidate at the University of Nottingham Ningbo China and developer of XR rehabilitation serious games. His work explores immersive intelligent rehabilitation through gamification, virtual characters, and interaction design, alongside long-term clinical collaboration with healthcare institutions in Ningbo.",
     },
   },
@@ -337,7 +337,7 @@ const currentResearchAssistants = [
       { zh: "科研传播", en: "Research Communication" },
     ],
     bio: {
-      zh: "负责 I²Lab 网站的视觉与交互设计、搭建及持续维护，让实验室的研究项目、团队信息和论文成果以清晰的双语形式呈现。",
+      zh: "负责 I²Lab 网站的视觉与交互设计、开发和日常维护，让更多人可以清楚地了解实验室的项目、团队和论文成果。",
       en: "Bingxu designed, built, and continues to maintain the I²Lab website. His work brings the laboratory’s projects, people, and publications together in a clear bilingual experience, connecting interaction design and web development with research communication.",
     },
   },
@@ -353,7 +353,7 @@ const advisors = [
     image: "/images/team/boon-giin-lee.png",
     profileUrl: "https://research.nottingham.edu.cn/en/persons/boon-giin-lee/",
     bio: {
-      zh: "人机交互与人本智能感知学者，传感器、传感器网络与仪器技术研究组负责人，IEEE 资深会员，长期推动 XR 与智能交互在医疗和康复领域的研究转化。",
+      zh: "长期研究人机交互与以人为本的智能感知，担任传感器、传感器网络与仪器技术研究组负责人，也是 IEEE 资深会员。他致力于推动 XR 和智能交互在医疗、康复领域的研究与应用。",
       en: "A scholar in human-computer interaction and human-centred intelligent sensing, Head of the Sensors, Sensor Networks and Instrumentation research group, and IEEE Senior Member. His work advances the translation of XR and intelligent interaction into healthcare and rehabilitation.",
     },
   },
@@ -366,7 +366,7 @@ const advisors = [
     image: "/images/team/liwei-zheng.jpg",
     profileUrl: "",
     bio: {
-      zh: "在供应链管理与冷链物流领域拥有多年企业经营及项目落地经验，专长覆盖仓配网络、冷链运营、合作伙伴拓展以及成本与风险管理。",
+      zh: "在供应链管理和冷链物流领域有多年企业经营与项目实践经验，熟悉仓配网络、冷链运营、合作伙伴拓展，以及成本和风险管理。",
       en: "An experienced operator in supply-chain management and cold-chain logistics, with expertise spanning distribution networks, cold-chain operations, partner development, and cost and risk control.",
     },
   },
@@ -738,9 +738,9 @@ function OpportunitiesOverview({ lang }: { lang: Lang }) {
         <SectionHeading
           lang={lang}
           eyebrow={{ zh: "研究机会", en: "RESEARCH OPPORTUNITIES" }}
-          title={{ zh: "从参与真实研究开始，建立自己的学术路径。", en: "Begin with real research. Build your own academic path." }}
+          title={{ zh: "从真实项目出发，找到自己的方向。", en: "Begin with real research. Build your own academic path." }}
           description={{
-            zh: "加入智能交互技术研究实验室正在开展的项目，在长期协作中经历从系统开发、实验设计到论文写作的完整研究过程。",
+            zh: "加入实验室正在开展的项目，和团队长期合作，学习系统开发、实验设计和论文写作，亲身经历研究是怎样一步步完成的。",
             en: "Join an active Intelligent Interaction Laboratory project and experience the complete research process—from system development and experimental design to academic writing.",
           }}
         />
@@ -774,7 +774,7 @@ function OpportunitiesOverview({ lang }: { lang: Lang }) {
           </div>
           <p>
             {lang === "zh"
-              ? "请在选择项目后联系对应负责人。邮件正文使用英文要点形式，不超过 200 词，并附上个人简历与相关作品链接。"
+              ? "选好项目后，请给对应负责人发邮件。正文用英文要点撰写，不超过 200 词，并附上简历和相关作品链接。"
               : "Choose a project, then contact its project lead. Use no more than 200 words in English bullet points and attach your CV and relevant project links."}
           </p>
           <a className="primary-button" href="#available-projects">
@@ -783,8 +783,8 @@ function OpportunitiesOverview({ lang }: { lang: Lang }) {
           </a>
         </div>
         <a className="alumni-recruitment-link reveal" href="#alumni">
-          <span>{lang === "zh" ? "从研究参与，到下一段旅程" : "FROM RESEARCH TO WHAT COMES NEXT"}</span>
-          <strong>{lang === "zh" ? "了解往届研究助理的成长路径" : "Discover our RA alumni’s pathways"}</strong>
+          <span>{lang === "zh" ? "从实验室出发，走向更多可能" : "FROM RESEARCH TO WHAT COMES NEXT"}</span>
+          <strong>{lang === "zh" ? "看看往届研究助理如今走到了哪里" : "Discover our RA alumni’s pathways"}</strong>
           <i aria-hidden="true">↗</i>
         </a>
       </div>
@@ -800,9 +800,9 @@ function OpportunityDirectory({ lang }: { lang: Lang }) {
           <SectionHeading
             lang={lang}
             eyebrow={{ zh: "可申请研究项目", en: "AVAILABLE RESEARCH PROJECTS" }}
-            title={{ zh: "选择一个值得长期投入的问题。", en: "Choose a question worth staying with." }}
+            title={{ zh: "选择一个你愿意长期投入的问题。", en: "Choose a question worth staying with." }}
             description={{
-              zh: "项目将随实验室研究进展持续更新。点击项目进入详情页，查看研究背景、参与要求与申请方式。",
+              zh: "这里的项目会随着实验室的研究进展更新。点开感兴趣的项目，就能了解它在做什么、需要哪些能力，以及如何申请。",
               en: "Opportunities evolve with the laboratory’s research. Open a project to review its context, participation requirements, and application route.",
             }}
           />
@@ -874,7 +874,7 @@ function OpportunityDetailPage({ project, lang }: { project: ResearchOpportunity
         <div className="section-frame project-detail-content">
           <aside className="project-detail-aside reveal">
             <span>{lang === "zh" ? "I² / 研究机会" : "I² / RESEARCH OPPORTUNITY"}</span>
-            <p>{lang === "zh" ? "长期参与 · 真实研究 · 可验证成果" : "LONG-TERM · REAL RESEARCH · VERIFIABLE OUTCOMES"}</p>
+            <p>{lang === "zh" ? "长期参与 · 真实项目 · 扎实成果" : "LONG-TERM · REAL RESEARCH · VERIFIABLE OUTCOMES"}</p>
           </aside>
           <div className="project-detail-sections">
             {project.sections.map((section, sectionIndex) => (
@@ -924,8 +924,8 @@ function OpportunityDetailPage({ project, lang }: { project: ResearchOpportunity
       <section className="project-application-band">
         <div>
           <span>{lang === "zh" ? "准备加入这个项目？" : "READY TO JOIN THIS PROJECT?"}</span>
-          <h2>{lang === "zh" ? "从一封清晰的申请邮件开始。" : "Start with a clear application email."}</h2>
-          <p>{lang === "zh" ? "邮件正文使用英文要点形式，不超过 200 词，并附个人简历及相关项目链接。" : "Use no more than 200 words in English bullet points and attach your CV and relevant project links."}</p>
+          <h2>{lang === "zh" ? "先写一封简单、清楚的申请邮件。" : "Start with a clear application email."}</h2>
+          <p>{lang === "zh" ? "请用英文要点写正文，不超过 200 词，并附上简历和相关项目链接。" : "Use no more than 200 words in English bullet points and attach your CV and relevant project links."}</p>
         </div>
         <a className="primary-button light-button" href={`mailto:${project.email}?subject=${mailSubject}`}>
           <span>{lang === "zh" ? `联系${t(project.leader, lang)}` : `Email ${t(project.leader, lang)}`}</span>
@@ -945,7 +945,7 @@ function MainProjectsSection({ lang }: { lang: Lang }) {
           eyebrow={{ zh: "研究与临床实践", en: "RESEARCH IN PRACTICE" }}
           title={{ zh: "主要项目", en: "Main Projects" }}
           description={{
-            zh: "从临床问题出发，走向可体验的研究系统。两个围术期项目分别回应患者对清晰信息和主动康复的需求；点击项目了解各自的研究路径。",
+            zh: "从临床里的真实问题出发，做出人们能亲身体验的系统。一个项目帮助患者了解治疗过程，另一个关注术后康复。点击项目，看看它们各自怎样展开。",
             en: "From clinical questions to research systems people can experience. These two perioperative projects address different needs—understanding care and participating in recovery. Open each to explore its approach.",
           }}
         />
@@ -1059,9 +1059,9 @@ function ResearchFigureCard({ figure, lang }: { figure: ResearchFigure; lang: La
           href={figure.pdf}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={`${lang === "zh" ? "PDF 出处" : "PDF source"}: ${t(figure.title, lang)} · ${openLabel}`}
+          aria-label={`${lang === "zh" ? "查看论文 PDF" : "PDF source"}: ${t(figure.title, lang)} · ${openLabel}`}
         >
-          {lang === "zh" ? "PDF 出处" : "PDF source"}<i aria-hidden="true">↗</i>
+          {lang === "zh" ? "查看论文 PDF" : "PDF source"}<i aria-hidden="true">↗</i>
         </a>
       </figcaption>
     </figure>
@@ -1141,7 +1141,7 @@ function ResearchCarousel({ stories, lang }: { stories: ResearchStory[]; lang: L
       <div className="research-carousel-toolbar">
         <div className="research-carousel-intro">
           <span>{lang === "zh" ? "I² / 研究图谱" : "I² / RESEARCH ATLAS"}</span>
-          <p>{lang === "zh" ? "12 份视觉记录 · 6 组研究线索 · 每张图片直达来源 PDF" : "12 visual records · 6 research pairings · every image opens its source PDF"}</p>
+          <p>{lang === "zh" ? "12 张研究图片 · 6 组主题 · 点击图片阅读对应论文" : "12 visual records · 6 research pairings · every image opens its source PDF"}</p>
         </div>
         <div className="research-carousel-controls">
           <span aria-hidden="true"><b>{String(activeIndex + 1).padStart(2, "0")}</b> / {String(stories.length).padStart(2, "0")}</span>
@@ -1190,7 +1190,7 @@ function ResearchCarousel({ stories, lang }: { stories: ResearchStory[]; lang: L
                 <span>{t(story.tag, lang)}</span>
                 <strong>{t(story.title, lang)}</strong>
                 <p>{t(story.note, lang)}</p>
-                <small>{lang === "zh" ? "研究 · 原型 · 转化" : "RESEARCH · PROTOTYPE · TRANSLATION"}</small>
+                <small>{lang === "zh" ? "研究 · 原型 · 实践" : "RESEARCH · PROTOTYPE · TRANSLATION"}</small>
               </div>
               <ResearchFigureCard figure={story.figures[1]} lang={lang} />
             </article>
@@ -1433,7 +1433,7 @@ function App() {
             <div className="about-statement reveal">
               <p className="statement-lead">
                 {lang === "zh" ? (
-                  <>智能交互技术研究实验室（I²Lab）以<em>智能交互研究</em>为核心，探索人与数字世界、物理环境之间更自然、可信的连接。</>
+                  <>智能交互技术研究实验室（I²Lab）关注<em>人与智能系统的关系</em>，探索我们如何更自然、更安心地与数字世界和身边的环境互动。</>
                 ) : (
                   <>I²Lab is an <em>intelligent interaction research laboratory</em> exploring more natural, trustworthy connections between people, digital worlds, and physical environments.</>
                 )}
@@ -1441,12 +1441,12 @@ function App() {
               <div className="about-body">
                 <p>
                   {lang === "zh"
-                    ? "我们围绕扩展现实、毫米波感知与智能传感开展研究，结合人机交互、原型开发和实验评估，探索能够感知情境、理解行为并持续适应用户需求的交互系统。"
+                    ? "我们研究扩展现实、毫米波感知和智能传感，也动手做原型、开展实验。我们希望做出的交互系统能理解周围的情境，回应人的行为，并随着需求变化而调整。"
                     : "We investigate extended reality, millimetre-wave sensing, and intelligent sensors, combining human–computer interaction research, prototype development, and experimental evaluation to explore systems that perceive context, understand behaviour, and adapt to users’ needs."}
                 </p>
                 <p>
                   {lang === "zh"
-                    ? "我们从医疗与教育中的真实需求出发，通过用户研究与可复现的实验连接学术探索和现实应用。实验室致力于在不增加额外负担的前提下改善交互体验，支持学习、康复与长期健康管理，让研究成果走入日常生活。"
+                    ? "我们的起点是医疗和教育中的具体问题。通过用户研究和可重复的实验，我们寻找真正有用的解决办法：让学习、康复和长期健康管理更轻松，而不是给人增加负担。"
                     : "We begin with real needs in healthcare and education, connecting academic exploration with practical applications through user studies and reproducible experiments. Our laboratory aims to improve interaction without adding burden, supporting learning, rehabilitation, and long-term health management while bringing research into everyday life."}
                 </p>
               </div>
@@ -1455,7 +1455,7 @@ function App() {
               <span>{lang === "zh" ? "实验室愿景" : "OUR VISION"}</span>
               <blockquote>
                 {lang === "zh"
-                  ? "让源于实验室的高质量人机交互能力，在任何时间、任何地点、任何环境中，稳定服务于医疗与教育实践。"
+                  ? "让实验室里的好想法走进医疗和教育现场，在人们需要的时候，提供可靠的帮助。"
                   : "To make research-led intelligent interaction reliable—anytime, anywhere, and in any context—for healthcare and education."}
               </blockquote>
             </div>
@@ -1475,7 +1475,7 @@ function App() {
             <SectionHeading
               lang={lang}
               eyebrow={{ zh: "从实验室到真实场景", en: "FROM LAB TO LIVED EXPERIENCE" }}
-              title={{ zh: "研究，只有进入生活才真正发生价值。", en: "Research creates value when it enters real life." }}
+              title={{ zh: "让研究走近真实生活。", en: "Research creates value when it enters real life." }}
             />
 
             <ResearchCarousel stories={researchStories} lang={lang} />
@@ -1496,17 +1496,17 @@ function App() {
           <div className="section-frame">
             <SectionHeading
               lang={lang}
-              eyebrow={{ zh: "团队概要", en: "TEAM PROFILE" }}
-              title={{ zh: "跨越研究、工程与转化。", en: "Across research, engineering, and translation." }}
+              eyebrow={{ zh: "认识团队", en: "TEAM PROFILE" }}
+              title={{ zh: "不同专长，在这里相遇。", en: "Across research, engineering, and translation." }}
               description={{
-                zh: "来自计算机科学、人机交互、智能系统与产业实践的多元经验，在同一目标下汇聚。",
+                zh: "我们有不同的背景：计算机科学、人机交互、智能系统和产业实践。大家带着各自的专长，一起解决真实问题。",
                 en: "Different perspectives across computer science, HCI, intelligent systems, and industry converge around a shared purpose.",
               }}
             />
 
             <div className="advisory-header reveal">
               <span>{lang === "zh" ? "顾问委员会" : "EXTERNAL ADVISORY BOARD"}</span>
-              <p>{lang === "zh" ? "为科研深度与真实世界转化提供长期支持。" : "Long-term guidance for research depth and real-world translation."}</p>
+              <p>{lang === "zh" ? "为研究和实际应用提供长期支持。" : "Long-term guidance for research depth and real-world translation."}</p>
             </div>
             <div className="advisor-grid">
               {advisors.map((advisor) => (
@@ -1525,7 +1525,7 @@ function App() {
 
             <div className="team-current-header reveal">
               <span>{lang === "zh" ? "研究团队" : "RESEARCH TEAM"}</span>
-              <p>{lang === "zh" ? "以不同专长，共同推进智能交互研究。" : "Different strengths, one shared research practice."}</p>
+              <p>{lang === "zh" ? "带着不同的专长，一起探索更好的交互方式。" : "Different strengths, one shared research practice."}</p>
             </div>
             <div className="team-grid">
               {team.map((member, index) => (
@@ -1556,7 +1556,7 @@ function App() {
 
             <div className="team-current-header research-assistant-header reveal">
               <span>{lang === "zh" ? "现任研究助理" : "CURRENT RESEARCH ASSISTANTS"}</span>
-              <p>{lang === "zh" ? "让实验室的研究在数字空间中被看见。" : "Making the laboratory’s research visible in digital space."}</p>
+              <p>{lang === "zh" ? "参与项目，让实验室的研究持续向前。" : "Making the laboratory’s research visible in digital space."}</p>
             </div>
             <div className="research-assistant-list">
               {currentResearchAssistants.map((assistant, index) => (
@@ -1584,10 +1584,10 @@ function App() {
             <div className="publications-heading-row">
               <SectionHeading
                 lang={lang}
-                eyebrow={{ zh: "精选发表论文集", en: "SELECTED PUBLICATIONS" }}
-                title={{ zh: "用可验证的研究，支撑每一次转化。", en: "Evidence for every step toward impact." }}
+                eyebrow={{ zh: "精选论文", en: "SELECTED PUBLICATIONS" }}
+                title={{ zh: "每一项研究，都有迹可循。", en: "Evidence for every step toward impact." }}
                 description={{
-                  zh: "论文按团队成员在本页中的出场顺序呈现；后续研究成果可持续追加。",
+                  zh: "这些论文按上方团队成员的出场顺序整理，今后还会继续更新。",
                   en: "Research is grouped in the same order as the team above, with room for the collection to keep growing.",
                 }}
               />
@@ -1677,7 +1677,7 @@ function App() {
           <div className="closing-copy reveal">
             <span>{lang === "zh" ? "I²Lab · 宁波" : "I² LAB · NINGBO"}</span>
             <h2>{lang === "zh" ? <>下一代交互，<br />从真实问题开始。</> : <>The next interaction<br />starts with a real need.</>}</h2>
-            <p>{lang === "zh" ? "与产业、学术和医疗伙伴共同构建面向未来的交互创新生态。" : "Building the future of interaction with partners across industry, academia, and healthcare."}</p>
+            <p>{lang === "zh" ? "与产业、学术和医疗伙伴一起，把新的交互方式带进真实生活。" : "Building the future of interaction with partners across industry, academia, and healthcare."}</p>
             <div>
               <a className="primary-button light-button" href="#team"><span>{lang === "zh" ? "认识团队" : "Meet the team"}</span><span aria-hidden="true">↑</span></a>
               <a className="text-button light-text-button" href="#publications">{lang === "zh" ? "浏览研究成果" : "Explore the research"}<span aria-hidden="true">↗</span></a>

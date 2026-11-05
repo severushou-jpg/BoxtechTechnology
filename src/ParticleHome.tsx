@@ -13,7 +13,7 @@ export default function ParticleHome({ lang, paused, openingComplete, onTogglePa
             <span className="particle-home-name">{lang === "zh" ? "智能交互技术研究实验室" : "Intelligent Interaction Laboratory"}</span>
           </h1>
           <p className="particle-home-thesis">
-            {lang === "zh" ? "研究人与智能如何共同感知、理解与行动。" : "Exploring how people and intelligent systems perceive, understand, and act together."}
+            {lang === "zh" ? "探索人与智能如何共同感知、理解与行动。" : "Exploring how people and intelligent systems perceive, understand, and act together."}
           </p>
         </div>
       ) : (
@@ -28,8 +28,8 @@ export default function ParticleHome({ lang, paused, openingComplete, onTogglePa
             className="particle-home-pause"
             type="button"
             aria-label={paused
-              ? (lang === "zh" ? "继续粒子标志开场、人机塑形、流场和微浮动" : "Resume particle-logo opening, figure formation, flow and drift")
-              : (lang === "zh" ? "暂停粒子标志开场、人机塑形、流场和微浮动" : "Pause particle-logo opening, figure formation, flow and drift")}
+              ? (lang === "zh" ? "继续播放首页粒子动画" : "Resume particle-logo opening, figure formation, flow and drift")
+              : (lang === "zh" ? "暂停首页粒子动画" : "Pause particle-logo opening, figure formation, flow and drift")}
             aria-pressed={paused}
             onClick={onTogglePause}
           >
